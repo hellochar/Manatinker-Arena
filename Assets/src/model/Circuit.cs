@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-class Circuit {
+public class Circuit {
   List<Fragment> fragments;
   FlowGraph graph;
-  public Circuit(List<Fragment> fragments) {
-    this.fragments = fragments;
+  public Circuit(IEnumerable<Fragment> fragments) {
+    this.fragments = fragments.ToList();
     graph = new FlowGraph(fragments.SelectMany(f => new [] { f.outt, f.inn }).ToHashSet());
   }
 
@@ -21,6 +21,9 @@ class Circuit {
   }
 
 	internal void simulate(float dt) {
+    foreach(var f in fragments) {
+      f.Update?.Invoke();
+    }
     foreach(var f in fragments) {
       f.assignNodeFlows(dt);
     }
@@ -39,7 +42,7 @@ class Circuit {
 	}
 }
 
-class FlowGraph {
+public class FlowGraph {
   HashSet<Node> nodes;
   IEnumerable<Edge> allEdges => nodes.SelectMany(n => n.edges);
 
@@ -80,7 +83,7 @@ class FlowGraph {
 	}
 }
 
-class Node {
+public class Node {
   public string name;
   // set per simulate step
   public float flow = -1;
@@ -119,7 +122,7 @@ class Node {
   }
 }
 
-class Edge {
+public class Edge {
   public Edge(Node outt, Node inn) {
     this.outt = outt;
     this.inn = inn;

@@ -1,20 +1,36 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-class Fragment : MonoBehaviour {
+public class Fragment : MonoBehaviour {
   public Node outt, inn;
   public new string name;
   public float mana = 50;
   public float manaMax = 100;
   public float outFlowRate;
   public float inFlowRate;
+
+  public List<Fragment> connections;
+
+  public Action Update;
+
   public Fragment(string name, float outFlowRate, float inFlowRate) {
     this.name = name;
     this.outFlowRate = outFlowRate;
     this.inFlowRate = inFlowRate;
     outt = new Node("out" + name);
     inn = new Node("in" + name);
+  }
+
+  public void Awake() {
+    outt = new Node("out" + name);
+    inn = new Node("in" + name);
+    foreach(var f in connections) {
+      if (f != null) {
+        connect(f);
+      }
+    }
   }
 
   public void connect(Fragment other) {
