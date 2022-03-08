@@ -288,7 +288,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.053463, g: 0.05784725, b: 0.071, a: 1}
+  m_Color: {r: 0.17983893, g: 0.21409395, b: 0.319, a: 1}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
@@ -767,7 +767,8 @@ GameObject:
   - component: {fileID: 925064480}
   - component: {fileID: 925064484}
   - component: {fileID: 925064485}
-  m_Layer: 0
+  - component: {fileID: 925064486}
+  m_Layer: 6
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,6 +930,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fragment: {fileID: 0}
   projectilePrefab: {fileID: 1257238511}
+--- !u!114 &925064486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925064478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a4711b65898ee4a9ed277011c48a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storeInTexcoordChannel: 1
+  cospatialVertexDistance: 0.01
 --- !u!1 &927129138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1225,7 @@ GameObject:
   - component: {fileID: 1196077485}
   - component: {fileID: 1196077484}
   - component: {fileID: 1196077483}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1288,7 +1303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1257238512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1466,7 @@ GameObject:
   - component: {fileID: 1600871575}
   - component: {fileID: 1600871577}
   - component: {fileID: 1600871578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1584,7 +1599,8 @@ GameObject:
   - component: {fileID: 1977539416}
   - component: {fileID: 1977539419}
   - component: {fileID: 1977539420}
-  m_Layer: 0
+  - component: {fileID: 1977539421}
+  m_Layer: 6
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1707,3 +1723,17 @@ MonoBehaviour:
   fragment: {fileID: 1977539416}
   fuel: 500
   fuelToManaRatio: 10
+--- !u!114 &1977539421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977539411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a4711b65898ee4a9ed277011c48a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storeInTexcoordChannel: 1
+  cospatialVertexDistance: 0.01

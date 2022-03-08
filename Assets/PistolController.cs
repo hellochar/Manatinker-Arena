@@ -17,6 +17,7 @@ public class PistolController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && fragment.mana > 10) {
             fragment.mana -= 10;
             var p = Instantiate(projectilePrefab, this.transform.position, this.transform.rotation);
+            p.SetActive(true);
         }
     }
 
