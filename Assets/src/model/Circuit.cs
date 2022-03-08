@@ -4,25 +4,28 @@ using System.Linq;
 
 public class Circuit {
   List<Fragment> fragments;
+  public IEnumerable<Fragment> Fragments => fragments;
   FlowGraph graph;
   public Circuit(IEnumerable<Fragment> fragments) {
     this.fragments = fragments.ToList();
     graph = new FlowGraph(fragments.SelectMany(f => new [] { f.outt, f.inn }).ToHashSet());
   }
+  public Circuit() : this(Enumerable.Empty<Fragment>()) {
+  }
 
-  void AddFragment(Fragment f) {
+  public void AddFragment(Fragment f) {
     fragments.Add(f);
     graph.AddNodes(f.outt, f.inn);
   }
 
-  void RemoveFragment(Fragment f) {
+  public void RemoveFragment(Fragment f) {
     fragments.Remove(f);
     graph.RemoveNodes(f.outt, f.inn);
   }
 
 	internal void simulate(float dt) {
     foreach(var f in fragments) {
-      f.Update?.Invoke();
+      f.Update(dt);
     }
     foreach(var f in fragments) {
       f.assignNodeFlows(dt);

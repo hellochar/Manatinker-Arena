@@ -3,38 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Fragment : MonoBehaviour {
+[Serializable]
+public class Fragment {
   public Node outt, inn;
   public new string name;
   [SerializeField]
   [ReadOnly]
-  private float mana = 50;
+  private float mana;
   public float Mana => mana;
-  public float manaMax = 100;
-  public float outFlowRate;
-  public float inFlowRate;
+  private float hp;
+  public float Hp => hp;
+  public virtual float manaMax => 100;
+  public virtual float outFlowRate => 0;
+  public virtual float inFlowRate => 0;
+  public virtual float mass => 1;
+  public virtual float weight => (1 + offset.magnitude) * mass;
 
-  public List<Fragment> connections;
+  public virtual float hpMax => 30;
+  public bool isBroken = false;
 
-  public Action Update;
+  // e.g. the player
+  public Fragment owner;
+  public Vector2 offset;
+  public float angle;
 
-  public Fragment(string name, float outFlowRate, float inFlowRate) {
+  public FragmentController controller;
+  public Vector2 worldPos => controller.transform.position.xy();
+  public float worldRotation => controller.transform.eulerAngles.z;
+
+  public Fragment() : this("") {
+  }
+
+  public Fragment(string name) {
     this.name = name;
-    this.outFlowRate = outFlowRate;
-    this.inFlowRate = inFlowRate;
     outt = new Node("out" + name);
     inn = new Node("in" + name);
+    hp = hpMax;
   }
 
-  public void Awake() {
-    outt = new Node("out" + name);
-    inn = new Node("in" + name);
-    foreach(var f in connections) {
-      if (f != null) {
-        connect(f);
-      }
-    }
-  }
+  public virtual void Update(float dt) {}
 
   public void connect(Fragment other) {
     outt.connectInn(other.inn);
@@ -55,6 +62,7 @@ public class Fragment : MonoBehaviour {
 
   float incomingTotal, outgoingTotal;
   float lastMana;
+
   // assumes all edges on my nodes are solved
   public void exchange() {
     outgoingTotal = outt.edges.Select(e => e.flow).Sum();
