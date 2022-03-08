@@ -220,8 +220,8 @@ MonoBehaviour:
     name: 
     mana: 0
     isBroken: 0
-    offset: {x: 0, y: 0}
-    angle: 0
+    builtinOffset: {x: 0, y: 0}
+    builtinAngle: 0
     controller: {fileID: 0}
   text: {fileID: 0}
 --- !u!1001 &2336626921831685073
@@ -338,12 +338,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8487840fddc76742a0f8fa3e6985133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sr: {fileID: 3209757324713929380}
   projectilePrefab: {fileID: 8853789878479199055, guid: 2c2e91c1b1d0a2f4eb10996854832140,
     type: 3}
   spawnPoint: {fileID: 3155899012154803869}
 --- !u!4 &2820953576096154947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 525610104338259602, guid: 1e59fcb8e698c244aacb132a761060af,
+    type: 3}
+  m_PrefabInstance: {fileID: 2336626921831685073}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3209757324713929380 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
     type: 3}
   m_PrefabInstance: {fileID: 2336626921831685073}
   m_PrefabAsset: {fileID: 0}

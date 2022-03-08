@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CameraFollowPlayer : MonoBehaviour {
   public GameObject Player;
-  Vector3 diffOriginal;
-  public bool nearMode = false;
   public float mouseMovement = 2f;
   // public float nearModeFov = 30f;
   // float originalFov;
@@ -16,7 +14,6 @@ public class CameraFollowPlayer : MonoBehaviour {
 
   // Start is called before the first frame update
   void Start() {
-    diffOriginal = transform.position - Player.transform.position;
     camera = GetComponent<Camera>();
     // originalFov = camera.fieldOfView;
     originalProjectionSize = camera.orthographicSize;
@@ -25,18 +22,21 @@ public class CameraFollowPlayer : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     if (Input.GetKeyDown(KeyCode.E)) {
-      nearMode = !nearMode;
+      GameModel.main.isEditMode = !GameModel.main.isEditMode;
     }
-    var targetPosition = Player.transform.position + diffOriginal;
+    if (Player == null) {
+      return;
+    }
+    var targetPosition = Player.transform.position.xy();
 
-    if (!nearMode) {
+    if (!GameModel.main.isEditMode) {
       var screenCenter = new Vector2(Screen.width, Screen.height) / 2f;
       // -1 -> 1
       var mouseOffset = (Input.mousePosition.xy() - screenCenter) / screenCenter;
-      targetPosition += new Vector3(mouseOffset.x, mouseOffset.y, 0) * mouseMovement;
+      targetPosition += mouseOffset * mouseMovement;
     }
 
-    float targetProjectionSize = nearMode ? nearModeProjectionSize : originalProjectionSize;
+    float targetProjectionSize = GameModel.main.isEditMode ? nearModeProjectionSize : originalProjectionSize;
     camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetProjectionSize, 0.1f);
     // float targetFov = nearMode ? nearModeFov : originalFov;
     // camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, 0.2f);
@@ -47,7 +47,9 @@ public class CameraFollowPlayer : MonoBehaviour {
     // }
     // var dist = Vector3.Distance(Player.transform.position.xy(), transform.position.xy());
     // var lerpRate = Util.MapLinear(Mathf.Clamp(dist, 1f, 5f), 1f, 5f, 1f, 5f);
-    transform.position = Vector3.Lerp(transform.position, targetPosition, lerpRate * Time.deltaTime);
+    var newPosition = transform.position.xy();
+    newPosition = Vector2.Lerp(newPosition, targetPosition, lerpRate * Time.deltaTime);
+    transform.position = newPosition.z(transform.position.z);
   }
 }
 

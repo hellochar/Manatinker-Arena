@@ -11,8 +11,8 @@ public class Core : Fragment {
   public override float outFlowRate => 25;
   public override float mass => 0;
 
-  public Core(float fuel) : base("core") {
-    this.fuel = fuel;
+  public Core() : base("core") {
+    this.fuel = fuelMax;
   }
 
   public override void Update(float dt) {

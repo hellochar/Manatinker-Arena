@@ -17,15 +17,15 @@ public class Fragment {
   public virtual float outFlowRate => 0;
   public virtual float inFlowRate => 0;
   public virtual float mass => 1;
-  public virtual float weight => (1 + offset.magnitude) * mass;
+  public virtual float weight => (1 + builtinOffset.magnitude) * mass;
 
   public virtual float hpMax => 30;
   public bool isBroken = false;
 
   // e.g. the player
   public Fragment owner;
-  public Vector2 offset;
-  public float angle;
+  public Vector2 builtinOffset;
+  public float builtinAngle;
 
   public FragmentController controller;
   public Vector2 worldPos => controller.transform.position.xy();

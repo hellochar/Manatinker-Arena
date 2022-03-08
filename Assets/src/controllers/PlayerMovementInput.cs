@@ -9,7 +9,7 @@ public class PlayerMovementInput : MonoBehaviour {
   Rigidbody2D rb2d;
   void Start() {
     rb2d = GetComponent<Rigidbody2D>();
-
+    Camera.main.GetComponent<CameraFollowPlayer>().Player = this.gameObject;
   }
 
   float lastTime = 0;

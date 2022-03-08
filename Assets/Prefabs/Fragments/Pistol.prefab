@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 2145530139324960989, guid: cfb24af8d768a0540bb75ae0ffa6c45c,
         type: 3}
       propertyPath: m_Name
-      value: Weapon
+      value: Pistol
       objectReference: {fileID: 0}
     - target: {fileID: 2820953576096154947, guid: cfb24af8d768a0540bb75ae0ffa6c45c,
         type: 3}
@@ -67,6 +67,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059730701790439479, guid: cfb24af8d768a0540bb75ae0ffa6c45c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059730701790439479, guid: cfb24af8d768a0540bb75ae0ffa6c45c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

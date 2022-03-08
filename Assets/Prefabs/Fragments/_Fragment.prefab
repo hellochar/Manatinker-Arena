@@ -128,7 +128,7 @@ PrefabInstance:
     - target: {fileID: 1993349494470741047, guid: cf1ab0262f774974a9e73e727675a4b2,
         type: 3}
       propertyPath: m_Name
-      value: Fragment
+      value: _Fragment
       objectReference: {fileID: 0}
     - target: {fileID: 2398644892997622185, guid: cf1ab0262f774974a9e73e727675a4b2,
         type: 3}
@@ -216,3 +216,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed346dad0e6674408fb87f37e8d9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sr: {fileID: 929435363090133365}

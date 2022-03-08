@@ -9,6 +9,10 @@ public class WeaponController : FragmentController {
     weapon.OnShootProjectile += HandleShootProjectile;
   }
 
+  public override void Init(Fragment f) {
+    base.Init(f);
+  }
+
   void HandleShootProjectile(Projectile p) {
     var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<ProjectileController>();
     projectile.Init(p);

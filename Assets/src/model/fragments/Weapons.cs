@@ -17,7 +17,7 @@ public class Pistol : Weapon {
   public override float manaMax => 100;
   static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
 
-  public Pistol(string name) : base("pistol") {
+  public Pistol() : base("pistol") {
   }
 
   public override void Update(float dt) {

@@ -189,8 +189,8 @@ MonoBehaviour:
     name: 
     mana: 0
     isBroken: 0
-    offset: {x: 0, y: 0}
-    angle: 0
+    builtinOffset: {x: 0, y: 0}
+    builtinAngle: 0
     controller: {fileID: 0}
   text: {fileID: 0}
 --- !u!1001 &2336626921831685073
@@ -262,6 +262,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c4249b599ca6a9a4fa8ed91238ce816d,
         type: 3}
+    - target: {fileID: 1745798371044701158, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745798371044701158, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745798371044701158, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1787473703562407200, guid: 1e59fcb8e698c244aacb132a761060af,
         type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -304,9 +319,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef5dca4f4241ffe469b078f99773b502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sr: {fileID: 3209757324713929380}
 --- !u!4 &2820953576096154947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 525610104338259602, guid: 1e59fcb8e698c244aacb132a761060af,
+    type: 3}
+  m_PrefabInstance: {fileID: 2336626921831685073}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3209757324713929380 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
     type: 3}
   m_PrefabInstance: {fileID: 2336626921831685073}
   m_PrefabAsset: {fileID: 0}

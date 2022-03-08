@@ -14,17 +14,20 @@ public class GameModelController : MonoBehaviour {
   [ReadOnly]
   public List<FragmentController> fragmentControllers = new List<FragmentController>();
 
-  void Start() {
+  void Awake() {
     foreach(var entry in Mapping) {
       var type = Type.GetType(entry.className);
       fragmentPrefabs.Add(type, entry.prefab);
     }
     GameModel.SetMainToNewGame();
+  }
+
+  void Start() {
     Init(GameModel.main);
   }
 
   void Init(GameModel model) {
-    floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<FloorController>();
+    floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity).GetComponent<FloorController>();
     floor.Init(model.floor);
 
     foreach(var f in model.Fragments) {
@@ -41,7 +44,8 @@ public class GameModelController : MonoBehaviour {
   }
 
   private void HandleFragmentAdded(Fragment fragment) {
-    FragmentController f = Instantiate(fragmentPrefabs[fragment.GetType()], Vector3.zero, Quaternion.identity, transform).GetComponent<FragmentController>();
+    var go = Instantiate(fragmentPrefabs[fragment.GetType()], Vector3.zero, Quaternion.identity);
+    FragmentController f = go.GetComponent<FragmentController>();
     fragmentControllers.Add(f);
     f.Init(fragment);
   }
