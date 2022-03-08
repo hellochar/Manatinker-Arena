@@ -19,9 +19,9 @@ public class CoreController : MonoBehaviour
     void MyUpdate()
     {
         var manaToAdd = Time.deltaTime * fuelToManaRatio;
-        if (fragment.mana + manaToAdd <= fragment.manaMax) {
+        if (fragment.Mana + manaToAdd <= fragment.manaMax) {
             fuel -= Time.deltaTime;
-            fragment.mana += manaToAdd;
+            fragment.ChangeMana(manaToAdd);
         }
     }
 }

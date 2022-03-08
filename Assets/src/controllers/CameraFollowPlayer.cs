@@ -8,8 +8,10 @@ public class CameraFollowPlayer : MonoBehaviour
     Vector3 diffOriginal;
     public bool nearMode = false;
     public float mouseMovement = 2f;
-    public float nearModeFov = 30f;
-    float originalFov;
+    // public float nearModeFov = 30f;
+    // float originalFov;
+    public float nearModeProjectionSize = 4;
+    float originalProjectionSize;
     public float lerpRate = 4f;
     private new Camera camera;
 
@@ -18,7 +20,8 @@ public class CameraFollowPlayer : MonoBehaviour
     {
         diffOriginal = transform.position - Player.transform.position;
         camera = GetComponent<Camera>();
-        originalFov = camera.fieldOfView;
+        // originalFov = camera.fieldOfView;
+        originalProjectionSize = camera.orthographicSize;
     }
 
     // Update is called once per frame
@@ -36,8 +39,10 @@ public class CameraFollowPlayer : MonoBehaviour
             targetPosition += new Vector3(mouseOffset.x, mouseOffset.y, 0) * mouseMovement;
         }
 
-        float targetFov = nearMode ? nearModeFov : originalFov;
-        camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, 0.2f);
+        float targetProjectionSize = nearMode ? nearModeProjectionSize : originalProjectionSize;
+        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetProjectionSize, 0.1f);
+        // float targetFov = nearMode ? nearModeFov : originalFov;
+        // camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, 0.2f);
 
         // if (Vector3.Distance(diffCurrent, diffTarget) > 0.01f) {
         //     diffCurrent = Vector3.Lerp(diffCurrent, diffTarget, 0.2f);

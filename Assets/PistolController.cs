@@ -7,6 +7,7 @@ public class PistolController : MonoBehaviour
     // Start is called before the first frame update
     public Fragment fragment;
     public GameObject projectilePrefab;
+    public Transform spawnPoint;
     void Start()
     {
         fragment = GetComponent<Fragment>();
@@ -14,9 +15,9 @@ public class PistolController : MonoBehaviour
     }
 
     void MyUpdate() {
-        if (Input.GetMouseButtonDown(0) && fragment.mana > 10) {
-            fragment.mana -= 10;
-            var p = Instantiate(projectilePrefab, this.transform.position, this.transform.rotation);
+        if (Input.GetMouseButtonDown(0) && fragment.Mana > 10) {
+            fragment.ChangeMana(-10);
+            var p = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
             p.SetActive(true);
         }
     }

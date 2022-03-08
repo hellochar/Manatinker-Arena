@@ -6,7 +6,10 @@ using UnityEngine;
 public class Fragment : MonoBehaviour {
   public Node outt, inn;
   public new string name;
-  public float mana = 50;
+  [SerializeField]
+  [ReadOnly]
+  private float mana = 50;
+  public float Mana => mana;
   public float manaMax = 100;
   public float outFlowRate;
   public float inFlowRate;
@@ -37,11 +40,15 @@ public class Fragment : MonoBehaviour {
     outt.connectInn(other.inn);
   }
 
-	private void ChangeMana(float diff) {
+	public void ChangeMana(float diff) {
     if (mana + diff > manaMax) {
       Console.WriteLine($"giving {mana} + {diff} = {mana+diff}, max {manaMax}");
+      mana = manaMax;
+      return;
     } else if (mana + diff < 0) {
       Console.WriteLine($"taking {-diff}, mana {mana}.");
+      mana = 0;
+      return;
     }
 		this.mana += diff;
 	}
