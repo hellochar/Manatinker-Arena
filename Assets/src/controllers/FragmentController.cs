@@ -6,7 +6,7 @@ using UnityEngine;
 public class FragmentController : MonoBehaviour {
   [NonSerialized]
   public Fragment fragment;
-  public SpriteRenderer sr;
+  public SpriteRenderer manaCover;
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -23,13 +23,17 @@ public class FragmentController : MonoBehaviour {
   }
 
   void Start() {
-    if (sr == null) {
-      sr = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+    if (manaCover != null) {
+      var sr = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+      manaCover.sprite = sr.sprite;
     }
   }
 
   public virtual void Update() {
-    sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
+    if (manaCover != null) {
+      manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
+    }
+    // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
 
   internal void Removed() {

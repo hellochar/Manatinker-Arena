@@ -12,9 +12,9 @@ public abstract class Weapon : Fragment {
 public class Pistol : Weapon {
   public override (int, int) damageSpread => (8, 12);
   public override float outFlowRate => 0;
-  public override float inFlowRate => 10;
+  public override float inFlowRate => 7;
   public override float hpMax => 15;
-  public override float manaMax => 100;
+  public override float manaMax => 30;
   static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
 
   public Pistol() : base("pistol") {
