@@ -7,6 +7,8 @@ public class FragmentController : MonoBehaviour {
   [NonSerialized]
   public Fragment fragment;
   public SpriteRenderer manaCover;
+  public GameObject input;
+  public GameObject output;
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -26,6 +28,12 @@ public class FragmentController : MonoBehaviour {
     if (manaCover != null) {
       var sr = transform.Find("Sprite").GetComponent<SpriteRenderer>();
       manaCover.sprite = sr.sprite;
+    }
+    if (input == null) {
+      input = transform.Find("Input")?.gameObject;
+    }
+    if (output == null) {
+      output = transform.Find("Output")?.gameObject;
     }
   }
 

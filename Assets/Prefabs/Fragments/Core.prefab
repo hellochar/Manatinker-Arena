@@ -94,10 +94,40 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2400642224060455150, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400642224060455150, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400642224060455150, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 4443691110170069772, guid: 1e59fcb8e698c244aacb132a761060af,
         type: 3}
       propertyPath: m_Name
       value: Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230856036513731825, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230856036513731825, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230856036513731825, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.56
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -1775392909632285473, guid: 1e59fcb8e698c244aacb132a761060af, type: 3}
@@ -123,6 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaCover: {fileID: 7605165955503425990}
+  input: {fileID: 0}
+  output: {fileID: 0}
 --- !u!212 &7605165955503425990 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5325409710869402135, guid: 1e59fcb8e698c244aacb132a761060af,
