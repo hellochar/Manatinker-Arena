@@ -41,6 +41,9 @@ public class ProjectileController : MonoBehaviour {
   // }
 
   void OnTriggerEnter2D(Collider2D col) {
-    Destroy(gameObject);
+    if (col.gameObject.CompareTag("InLevel")) {
+      // we've hit a level object
+      Destroy(gameObject);
+    }
   }
 }

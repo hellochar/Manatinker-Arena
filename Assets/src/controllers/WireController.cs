@@ -23,6 +23,7 @@ public class WireController : MonoBehaviour {
     var knot1 = splineContainer.Spline[1];
     var inTransform = wire.to.controller.input.transform;
     knot1.Position = inTransform.position;
+    // var inRotation = inTransform.localPosition.xy().angleDeg() * Mathf.Deg2Rad;
     var inRotation = inTransform.eulerAngles.z * Mathf.Deg2Rad;
     knot1.TangentIn = new Unity.Mathematics.float3(-Mathf.Cos(inRotation), -Mathf.Sin(inRotation), 0) * 0.5f;
     splineContainer.Spline[1] = knot1;

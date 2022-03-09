@@ -109,6 +109,7 @@ public class Node {
   public void disconnectInn(Node inn) {
     var e = edges.FirstOrDefault(e => e.inn == inn);
     edges.Remove(e);
+    inn.edges.Remove(e);
   }
 
   public void assignOffers() {
@@ -144,6 +145,9 @@ public class Edge {
   }
 
   public void resolveOffer() {
+    if (outOffer < 0 || inOffer < 0) {
+      throw new Exception($"bad outOffer {outOffer} or inOffer {inOffer}");
+    }
     flow = Math.Min(outOffer, inOffer);
   }
 

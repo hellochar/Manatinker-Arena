@@ -84,12 +84,6 @@ public class EditModeInputController : MonoBehaviour {
     //   return;
     // }
     // if (creatingWire && selected != null) {
-    //   var isConnected = selected.fragment.isConnected(fc.fragment);
-    //   if (isConnected) {
-    //     selected.fragment.disconnect(fc.fragment);
-    //   } else {
-    //     selected.fragment.connect(fc.fragment);
-    //   }
     // }
     inputState.mouseDownOnFragment(fc);
   }
@@ -145,6 +139,9 @@ internal class InputStateSelected : InputState {
       // player's trying to drag
       Transition(new InputStateDragged(selected));
     }
+    if (Input.GetKeyDown(KeyCode.X)) {
+      Transition(new InputStateWireEdit(selected));
+    }
   }
 
   public override void mouseDownOnFragment(FragmentController fc) {
@@ -157,6 +154,34 @@ internal class InputStateSelected : InputState {
       Transition(new InputStateSelected(fc));
       return;
     }
+  }
+}
+
+internal class InputStateWireEdit : InputState {
+  public override string instructions => "Click a Fragment - toggle wire.\nX - cancel.";
+  private FragmentController from;
+
+  public InputStateWireEdit(FragmentController from) {
+    this.from = from;
+  }
+
+  void ToggleWire(FragmentController to) {
+    var isConnected = from.fragment.isConnected(to.fragment);
+    if (isConnected) {
+      from.fragment.disconnect(to.fragment);
+    } else {
+      from.fragment.connect(to.fragment);
+    }
+  }
+
+  public override void update() {
+    if (Input.GetKeyDown(KeyCode.X)) {
+      Transition(new InputStateSelected(from));
+    }
+  }
+
+  public override void mouseDownOnFragment(FragmentController fc) {
+    ToggleWire(fc);
   }
 }
 
