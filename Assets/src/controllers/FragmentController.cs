@@ -28,8 +28,8 @@ public class FragmentController : MonoBehaviour {
     }
   }
 
-  void Update() {
-    sr.color = Color.Lerp(Color.white, Color.black, fragment.Mana / fragment.manaMax);
+  public virtual void Update() {
+    sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
 
   internal void Removed() {

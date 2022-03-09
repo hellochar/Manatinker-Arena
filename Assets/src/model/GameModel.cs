@@ -62,4 +62,6 @@ public class GameModel {
 }
 
 internal class PlayerFragment : Fragment {
+  public PlayerFragment() : base("player-fragment") {
+  }
 }

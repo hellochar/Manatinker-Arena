@@ -18,7 +18,7 @@ public class WeaponController : FragmentController {
     projectile.Init(p);
   }
 
-  void Update() {
-
+  public override void Update() {
+    base.Update();
   }
 }

@@ -48,12 +48,12 @@ public class Fragment {
   }
 
 	public void ChangeMana(float diff) {
-    if (mana + diff > manaMax) {
-      Console.WriteLine($"giving {mana} + {diff} = {mana+diff}, max {manaMax}");
+    if (mana + diff > manaMax + 0.001) {
+      Debug.LogWarning($"giving {mana} + {diff} = {mana+diff}, max {manaMax}");
       mana = manaMax;
       return;
-    } else if (mana + diff < 0) {
-      Console.WriteLine($"taking {-diff}, mana {mana}.");
+    } else if (mana + diff < -0.001) {
+      Debug.LogError($"taking {-diff}, mana {mana}.");
       mana = 0;
       return;
     }
@@ -86,6 +86,6 @@ public class Fragment {
 
 	public override string ToString() {
     var netManaDiff = incomingTotal - outgoingTotal;
-		return $"[{name} {netManaDiff.ToString("+#0.000;-#0.000")} {lastMana.ToString("F3")} -->{incomingTotal.ToString("F3")}({inn.flow}) {outgoingTotal.ToString("F3")}({outt.flow})--> {mana.ToString("F3")} (max {manaMax})]";
+		return $"{base.ToString()}[{name} {netManaDiff.ToString("+#0.000;-#0.000")} {lastMana.ToString("F3")} -->{incomingTotal.ToString("F3")}({inn.flow}) {outgoingTotal.ToString("F3")}({outt.flow})--> {mana.ToString("F3")} (max {manaMax})]";
 	}
 }
