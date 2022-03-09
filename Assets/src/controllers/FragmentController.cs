@@ -58,10 +58,10 @@ public class FragmentController : MonoBehaviour {
   }
 
   void OnMouseDown() {
-    EditModeInputController.instance.mouseDown(this);
+    EditModeInputController.instance.mouseDownOnFragment(this);
   }
 
   void OnMouseUp() {
-    EditModeInputController.instance.mouseUp(this);
+    EditModeInputController.instance.mouseUpOnFragment(this);
   }
 }

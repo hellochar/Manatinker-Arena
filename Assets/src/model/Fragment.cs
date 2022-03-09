@@ -47,6 +47,9 @@ public class Fragment {
   public Vector2 worldPos => controller.transform.position.xy();
   public float worldRotation => controller.transform.eulerAngles.z;
 
+  public string DisplayName => GetType().Name;
+  public bool isPlayerOwned => owner is PlayerFragment;
+
   public Fragment() : this("") {
   }
 
@@ -60,7 +63,7 @@ public class Fragment {
   public virtual void Update(float dt) {}
 
   public void connect(Fragment other) {
-    if (wires.Any(w => w.to == other)) {
+    if (isConnected(other)) {
       return;
     }
     var wire = new Wire(this, other);
@@ -90,6 +93,10 @@ public class Fragment {
     }
 		this.mana += diff;
 	}
+
+  public bool isConnected(Fragment other) {
+    return wires.Any(w => w.to == other);
+  }
 
   float incomingTotal, outgoingTotal;
   float lastMana;

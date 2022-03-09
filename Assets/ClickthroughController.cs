@@ -5,6 +5,6 @@ using UnityEngine;
 // if we click here, deselect 
 public class ClickthroughController : MonoBehaviour {
   void OnMouseDown() {
-    EditModeInputController.instance.Reset();
+    EditModeInputController.instance.clickGround();
   }
 }
