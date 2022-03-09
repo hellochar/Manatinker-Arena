@@ -27,6 +27,8 @@ public class Fragment {
   public Vector2 builtinOffset;
   public float builtinAngle;
 
+  public List<Wire> wires = new List<Wire>();
+
   public FragmentController controller;
   public Vector2 worldPos => controller.transform.position.xy();
   public float worldRotation => controller.transform.eulerAngles.z;
@@ -44,7 +46,22 @@ public class Fragment {
   public virtual void Update(float dt) {}
 
   public void connect(Fragment other) {
+    if (wires.Any(w => w.to == other)) {
+      return;
+    }
+    var wire = new Wire(this, other);
+    wires.Add(wire);
     outt.connectInn(other.inn);
+    GameModel.main.OnWireAdded?.Invoke(wire);
+  }
+
+  public void disconnect(Fragment other) {
+    var wire = wires.Find(w => w.to == other);
+    if (wire != null) {
+      wires.Remove(wire);
+      outt.disconnectInn(other.inn);
+      GameModel.main.OnWireRemoved?.Invoke(wire);
+    }
   }
 
 	public void ChangeMana(float diff) {
@@ -88,4 +105,15 @@ public class Fragment {
     var netManaDiff = incomingTotal - outgoingTotal;
 		return $"{base.ToString()}[{name} {netManaDiff.ToString("+#0.000;-#0.000")} {lastMana.ToString("F3")} -->{incomingTotal.ToString("F3")}({inn.flow}) {outgoingTotal.ToString("F3")}({outt.flow})--> {mana.ToString("F3")} (max {manaMax})]";
 	}
+}
+
+public class Wire {
+  public readonly Fragment from;
+  public readonly Fragment to;
+  public WireController controller;
+
+  public Wire(Fragment from, Fragment to) {
+    this.from = from;
+    this.to = to;
+  }
 }

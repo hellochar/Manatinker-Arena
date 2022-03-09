@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameModelController : MonoBehaviour {
+  public GameModel model => GameModel.main;
+
+  public Transform wireContainer;
   public GameObject floorPrefab;
+  public GameObject wirePrefab;
   [ReadOnly]
   public FloorController floor;
   [SerializeField]
@@ -13,6 +17,7 @@ public class GameModelController : MonoBehaviour {
 
   [ReadOnly]
   public List<FragmentController> fragmentControllers = new List<FragmentController>();
+  public HashSet<WireController> wireControllers = new HashSet<WireController>();
 
   void Awake() {
     foreach(var entry in Mapping) {
@@ -34,8 +39,28 @@ public class GameModelController : MonoBehaviour {
       HandleFragmentAdded(f);
     }
 
+    foreach(var w in model.Wires) {
+      HandleWireAdded(w);
+    }
+
     model.OnFragmentAdded += HandleFragmentAdded;
     model.OnFragmentRemoved += HandleFragmentRemoved;
+
+    model.OnWireAdded += HandleWireAdded;
+    model.OnWireRemoved += HandleWireRemoved;
+  }
+
+  private void HandleWireRemoved(Wire w) {
+    wireControllers.Remove(w.controller);
+    w.controller.Removed();
+    // wireControllers.
+  }
+
+  private void HandleWireAdded(Wire w) {
+    var wire = Instantiate(wirePrefab, Vector3.zero, Quaternion.identity, wireContainer);
+    var wireController = wire.GetComponent<WireController>();
+    wireControllers.Add(wireController);
+    wireController.Init(w);
   }
 
   private void HandleFragmentRemoved(Fragment fragment) {

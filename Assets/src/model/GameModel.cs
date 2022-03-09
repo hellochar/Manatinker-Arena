@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameModel {
   public static GameModel main;
@@ -10,8 +11,12 @@ public class GameModel {
 
   public Action<Fragment> OnFragmentRemoved;
   public Action<Fragment> OnFragmentAdded;
+  public Action<Wire> OnWireAdded;
+  public Action<Wire> OnWireRemoved;
 
   public IEnumerable<Fragment> Fragments => circuit.Fragments;
+
+  public IEnumerable<Wire> Wires => Fragments.SelectMany(f => f.wires);
 
   public GameModel() {
   }
