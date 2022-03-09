@@ -23,6 +23,7 @@ public class GameModelController : MonoBehaviour {
   [ReadOnly]
   public List<FragmentController> fragmentControllers = new List<FragmentController>();
   public HashSet<WireController> wireControllers = new HashSet<WireController>();
+  private Coroutine activeAnimation;
 
   void Awake() {
     main = this;
@@ -35,7 +36,7 @@ public class GameModelController : MonoBehaviour {
 
   void Start() {
     Init(GameModel.main);
-    UpdateIsEditMode();
+    // UpdateIsEditMode();
   }
 
   void Init(GameModel model) {
@@ -82,34 +83,59 @@ public class GameModelController : MonoBehaviour {
     f.Init(fragment);
   }
 
-  internal void UpdateIsEditMode() {
-    foreach (var o in editModeObjects) {
-      o.SetActive(model.isEditMode);
+  internal void UpdateIsEditMode(bool value, Action callback) {
+    if (activeAnimation != null) {
+      return;
     }
-    foreach (var fc in fragmentControllers) {
-      // StartCoroutine(WaitForAnimationThenFixRigidbodies());
-      if (!(fc.fragment is PlayerFragment)) {
-        if (model.isEditMode) {
-          // make them clickable
-          var rb2d = fc.gameObject.AddComponent<Rigidbody2D>();
-          rb2d.bodyType = RigidbodyType2D.Static;
-        } else {
-          var rb2d = fc.gameObject.GetComponent<Rigidbody2D>();
-          if (rb2d) {
-            Destroy(rb2d);
-          }
-        }
+    Action cb = () => {
+      foreach (var o in editModeObjects) {
+        o.SetActive(value);
       }
+      activeAnimation = null;
+      callback();
+    };
+    if (value) {
+      activeAnimation = StartCoroutine(ResetRotationThenAddRigidbodies(cb));
+    } else {
+      activeAnimation = StartCoroutine(RemoveRigidbodies(cb));
     }
   }
 
-  private IEnumerator WaitForAnimationThenFixRigidbodies() {
-    if (model.isEditMode) {
-      while (GameModel.main.player.controller.GetComponent<PlayerMovementInput>().rb2d.rotation != 0) {
+  private IEnumerator ResetRotationThenAddRigidbodies(Action callback) {
+    {
+      var playerController = GameModel.main.player.controller;
+      var rb2d = playerController.GetComponent<Rigidbody2D>();
+      rb2d.SetRotation(0);
+
+      yield return new WaitForSeconds(0.25f);
+
+      // let physics catch up
+      while (rb2d.rotation != 0) {
         yield return new WaitForEndOfFrame();
       }
     }
+
+    foreach (var fc in fragmentControllers) {
+      if (!(fc.fragment is PlayerFragment)) {
+        // make them clickable
+        var rb2d = fc.gameObject.AddComponent<Rigidbody2D>();
+        rb2d.bodyType = RigidbodyType2D.Static;
+      }
+    }
+    callback();
+  }
+
+  private IEnumerator RemoveRigidbodies(Action callback) {
+    foreach (var fc in fragmentControllers) {
+      if (!(fc.fragment is PlayerFragment)) {
+        var rb2d = fc.gameObject.GetComponent<Rigidbody2D>();
+        if (rb2d) {
+          Destroy(rb2d);
+        }
+      }
+    }
     yield return new WaitForEndOfFrame();
+    callback();
   }
 
   void Update() {

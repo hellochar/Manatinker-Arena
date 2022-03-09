@@ -16,23 +16,21 @@ public class PlayerMovementInput : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
-    if (!GameModel.main.isEditMode) {
-      var dx = Input.GetAxis("Horizontal");
-      var dy = Input.GetAxis("Vertical");
-      rb2d.velocity = new Vector2(dx, dy) * velocity;
+    if (GameModel.main.isEditMode) {
+      return;
     }
+
+    var dx = Input.GetAxis("Horizontal");
+    var dy = Input.GetAxis("Vertical");
+    rb2d.velocity = new Vector2(dx, dy) * velocity;
 
     var s = new Vector2(Screen.width, Screen.height) / 2f;
     var mouseOffset = Input.mousePosition.xy() - s;
 
     var currentAngle = rb2d.rotation;
-    var targetAngle = GameModel.main.isEditMode ? 0 : Vector2.SignedAngle(Vector2.right, mouseOffset);
-    // rb2d.SetRotation(angle);
-    // rb2d.SetRotation(Mathf.MoveTowardsAngle(currentAngle, angle, 360 * Time.deltaTime));
+    var targetAngle = Vector2.SignedAngle(Vector2.right, mouseOffset);
     
-    // quickly force angle over there in edit mode
-    var angleLerp = GameModel.main.isEditMode ? 0.25f : 10f * Time.deltaTime;
-    var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, angleLerp);
+    var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, 10f * Time.deltaTime);
     newAngle = Mathf.MoveTowardsAngle(newAngle, targetAngle, 360 * Time.deltaTime);
     rb2d.SetRotation(newAngle);
 

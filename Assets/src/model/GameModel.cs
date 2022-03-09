@@ -6,12 +6,20 @@ using UnityEngine;
 public class GameModel {
   public static GameModel main;
 
-  private bool _isEditMode = true;
+  private bool _isEditMode = false;
   public bool isEditMode {
     get => _isEditMode;
     set {
-      _isEditMode = value;
-      GameModelController.main.UpdateIsEditMode();
+      if (value) {
+        // immediately set editmode to true
+        _isEditMode = true;
+      }
+      var isFalse = value == false;
+      GameModelController.main.UpdateIsEditMode(value, () => {
+        if (isFalse) {
+          _isEditMode = false;
+        }
+      });
     }
   }
 
