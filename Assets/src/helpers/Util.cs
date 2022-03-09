@@ -5,7 +5,11 @@ public static class Util {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
   }
 
+  public static float Snap(float v, float factor) {
+    return Mathf.Round(v / factor) * factor;
+  }
+
   public static Vector2 Snap(Vector2 v, float factor) {
-    return new Vector2(Mathf.Round(v.x / factor) * factor, Mathf.Round(v.y / factor) * factor);
+    return new Vector2(Snap(v.x, factor), Snap(v.y, factor));
   }
 }

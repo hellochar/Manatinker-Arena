@@ -38,7 +38,7 @@ public class Pistol : Weapon, IActivatable {
   }
 
   public bool CanActivateInner() {
-    return Input.GetMouseButtonDown(0) && Mana > 10;
+    return (isPlayerOwned ? Input.GetMouseButtonDown(0) : true) && Mana > 10;
   }
 
   public void Activate() {

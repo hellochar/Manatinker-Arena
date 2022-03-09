@@ -36,7 +36,7 @@ public class GameModelController : MonoBehaviour {
 
   void Start() {
     Init(GameModel.main);
-    // UpdateIsEditMode();
+    UpdateIsEditMode(GameModel.main.isEditMode);
   }
 
   void Init(GameModel model) {
@@ -83,7 +83,7 @@ public class GameModelController : MonoBehaviour {
     f.Init(fragment);
   }
 
-  internal void UpdateIsEditMode(bool value, Action callback) {
+  internal void UpdateIsEditMode(bool value, Action callback = null) {
     if (activeAnimation != null) {
       return;
     }
@@ -92,7 +92,7 @@ public class GameModelController : MonoBehaviour {
         o.SetActive(value);
       }
       activeAnimation = null;
-      callback();
+      callback?.Invoke();
     };
     if (value) {
       activeAnimation = StartCoroutine(ResetRotationThenAddRigidbodies(cb));
@@ -116,7 +116,7 @@ public class GameModelController : MonoBehaviour {
     }
 
     foreach (var fc in fragmentControllers) {
-      if (!(fc.fragment is PlayerFragment)) {
+      if (!(fc.fragment is Player)) {
         // make them clickable
         var rb2d = fc.gameObject.AddComponent<Rigidbody2D>();
         rb2d.bodyType = RigidbodyType2D.Static;
@@ -127,7 +127,7 @@ public class GameModelController : MonoBehaviour {
 
   private IEnumerator RemoveRigidbodies(Action callback) {
     foreach (var fc in fragmentControllers) {
-      if (!(fc.fragment is PlayerFragment)) {
+      if (!(fc.fragment is Player)) {
         var rb2d = fc.gameObject.GetComponent<Rigidbody2D>();
         if (rb2d) {
           Destroy(rb2d);

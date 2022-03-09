@@ -23,7 +23,22 @@ public class Fragment {
   public bool isBroken = false;
 
   // e.g. the player
-  public Fragment owner;
+  public Creature _owner;
+  public Creature owner {
+    get => _owner;
+    set {
+      if (_owner != null) {
+        _owner.children.Remove(this);
+      }
+      // TODO update dynamically changing owners on GameObject side, with builtin angle and builtin rotation
+      _owner = value;
+      if (_owner != null) {
+        _owner.children.Add(this);
+      }
+    }
+  }
+  public bool isPlayerOwned => owner is Player;
+
   public Vector2 _builtinOffset;
   public Vector2 builtinOffset {
     get => _builtinOffset;
@@ -48,7 +63,6 @@ public class Fragment {
   public float worldRotation => controller.transform.eulerAngles.z;
 
   public string DisplayName => GetType().Name;
-  public bool isPlayerOwned => owner is PlayerFragment;
 
   public Fragment() : this("") {
   }

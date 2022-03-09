@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameModel {
   public static GameModel main;
@@ -41,7 +42,7 @@ public class GameModel {
 
   public void AddFragment(params Fragment[] fArr) {
     foreach (var f in fArr) {
-      if (f is PlayerFragment) {
+      if (f is Player) {
         if (player != null) {
           throw new Exception("two players");
         }
@@ -61,7 +62,7 @@ public class GameModel {
     main = new GameModel();
     main.circuit = new Circuit();
 
-    var player = new PlayerFragment();
+    var player = new Player(new Vector2(5, 5));
 
     var core = new Core();
     core.owner = player;
@@ -85,12 +86,97 @@ public class GameModel {
     main.floor = new Floor(25, 25).surroundWithWalls();
   }
 
+  void spawnEnemy() {
+    var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
+    var enemy = new Enemy(pos);
+
+    var core = new Core();
+    core.owner = enemy;
+
+    var pistol1 = new Pistol();
+    pistol1.owner = enemy;
+    pistol1.builtinOffset = new Vector2(1.5f, 0);
+    core.connect(pistol1);
+
+    main.AddFragment(enemy, core, pistol1);
+  }
+
+  float timeUntilNextSpawn = 1;
   public void simulate(float dt) {
+    timeUntilNextSpawn -= dt;
+    if (timeUntilNextSpawn < 0) {
+      timeUntilNextSpawn += 15;
+      spawnEnemy();
+    }
     circuit.simulate(dt);
   }
 }
 
-internal class PlayerFragment : Fragment {
-  public PlayerFragment() : base("player-fragment") {
+public class Creature : Fragment {
+  public Vector2 startPosition;
+  private Rigidbody2D _rb2d;
+  private Rigidbody2D rb2d {
+    get {
+      if (_rb2d == null) {
+        _rb2d = controller?.GetComponent<Rigidbody2D>();
+      }
+      return _rb2d;
+    }
+  }
+  public List<Fragment> children = new List<Fragment>();
+  public virtual float speed => 10;
+  public virtual float turnRate => 10f;
+  public Creature(string name, Vector2 startPosition) : base(name) {
+    this.startPosition = startPosition;
+  }
+
+  public void setVelocityDirection(Vector2 inDirection) {
+    if (rb2d != null) {
+      var dir = inDirection;
+      if (dir.magnitude > 1) {
+        dir = dir.normalized;
+      }
+      rb2d.velocity = dir * speed;
+    }
+  }
+
+  public void setRotation(float targetAngle) {
+    if (rb2d != null) {
+      var currentAngle = rb2d.rotation;
+      // e.g. 10%
+      var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, turnRate * Time.deltaTime);
+      // 5 degrees
+      newAngle = Mathf.MoveTowardsAngle(newAngle, targetAngle, (turnRate / 2) * Time.deltaTime);
+      rb2d.SetRotation(newAngle);
+    }
+  }
+}
+
+internal class Player : Creature {
+  public Player(Vector2 start) : base("player-fragment", start) {
+  }
+}
+
+internal class Enemy : Creature {
+  public Enemy(Vector2 start) : base("enemy-fragment", start) {
+  }
+
+  public override void Update(float dt) {
+    // rotate towards player and fire
+    var player = GameModel.main.player;
+    var offset = player.worldPos - this.worldPos;
+    var desiredAngle = offset.angleDeg();
+    setRotation(desiredAngle);
+
+    // if close enough, fire at player
+    if (Mathf.DeltaAngle(worldRotation, desiredAngle) < 10) {
+      foreach(var f in children) {
+        if (f is Pistol p) {
+          if (p.CanActivate()) {
+            p.Activate();
+          }
+        }
+      }
+    }
   }
 }

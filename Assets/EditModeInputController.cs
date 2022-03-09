@@ -5,32 +5,7 @@ using UnityEngine;
 
 public class EditModeInputController : MonoBehaviour {
   public static EditModeInputController instance;
-  public FragmentController selected;
-  // public bool creatingWire = false;
-  // public bool isDragging = false;
-  public string instructions {
-    get => inputState.instructions;
-    // get {
-    //   string s;
-    //   if (isDragging) {
-    //     s = "Dragging.";
-    //   } else {
-    //     if (creatingWire) {
-    //       if (selected == null) {
-    //         s = "Click a Fragment - start a wire.\nX - cancel.";
-    //       }
-    //       s = "Creating a wire.\nClick another Fragment - create or remove a wire.\nX - cancel.";
-    //     } else {
-    //       s = "Click - select a Fragment.\nDrag - move a Fragment.\nX - create a wire.";
-    //     }
-    //   }
-    //   if (selected != null) {
-    //     s = selected.ToString() + "\n" + s;
-    //   }
-    //   return s;
-    // }
-  }
-
+  public string instructions => inputState.instructions;
   public InputState inputState = InputState.Default;
   void Start() {
     instance = this;
@@ -38,37 +13,14 @@ public class EditModeInputController : MonoBehaviour {
 
   public void Reset() {
     Transition(InputState.Default);
-    selected = null;
-    // isDragging = false;
-    // creatingWire = false;
   }
 
   public void clickGround() {
     inputState.clickGround();
   }
 
-  // Update is called once per frame
   void Update() {
     inputState.update();
-    // if (Input.GetKeyDown(KeyCode.X)) {
-    //   creatingWire = !creatingWire;
-    // }
-    // if (selected != null) {
-    //   if (Input.GetMouseButton(0)) {
-    //     if (isDragging) {
-    //     }
-    //   } else {
-    //     if (isDragging) {
-    //       isDragging = false;
-    //     }
-    //   }
-    //   var rotation = Input.GetAxis("Mouse ScrollWheel");
-    //   if (rotation < 0) {
-    //     selected.fragment.builtinAngle -= 15;
-    //   } else if (rotation > 0) {
-    //     selected.fragment.builtinAngle += 15;
-    //   }
-    // }
   }
 
   public void Transition(InputState next) {
@@ -78,19 +30,11 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   public void mouseDownOnFragment(FragmentController fc) {
-    // if (selected == null || selected == fc) {
-    //   selected = fc;
-    //   isDragging = true;
-    //   return;
-    // }
-    // if (creatingWire && selected != null) {
-    // }
     inputState.mouseDownOnFragment(fc);
   }
 
   public void mouseUpOnFragment(FragmentController fc) {
     inputState.mouseUpOnFragment(fc);
-    // isDragging = false;
   }
 }
 
@@ -128,7 +72,7 @@ internal class InputStateSelected : InputState {
     this.selected = fc;
   }
 
-  public override string instructions => $"Selected {selected.fragment.DisplayName}.\nDrag to move.\nX - create a wire.";
+  public override string instructions => $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).\nX - create a wire.";
 
   public override void clickGround() {
     Transition(InputState.Default);
@@ -141,6 +85,26 @@ internal class InputStateSelected : InputState {
     }
     if (Input.GetKeyDown(KeyCode.X)) {
       Transition(new InputStateWireEdit(selected));
+    }
+    // rotation
+    {
+      var shouldRotateSnap = !Input.GetKey(KeyCode.LeftAlt);
+      var amplitude = shouldRotateSnap ? 15 : 1;
+      var mouseWheelAmount = Input.GetAxis("Mouse ScrollWheel");
+
+      var diff = 0;
+      if (mouseWheelAmount < 0) {
+        diff = -amplitude;
+      } else if (mouseWheelAmount > 0) {
+        diff = amplitude;
+      }
+      if (diff != 0) {
+        var newAngle = selected.fragment.builtinAngle + diff;
+        if (shouldRotateSnap) {
+          newAngle = Util.Snap(newAngle, amplitude);
+        }
+        selected.fragment.builtinAngle = newAngle;
+      }
     }
   }
 
@@ -186,7 +150,7 @@ internal class InputStateWireEdit : InputState {
 }
 
 internal class InputStateDragged : InputState {
-  public override string instructions => $"Alt - disable snapping.\nRelease - finish drag.";
+  public override string instructions => $"Alt - disable snapping.";
   private FragmentController dragged;
 
   public InputStateDragged(FragmentController fc) {

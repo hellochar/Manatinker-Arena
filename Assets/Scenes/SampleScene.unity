@@ -537,10 +537,10 @@ RectTransform:
   m_Father: {fileID: 455638156}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 200.33435, y: 41.0535}
-  m_SizeDelta: {x: 400.6687, y: 82.107}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200.33435, y: -41.053497}
+  m_SizeDelta: {x: 400.6687, y: 82.106995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &558632509
 MonoBehaviour:
@@ -590,15 +590,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 1024
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -129.68884, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -838,14 +838,16 @@ MonoBehaviour:
   - {fileID: 455638155}
   floor: {fileID: 0}
   Mapping:
-  - className: PlayerFragment
-    prefab: {fileID: 7474432251884920491, guid: bab6113e82485814f893c12104352548,
-      type: 3}
+  - className: Player
+    prefab: {fileID: 680559606912736472, guid: bab6113e82485814f893c12104352548, type: 3}
   - className: Pistol
     prefab: {fileID: 2832894760019680421, guid: 889667485ca391745a2f2dd9e6241c79,
       type: 3}
   - className: Core
     prefab: {fileID: 2145530139324960989, guid: 8a3f7d791b4b82f479811bf8524f7082,
+      type: 3}
+  - className: Enemy
+    prefab: {fileID: 5281574128029448156, guid: 0cc95d28b65b9414f9130c64ae3b08c6,
       type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
@@ -1011,4 +1013,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf5ad217c57d844d8bd2f16e6d28e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selected: {fileID: 0}

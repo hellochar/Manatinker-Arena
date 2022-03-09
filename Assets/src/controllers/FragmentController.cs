@@ -16,8 +16,8 @@ public class FragmentController : MonoBehaviour {
     if (fragment.owner != null) {
       transform.SetParent(fragment.owner.controller.transform);
     }
-    if (fragment is PlayerFragment) {
-      transform.position = new Vector3(5, 5, transform.position.z);
+    if (fragment is Creature c) {
+      transform.position = c.startPosition.z(transform.position.z);
     } else {
       UpdateOffset(fragment.builtinOffset);
       UpdateAngle(fragment.builtinAngle);
