@@ -24,8 +24,22 @@ public class Fragment {
 
   // e.g. the player
   public Fragment owner;
-  public Vector2 builtinOffset;
-  public float builtinAngle;
+  public Vector2 _builtinOffset;
+  public Vector2 builtinOffset {
+    get => _builtinOffset;
+    set {
+      _builtinOffset = value;
+      controller?.UpdateOffset(value);
+    }
+  }
+  public float _builtinAngle;
+  public float builtinAngle {
+    get => _builtinAngle;
+    set {
+      _builtinAngle = value;
+      controller?.UpdateAngle(value);
+    }
+  }
 
   public List<Wire> wires = new List<Wire>();
 

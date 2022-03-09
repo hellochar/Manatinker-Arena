@@ -9,7 +9,17 @@ public abstract class Weapon : Fragment {
   public abstract (int, int) damageSpread { get; }
 }
 
-public class Pistol : Weapon {
+public interface IActivatable {
+  bool CanActivateInner();
+  void Activate();
+}
+public static class ActivatableExtensions {
+  public static bool CanActivate(this IActivatable a) {
+    return a.CanActivateInner() && !GameModel.main.isEditMode;
+  }
+}
+
+public class Pistol : Weapon, IActivatable {
   public override (int, int) damageSpread => (8, 12);
   public override float outFlowRate => 0;
   public override float inFlowRate => 7;
@@ -22,11 +32,19 @@ public class Pistol : Weapon {
 
   public override void Update(float dt) {
     base.Update(dt);
-    if (Input.GetMouseButtonDown(0) && Mana > 10) {
-      ChangeMana(-10);
-      Projectile p = info;
-      OnShootProjectile?.Invoke(p);
+    if (this.CanActivate()) {
+      Activate();
     }
+  }
+
+  public bool CanActivateInner() {
+    return Input.GetMouseButtonDown(0) && Mana > 10;
+  }
+
+  public void Activate() {
+    ChangeMana(-10);
+    Projectile p = info;
+    OnShootProjectile?.Invoke(p);
   }
 }
 

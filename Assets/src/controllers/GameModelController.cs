@@ -1,13 +1,18 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameModelController : MonoBehaviour {
+  public static GameModelController main;
   public GameModel model => GameModel.main;
 
   public Transform wireContainer;
   public GameObject floorPrefab;
   public GameObject wirePrefab;
+
+  public GameObject[] editModeObjects;
+
   [ReadOnly]
   public FloorController floor;
   [SerializeField]
@@ -20,7 +25,8 @@ public class GameModelController : MonoBehaviour {
   public HashSet<WireController> wireControllers = new HashSet<WireController>();
 
   void Awake() {
-    foreach(var entry in Mapping) {
+    main = this;
+    foreach (var entry in Mapping) {
       var type = Type.GetType(entry.className);
       fragmentPrefabs.Add(type, entry.prefab);
     }
@@ -29,17 +35,18 @@ public class GameModelController : MonoBehaviour {
 
   void Start() {
     Init(GameModel.main);
+    UpdateIsEditMode();
   }
 
   void Init(GameModel model) {
     floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity).GetComponent<FloorController>();
     floor.Init(model.floor);
 
-    foreach(var f in model.Fragments) {
+    foreach (var f in model.Fragments) {
       HandleFragmentAdded(f);
     }
 
-    foreach(var w in model.Wires) {
+    foreach (var w in model.Wires) {
       HandleWireAdded(w);
     }
 
@@ -73,6 +80,36 @@ public class GameModelController : MonoBehaviour {
     FragmentController f = go.GetComponent<FragmentController>();
     fragmentControllers.Add(f);
     f.Init(fragment);
+  }
+
+  internal void UpdateIsEditMode() {
+    foreach (var o in editModeObjects) {
+      o.SetActive(model.isEditMode);
+    }
+    foreach (var fc in fragmentControllers) {
+      // StartCoroutine(WaitForAnimationThenFixRigidbodies());
+      if (!(fc.fragment is PlayerFragment)) {
+        if (model.isEditMode) {
+          // make them clickable
+          var rb2d = fc.gameObject.AddComponent<Rigidbody2D>();
+          rb2d.bodyType = RigidbodyType2D.Static;
+        } else {
+          var rb2d = fc.gameObject.GetComponent<Rigidbody2D>();
+          if (rb2d) {
+            Destroy(rb2d);
+          }
+        }
+      }
+    }
+  }
+
+  private IEnumerator WaitForAnimationThenFixRigidbodies() {
+    if (model.isEditMode) {
+      while (GameModel.main.player.controller.GetComponent<PlayerMovementInput>().rb2d.rotation != 0) {
+        yield return new WaitForEndOfFrame();
+      }
+    }
+    yield return new WaitForEndOfFrame();
   }
 
   void Update() {

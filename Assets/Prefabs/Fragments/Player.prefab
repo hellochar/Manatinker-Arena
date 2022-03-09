@@ -176,3 +176,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaCover: {fileID: 0}
+  input: {fileID: 0}
+  output: {fileID: 0}

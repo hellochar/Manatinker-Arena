@@ -1,11 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GameModel {
   public static GameModel main;
 
-  public bool isEditMode = false;
+  private bool _isEditMode = true;
+  public bool isEditMode {
+    get => _isEditMode;
+    set {
+      _isEditMode = value;
+      GameModelController.main.UpdateIsEditMode();
+    }
+  }
+
+  public Fragment player;
   public Circuit circuit = new Circuit();
   public Floor floor;
 
@@ -23,6 +33,12 @@ public class GameModel {
 
   public void AddFragment(params Fragment[] fArr) {
     foreach (var f in fArr) {
+      if (f is PlayerFragment) {
+        if (player != null) {
+          throw new Exception("two players");
+        }
+        player = f;
+      }
       circuit.AddFragment(f);
       OnFragmentAdded?.Invoke(f);
     }
@@ -44,17 +60,17 @@ public class GameModel {
 
     var pistol1 = new Pistol();
     pistol1.owner = player;
-    pistol1.builtinOffset.Set(1.5f, 0);
+    pistol1.builtinOffset = new Vector2(1.5f, 0);
     core.connect(pistol1);
 
     var pistol2 = new Pistol();
     pistol2.owner = player;
-    pistol2.builtinOffset.Set(1.5f, 0.5f);
+    pistol2.builtinOffset = new Vector2(1.5f, 0.5f);
     core.connect(pistol2);
 
     var pistol3 = new Pistol();
     pistol3.owner = player;
-    pistol3.builtinOffset.Set(1.5f, -0.5f);
+    pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
     core.connect(pistol3);
 
     main.AddFragment(player, core, pistol1, pistol2, pistol3);

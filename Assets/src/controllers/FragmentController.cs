@@ -19,8 +19,8 @@ public class FragmentController : MonoBehaviour {
     if (fragment is PlayerFragment) {
       transform.position = new Vector3(5, 5, transform.position.z);
     } else {
-      transform.localPosition = fragment.builtinOffset.z(transform.position.z);
-      transform.localRotation = Quaternion.Euler(0, 0, fragment.builtinAngle);
+      UpdateOffset(fragment.builtinOffset);
+      UpdateAngle(fragment.builtinAngle);
     }
   }
 
@@ -37,6 +37,14 @@ public class FragmentController : MonoBehaviour {
     }
   }
 
+  internal void UpdateOffset(Vector2 offset) {
+    transform.localPosition = offset.z(transform.position.z);
+  }
+
+  internal void UpdateAngle(float value) {
+    transform.localRotation = Quaternion.Euler(0, 0, fragment.builtinAngle);
+  }
+
   public virtual void Update() {
     if (manaCover != null) {
       manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
@@ -47,5 +55,13 @@ public class FragmentController : MonoBehaviour {
   internal void Removed() {
     Destroy(gameObject);
     fragment.controller = null;
+  }
+
+  void OnMouseDown() {
+    EditModeInputController.instance.mouseDown(this);
+  }
+
+  void OnMouseUp() {
+    EditModeInputController.instance.mouseUp(this);
   }
 }
