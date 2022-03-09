@@ -20,7 +20,7 @@ public class FloorController : MonoBehaviour {
           prefab = wallTilePrefab;
         }
         tiles[x, y] = Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity, transform).GetComponent<TileController>();
-        tiles[x, y].Init(floor.tiles[x, y]);
+        tiles[x, y]?.Init(floor.tiles[x, y]);
       }
     }
   }

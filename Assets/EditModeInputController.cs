@@ -8,7 +8,7 @@ public class EditModeInputController : MonoBehaviour {
   public FragmentController selected;
   public string instructions {
     get {
-      var s = "Click a piece to select it.\nClick-drag to move.\nClick its outport to create a wire.";
+      var s = "Click a piece to select it.\nClick-drag to move.\nX - create a wire.";
       if (selected != null) {
         s = selected.ToString() + "\n" + s;
       }
@@ -32,17 +32,17 @@ public class EditModeInputController : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
-    if (selected != null && Input.GetMouseButton(0)) {
-      Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      var fragment = selected.fragment;
-      if (fragment.owner != null) {
-        // fragment.owner
-        Vector2 worldOffset = worldPosition.xy() - fragment.owner.controller.transform.position.xy();
-        Vector2 roundedOffset = snap(worldOffset, 0.25f);
-        fragment.builtinOffset = roundedOffset;
-      }
-    }
     if (selected != null) {
+      if (Input.GetMouseButton(0)) {
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var fragment = selected.fragment;
+        if (fragment.owner != null) {
+          // fragment.owner
+          Vector2 worldOffset = worldPosition.xy() - fragment.owner.controller.transform.position.xy();
+          Vector2 roundedOffset = snap(worldOffset, 0.25f);
+          fragment.builtinOffset = roundedOffset;
+        }
+      }
       var rotation = Input.GetAxis("Mouse ScrollWheel");
       if (rotation < 0) {
         selected.fragment.builtinAngle -= 15;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4728524820638147918}
   - component: {fileID: 4728524820638147919}
   - component: {fileID: 4728524820638147916}
-  - component: {fileID: 5229927799833311797}
+  - component: {fileID: 5154526991086083040}
   m_Layer: 0
   m_Name: FloorTile
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &5229927799833311797
+--- !u!114 &5154526991086083040
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
