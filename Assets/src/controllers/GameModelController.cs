@@ -115,23 +115,19 @@ public class GameModelController : MonoBehaviour {
       }
     }
 
-    foreach (var fc in fragmentControllers) {
-      if (!(fc.fragment is Player)) {
-        // make them clickable
-        var rb2d = fc.gameObject.AddComponent<Rigidbody2D>();
-        rb2d.bodyType = RigidbodyType2D.Static;
-      }
+    foreach (var child in model.player.children) {
+      // make them clickable
+      var rb2d = child.controller.gameObject.AddComponent<Rigidbody2D>();
+      rb2d.bodyType = RigidbodyType2D.Static;
     }
     callback();
   }
 
   private IEnumerator RemoveRigidbodies(Action callback) {
-    foreach (var fc in fragmentControllers) {
-      if (!(fc.fragment is Player)) {
-        var rb2d = fc.gameObject.GetComponent<Rigidbody2D>();
-        if (rb2d) {
-          Destroy(rb2d);
-        }
+    foreach (var child in model.player.children) {
+      var rb2d = child.controller.gameObject.GetComponent<Rigidbody2D>();
+      if (rb2d) {
+        Destroy(rb2d);
       }
     }
     yield return new WaitForEndOfFrame();

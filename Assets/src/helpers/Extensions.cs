@@ -5,7 +5,7 @@ public static class MyVector3Extensions {
         return new Vector2(v.x, v.y);
     }
     public static float angleDeg(this Vector2 v) {
-        return Vector2.SignedAngle(v, Vector2.right);
+        return Vector2.SignedAngle(Vector2.right, v);
     }
 
     public static Vector3 z(this Vector2 v, float z = 0) {

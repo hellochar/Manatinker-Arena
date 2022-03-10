@@ -24,7 +24,7 @@ public class GameModel {
     }
   }
 
-  public Fragment player;
+  public Player player;
   public Circuit circuit = new Circuit();
   public Floor floor;
 
@@ -42,11 +42,11 @@ public class GameModel {
 
   public void AddFragment(params Fragment[] fArr) {
     foreach (var f in fArr) {
-      if (f is Player) {
+      if (f is Player p) {
         if (player != null) {
           throw new Exception("two players");
         }
-        player = f;
+        player = p;
       }
       circuit.AddFragment(f);
       OnFragmentAdded?.Invoke(f);
@@ -109,74 +109,5 @@ public class GameModel {
       spawnEnemy();
     }
     circuit.simulate(dt);
-  }
-}
-
-public class Creature : Fragment {
-  public Vector2 startPosition;
-  private Rigidbody2D _rb2d;
-  private Rigidbody2D rb2d {
-    get {
-      if (_rb2d == null) {
-        _rb2d = controller?.GetComponent<Rigidbody2D>();
-      }
-      return _rb2d;
-    }
-  }
-  public List<Fragment> children = new List<Fragment>();
-  public virtual float speed => 10;
-  public virtual float turnRate => 10f;
-  public Creature(string name, Vector2 startPosition) : base(name) {
-    this.startPosition = startPosition;
-  }
-
-  public void setVelocityDirection(Vector2 inDirection) {
-    if (rb2d != null) {
-      var dir = inDirection;
-      if (dir.magnitude > 1) {
-        dir = dir.normalized;
-      }
-      rb2d.velocity = dir * speed;
-    }
-  }
-
-  public void setRotation(float targetAngle) {
-    if (rb2d != null) {
-      var currentAngle = rb2d.rotation;
-      // e.g. 10%
-      var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, turnRate * Time.deltaTime);
-      // 5 degrees
-      newAngle = Mathf.MoveTowardsAngle(newAngle, targetAngle, (turnRate / 2) * Time.deltaTime);
-      rb2d.SetRotation(newAngle);
-    }
-  }
-}
-
-internal class Player : Creature {
-  public Player(Vector2 start) : base("player-fragment", start) {
-  }
-}
-
-internal class Enemy : Creature {
-  public Enemy(Vector2 start) : base("enemy-fragment", start) {
-  }
-
-  public override void Update(float dt) {
-    // rotate towards player and fire
-    var player = GameModel.main.player;
-    var offset = player.worldPos - this.worldPos;
-    var desiredAngle = offset.angleDeg();
-    setRotation(desiredAngle);
-
-    // if close enough, fire at player
-    if (Mathf.DeltaAngle(worldRotation, desiredAngle) < 10) {
-      foreach(var f in children) {
-        if (f is Pistol p) {
-          if (p.CanActivate()) {
-            p.Activate();
-          }
-        }
-      }
-    }
   }
 }
