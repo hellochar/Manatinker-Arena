@@ -7,6 +7,10 @@ public abstract class Weapon : Fragment {
   }
 
   public abstract (int, int) damageSpread { get; }
+  public int rollDamage() {
+    var (min, max) = damageSpread;
+    return UnityEngine.Random.Range(min, max + 1);
+  }
 }
 
 public interface IActivatable {
@@ -44,6 +48,7 @@ public class Pistol : Weapon, IActivatable {
   public void Activate() {
     ChangeMana(-10);
     Projectile p = info;
+    p.damage = rollDamage();
     OnShootProjectile?.Invoke(p);
   }
 }
@@ -51,5 +56,6 @@ public class Pistol : Weapon, IActivatable {
 public struct Projectile {
   public float baseSpeed;
   public float maxDistance;
+  public float damage;
   public string name;
 }

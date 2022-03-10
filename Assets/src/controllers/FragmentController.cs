@@ -64,4 +64,19 @@ public class FragmentController : MonoBehaviour {
   void OnMouseUp() {
     EditModeInputController.instance.mouseUpOnFragment(this);
   }
+
+  void OnCollisionEnter2D(Collision2D collision) {
+    Debug.Log("fragment: collision enter " + collision.gameObject);
+    // Destroy(gameObject);
+  }
+
+  // this will handle projectiles (which are triggers)
+  void OnTriggerEnter2D(Collider2D col) {
+    Debug.Log("fragment: trigger enter " + col.gameObject);
+    var projectileController = col.gameObject.GetComponent<ProjectileController>();
+    if (projectileController != null) {
+      // we've been hit, take damage
+      fragment.Hit(projectileController.projectile);
+    }
+  }
 }

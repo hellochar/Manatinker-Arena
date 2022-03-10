@@ -72,17 +72,17 @@ public class GameModel {
     pistol1.builtinOffset = new Vector2(1.5f, 0);
     core.connect(pistol1);
 
-    var pistol2 = new Pistol();
-    pistol2.owner = player;
-    pistol2.builtinOffset = new Vector2(1.5f, 0.5f);
-    core.connect(pistol2);
+    // var pistol2 = new Pistol();
+    // pistol2.owner = player;
+    // pistol2.builtinOffset = new Vector2(1.5f, 0.5f);
+    // core.connect(pistol2);
 
-    var pistol3 = new Pistol();
-    pistol3.owner = player;
-    pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
-    core.connect(pistol3);
+    // var pistol3 = new Pistol();
+    // pistol3.owner = player;
+    // pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
+    // core.connect(pistol3);
 
-    main.AddFragment(player, core, pistol1, pistol2, pistol3);
+    main.AddFragment(player, core, pistol1);//, pistol2, pistol3);
     main.floor = new Floor(25, 25).surroundWithWalls();
   }
 
@@ -93,12 +93,12 @@ public class GameModel {
     var core = new Core();
     core.owner = enemy;
 
-    var pistol1 = new Pistol();
-    pistol1.owner = enemy;
-    pistol1.builtinOffset = new Vector2(1.5f, 0);
-    core.connect(pistol1);
+    // var pistol1 = new Pistol();
+    // pistol1.owner = enemy;
+    // pistol1.builtinOffset = new Vector2(1.5f, 0);
+    // core.connect(pistol1);
 
-    main.AddFragment(enemy, core, pistol1);
+    main.AddFragment(enemy, core/*, pistol1*/);
   }
 
   float timeUntilNextSpawn = 1;

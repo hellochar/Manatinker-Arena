@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Fragment {
   public Node outt, inn;
-  public new string name;
+  public string name;
   [SerializeField]
   [ReadOnly]
   private float mana;
@@ -108,6 +108,20 @@ public class Fragment {
 		this.mana += diff;
 	}
 
+  public void ChangeHP(float diff) {
+    if (hp + diff > hpMax) {
+      diff = hpMax - hp;
+    }
+    hp += diff;
+    if (hp < 0) {
+      Die();
+    }
+  }
+
+  private void Die() {
+    throw new NotImplementedException();
+  }
+
   public bool isConnected(Fragment other) {
     return wires.Any(w => w.to == other);
   }
@@ -140,6 +154,11 @@ public class Fragment {
     var netManaDiff = incomingTotal - outgoingTotal;
 		return $"{base.ToString()}[{name} {netManaDiff.ToString("+#0.000;-#0.000")} {lastMana.ToString("F3")} -->{incomingTotal.ToString("F3")}({inn.flow}) {outgoingTotal.ToString("F3")}({outt.flow})--> {mana.ToString("F3")} (max {manaMax})]";
 	}
+
+  public void Hit(Projectile p) {
+    // take damage
+    ChangeHP(-p.damage);
+  }
 }
 
 public class Wire {
