@@ -108,7 +108,7 @@ public class Fragment {
 		this.mana += diff;
 	}
 
-  public void ChangeHP(float diff) {
+  public virtual void ChangeHP(float diff) {
     if (hp + diff > hpMax) {
       diff = hpMax - hp;
     }

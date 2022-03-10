@@ -481,3 +481,4 @@ MonoBehaviour:
   manaCover: {fileID: 5325409710869402135}
   input: {fileID: 2145200279502194030}
   output: {fileID: 3573726924322902615}
+  healthbar: {fileID: 0}

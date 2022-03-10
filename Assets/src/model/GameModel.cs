@@ -89,16 +89,17 @@ public class GameModel {
   void spawnEnemy() {
     var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
     var enemy = new Enemy(pos);
+    main.AddFragment(enemy);
 
     var core = new Core();
     core.owner = enemy;
+    main.AddFragment(core);
 
-    // var pistol1 = new Pistol();
-    // pistol1.owner = enemy;
-    // pistol1.builtinOffset = new Vector2(1.5f, 0);
-    // core.connect(pistol1);
-
-    main.AddFragment(enemy, core/*, pistol1*/);
+    var pistol1 = new Pistol();
+    pistol1.owner = enemy;
+    pistol1.builtinOffset = new Vector2(1.5f, 0);
+    core.connect(pistol1);
+    main.AddFragment(pistol1);
   }
 
   float timeUntilNextSpawn = 1;

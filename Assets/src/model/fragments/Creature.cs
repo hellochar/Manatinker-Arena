@@ -19,6 +19,10 @@ public class Creature : Fragment {
     this.startPosition = startPosition;
   }
 
+  public override void ChangeHP(float diff) {
+    throw new System.Exception("Creature itself should not change HP!");
+  }
+
   public void setVelocityDirection(Vector2 inDirection) {
     if (rb2d != null) {
       var dir = inDirection;

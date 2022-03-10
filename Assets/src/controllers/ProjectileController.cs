@@ -36,23 +36,17 @@ public class ProjectileController : MonoBehaviour {
     }
   }
 
-  void OnCollisionEnter2D(Collision2D col) {
-    Debug.Log("projectile: collision enter " + col.gameObject);
-    // if (col.gameObject.CompareTag("InLevel")) {
-    //   var fragmentController = col.gameObject.GetComponent<FragmentController>();
-    //   if (fragmentController != null) {
-    //     // we've hit a fragment, deal damage
-    //     Hit(fragmentController.fragment);
-    //   }
-    // }
-  }
+  // projectile is not a collider so this will never happen
+  // void OnCollisionEnter2D(Collision2D col) { }
 
   void OnTriggerEnter2D(Collider2D col) {
     // Debug.Log("projectile: trigger enter " + col.gameObject);
-  }
-
-  private void Hit(Fragment fragment) {
-    fragment.Hit(projectile);
+    var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
+    // we've hit a fragment, process it
+    if (hitFC) {
+      hitFC.fragment.Hit(projectile);
+    }
     Destroy(gameObject);
+    // col.gameObject.GetComponentInParent<
   }
 }

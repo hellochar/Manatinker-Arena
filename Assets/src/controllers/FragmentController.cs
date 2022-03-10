@@ -9,6 +9,15 @@ public class FragmentController : MonoBehaviour {
   public SpriteRenderer manaCover;
   public GameObject input;
   public GameObject output;
+  public static GameObject healthbarPrefab;
+  [ReadOnly]
+  public GameObject healthbar;
+
+  void Awake() {
+    if (healthbarPrefab == null) {
+      healthbarPrefab = Resources.Load<GameObject>("Healthbar");
+    }
+  }
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -34,6 +43,10 @@ public class FragmentController : MonoBehaviour {
     }
     if (output == null) {
       output = transform.Find("Output")?.gameObject;
+    }
+    if (!(fragment is Creature)) {
+      healthbar = Instantiate(healthbarPrefab, Vector3.zero, Quaternion.identity, GameModelController.main.healthbars.transform);
+      healthbar.GetComponent<HealthbarController>()?.Init(this);
     }
   }
 
@@ -63,20 +76,5 @@ public class FragmentController : MonoBehaviour {
 
   void OnMouseUp() {
     EditModeInputController.instance.mouseUpOnFragment(this);
-  }
-
-  void OnCollisionEnter2D(Collision2D collision) {
-    Debug.Log("fragment: collision enter " + collision.gameObject);
-    // Destroy(gameObject);
-  }
-
-  // this will handle projectiles (which are triggers)
-  void OnTriggerEnter2D(Collider2D col) {
-    Debug.Log("fragment: trigger enter " + col.gameObject);
-    var projectileController = col.gameObject.GetComponent<ProjectileController>();
-    if (projectileController != null) {
-      // we've been hit, take damage
-      fragment.Hit(projectileController.projectile);
-    }
   }
 }

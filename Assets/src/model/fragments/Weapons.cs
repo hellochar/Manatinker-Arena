@@ -29,7 +29,7 @@ public class Pistol : Weapon, IActivatable {
   public override float inFlowRate => 7;
   public override float hpMax => 15;
   public override float manaMax => 30;
-  static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
+  static Projectile info = new Projectile() { baseSpeed = 10, maxDistance = 100 };
 
   public Pistol() : base("pistol") {
   }
