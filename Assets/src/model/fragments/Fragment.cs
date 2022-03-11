@@ -56,7 +56,9 @@ public class Fragment {
     }
   }
 
+  // outgoing wires
   public List<Wire> wires = new List<Wire>();
+  public List<Wire> wiresIn = new List<Wire>();
 
   public FragmentController controller;
   public Vector2 worldPos => controller.transform.position.xy();
@@ -82,6 +84,7 @@ public class Fragment {
     }
     var wire = new Wire(this, other);
     wires.Add(wire);
+    other.wiresIn.Add(wire);
     outt.connectInn(other.inn);
     GameModel.main.OnWireAdded?.Invoke(wire);
   }
@@ -90,6 +93,7 @@ public class Fragment {
     var wire = wires.Find(w => w.to == other);
     if (wire != null) {
       wires.Remove(wire);
+      other.wiresIn.Remove(wire);
       outt.disconnectInn(other.inn);
       GameModel.main.OnWireRemoved?.Invoke(wire);
     }
@@ -119,7 +123,9 @@ public class Fragment {
   }
 
   private void Die() {
-    throw new NotImplementedException();
+    // remove connections
+    // remove fragment controller
+    GameModel.main.RemoveFragment(this);
   }
 
   public bool isConnected(Fragment other) {
