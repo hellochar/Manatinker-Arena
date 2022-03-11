@@ -58,6 +58,9 @@ public class GameModel {
         }
         player = p;
       }
+      if (f is Enemy e) {
+        enemies.Add(e);
+      }
       circuit.AddFragment(f);
       OnFragmentAdded?.Invoke(f);
     }
@@ -66,6 +69,9 @@ public class GameModel {
   public void RemoveFragment(Fragment f) {
     if (!circuit.HasFragment(f)) {
       Debug.LogWarning("ignoring double remove on " + f, f.controller);
+    }
+    if (f is Enemy e) {
+      enemies.Remove(e);
     }
     circuit.RemoveFragment(f);
     OnFragmentRemoved?.Invoke(f);
