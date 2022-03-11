@@ -136,7 +136,7 @@ public class GameModelController : MonoBehaviour {
   }
 
   void Update() {
-    // healthbars?.SetActive(Input.GetKey(KeyCode.LeftAlt));
+    healthbars?.SetActive(Input.GetKey(KeyCode.LeftAlt));
     GameModel.main.simulate(Time.deltaTime);
   }
 }

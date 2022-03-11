@@ -40,6 +40,10 @@ public class ProjectileController : MonoBehaviour {
   // void OnCollisionEnter2D(Collision2D col) { }
 
   void OnTriggerEnter2D(Collider2D col) {
+    if (col.gameObject.name == "Clickthrough") {
+      // ignore
+      return;
+    }
     // Debug.Log("projectile: trigger enter " + col.gameObject);
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
     // we've hit a fragment, process it

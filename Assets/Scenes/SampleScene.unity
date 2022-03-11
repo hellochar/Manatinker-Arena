@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &118466910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,6 +829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wireContainer: {fileID: 1354127521}
+  healthbars: {fileID: 1804238020}
   floorPrefab: {fileID: 3100219939336097292, guid: 84b6974c0009f71419d61714e5ee29bc,
     type: 3}
   wirePrefab: {fileID: 1862279530375939376, guid: 16f1871ed2dfe284f91c353a11a31f89,

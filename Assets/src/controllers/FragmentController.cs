@@ -6,6 +6,8 @@ using UnityEngine;
 public class FragmentController : MonoBehaviour {
   [NonSerialized]
   public Fragment fragment;
+  [ReadOnly]
+  public SpriteRenderer spriteRenderer;
   public SpriteRenderer manaCover;
   public GameObject input;
   public GameObject output;
@@ -34,9 +36,12 @@ public class FragmentController : MonoBehaviour {
   }
 
   void Start() {
+    spriteRenderer = transform.Find("Sprite")?.GetComponent<SpriteRenderer>();
+    if (spriteRenderer) {
+      spriteRenderer.GetComponent<SpriteMask>().sprite = spriteRenderer.sprite;
+    }
     if (manaCover != null) {
-      var sr = transform.Find("Sprite").GetComponent<SpriteRenderer>();
-      manaCover.sprite = sr.sprite;
+      manaCover.sprite = spriteRenderer.sprite;
     }
     if (input == null) {
       input = transform.Find("Input")?.gameObject;

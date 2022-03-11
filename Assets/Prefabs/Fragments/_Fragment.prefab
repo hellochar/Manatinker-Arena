@@ -85,6 +85,117 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3178744323396937889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582543699892955196}
+  - component: {fileID: 335094642259576536}
+  - component: {fileID: 786828067037412230}
+  m_Layer: 6
+  m_Name: Damage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1582543699892955196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178744323396937889}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1745798371044701158}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &335094642259576536
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178744323396937889}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 1029864515
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: c8e2b7634d059864491aaf519bfdb5e0, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2, y: 2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 1
+  m_SpriteSortPoint: 0
+--- !u!114 &786828067037412230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178744323396937889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f83ff39be75064a971dbf561bd3193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: c8e2b7634d059864491aaf519bfdb5e0, type: 3}
+  - {fileID: 21300000, guid: f9a40ca66655f124e9c216d6301e4b60, type: 3}
+  - {fileID: 21300000, guid: f5739344e5a847443b011791138c3f2d, type: 3}
+  - {fileID: 21300000, guid: f25b74f4d878b834b9aeb1f00fee243a, type: 3}
+  - {fileID: 21300000, guid: 7ddcc38589a722c40997f3d49d26e55d, type: 3}
+  - {fileID: 21300000, guid: 41f380ac634578a498aa2facd4e8bffc, type: 3}
+  - {fileID: 21300000, guid: e2151fa363ea5ae41adb95ccbed2c692, type: 3}
+  - {fileID: 21300000, guid: 75689ac8f52d52e449652d9cc287fba2, type: 3}
+  - {fileID: 21300000, guid: c6ffddb28f5eeed478557d7312f713e6, type: 3}
+  - {fileID: 21300000, guid: 400babfc8a3e8d441ab3f670770567f5, type: 3}
+  - {fileID: 21300000, guid: 35b33a61780f5584d96baa354489f2a0, type: 3}
+  fc: {fileID: 1959762766203104642}
+  sr: {fileID: 335094642259576536}
 --- !u!1 &3573726924322902615
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +375,7 @@ GameObject:
   - component: {fileID: 1745798371044701158}
   - component: {fileID: 929435363090133365}
   - component: {fileID: 1787473703562407200}
+  - component: {fileID: 5285943924398833447}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
@@ -284,6 +396,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3521038241880500141}
+  - {fileID: 1582543699892955196}
   m_Father: {fileID: 525610104338259602}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -371,6 +484,57 @@ PolygonCollider2D:
       - {x: 0.5, y: 0.09375}
       - {x: 0.09375, y: 0.5}
   m_UseDelaunayMesh: 0
+--- !u!331 &5285943924398833447
+SpriteMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6887974936662831120}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: c4249b599ca6a9a4fa8ed91238ce816d, type: 3}
+  m_MaskAlphaCutoff: 0.2
+  m_FrontSortingLayerID: 1029864515
+  m_BackSortingLayerID: 1029864515
+  m_FrontSortingLayer: 1
+  m_BackSortingLayer: 1
+  m_FrontSortingOrder: 9999
+  m_BackSortingOrder: -9999
+  m_IsCustomRangeActive: 1
+  m_SpriteSortPoint: 0
 --- !u!1001 &2739003623783368507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -478,6 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed346dad0e6674408fb87f37e8d9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
   manaCover: {fileID: 5325409710869402135}
   input: {fileID: 2145200279502194030}
   output: {fileID: 3573726924322902615}
