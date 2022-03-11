@@ -21,6 +21,9 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   void Update() {
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+      clickGround();
+    }
     inputState.update();
   }
 
@@ -43,12 +46,12 @@ public abstract class InputState {
   public abstract string instructions { get; }
   public static InputStateDefault Default = new InputStateDefault();
 
-  public virtual void mouseDownOnFragment(FragmentController fc) {}
-  public virtual void mouseUpOnFragment(FragmentController fc) {}
-  public virtual void clickGround() {}
-  public virtual void update() {}
-  public virtual void enter() {}
-  public virtual void exit() {}
+  public virtual void mouseDownOnFragment(FragmentController fc) { }
+  public virtual void mouseUpOnFragment(FragmentController fc) { }
+  public virtual void clickGround() { }
+  public virtual void update() { }
+  public virtual void enter() { }
+  public virtual void exit() { }
   protected void Transition(InputState other) {
     EditModeInputController.instance.Transition(other);
   }
@@ -60,7 +63,7 @@ public class InputStateDefault : InputState {
   public override void mouseDownOnFragment(FragmentController fc) {
     var fragment = fc.fragment;
     // only allow dragging fragments that the player controls
-    if (fragment.isPlayerOwned) {
+    if (fragment.isPlayerOwned || fragment.owner == null) {
       Transition(new InputStateSelected(fc));
     }
   }
@@ -68,12 +71,15 @@ public class InputStateDefault : InputState {
 
 internal class InputStateSelected : InputState {
   private FragmentController selected;
+  bool isNeutral => selected.fragment.owner == null;
 
   public InputStateSelected(FragmentController fc) {
     this.selected = fc;
   }
 
-  public override string instructions => $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).\nX - create a wire.";
+  public override string instructions => isNeutral ?
+    "Drag into your zone of influence!" :
+    $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).\nX - create a wire.";
 
   public override void clickGround() {
     Transition(InputState.Default);
@@ -84,11 +90,13 @@ internal class InputStateSelected : InputState {
       // player's trying to drag
       Transition(new InputStateDragged(selected));
     }
-    if (Input.GetKeyDown(KeyCode.X)) {
-      Transition(new InputStateWireEdit(selected));
-    }
-    // rotation
-    {
+    // aka owned by player
+    if (!isNeutral) {
+      if (Input.GetKeyDown(KeyCode.X)) {
+        Transition(new InputStateWireEdit(selected));
+      }
+
+      // rotation
       var shouldRotateSnap = !Input.GetKey(KeyCode.LeftAlt);
       var amplitude = shouldRotateSnap ? 15 : 1;
       var mouseWheelAmount = Input.GetAxis("Mouse ScrollWheel");
@@ -123,11 +131,19 @@ internal class InputStateSelected : InputState {
 }
 
 internal class InputStateWireEdit : InputState {
-  public override string instructions => "Click a Fragment - toggle wire.\nX - cancel.";
+  public override string instructions => "Click a Fragment - toggle wire.\nEsc or X - cancel.";
   private FragmentController from;
 
   public InputStateWireEdit(FragmentController from) {
     this.from = from;
+  }
+
+  public override void clickGround() {
+    TransitionBack();
+  }
+
+  private void TransitionBack() {
+    Transition(new InputStateSelected(from));
   }
 
   void ToggleWire(FragmentController to) {
@@ -141,7 +157,7 @@ internal class InputStateWireEdit : InputState {
 
   public override void update() {
     if (Input.GetKeyDown(KeyCode.X)) {
-      Transition(new InputStateSelected(from));
+      TransitionBack();
     }
   }
 
@@ -175,7 +191,7 @@ internal class InputStateDragged : InputState {
   }
 
   public override void clickGround() {
-    base.clickGround();
+    TransitionBack();
   }
 
   public override void mouseUpOnFragment(FragmentController fc) {

@@ -45,7 +45,7 @@ public class GameModelController : MonoBehaviour {
   }
 
   void Init(GameModel model) {
-    floor = Instantiate(floorPrefab, Vector3.zero, Quaternion.identity).GetComponent<FloorController>();
+    floor = Instantiate(floorPrefab).GetComponent<FloorController>();
     floor.Init(model.floor);
 
     foreach (var f in model.Fragments) {

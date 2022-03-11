@@ -5,11 +5,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
   public Rigidbody2D rb2d;
-  FragmentController fragmentController;
-  Player player => (Player)fragmentController.fragment;
+  public FragmentController fragmentController;
+  public Player player => (Player)fragmentController.fragment;
   void Start() {
-    rb2d = GetComponent<Rigidbody2D>();
-    fragmentController = GetComponent<FragmentController>();
+    if (rb2d == null) {
+      rb2d = GetComponent<Rigidbody2D>();
+    }
+    if (fragmentController == null) {
+      fragmentController = GetComponent<FragmentController>();
+    }
     Camera.main.GetComponent<CameraFollowPlayer>().Player = this.gameObject;
   }
 

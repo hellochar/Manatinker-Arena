@@ -19,7 +19,9 @@ public class FloorController : MonoBehaviour {
         } else if (floor.tiles[x, y] == TileType.WALL) {
           prefab = wallTilePrefab;
         }
-        tiles[x, y] = Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity, transform).GetComponent<TileController>();
+        var tile = Instantiate(prefab, transform);
+        tile.transform.localPosition = new Vector3(x, y, 0);
+        tiles[x, y] = tile.GetComponent<TileController>();
         tiles[x, y]?.Init(floor.tiles[x, y]);
       }
     }
