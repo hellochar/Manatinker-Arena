@@ -11,6 +11,12 @@ public class WeaponController : MonoBehaviour {
     weapon.OnShootProjectile += HandleShootProjectile;
   }
 
+  void Update() {
+    if (weapon.CanActivate() && weapon.isPlayerOwned && Input.GetMouseButtonDown(0)) {
+      weapon.Activate();
+    }
+  }
+
   void HandleShootProjectile(Projectile p) {
     var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<ProjectileController>();
     projectile.Init(p);

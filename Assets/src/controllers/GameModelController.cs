@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameModelController : MonoBehaviour {
   public static GameModelController main;
@@ -11,6 +12,7 @@ public class GameModelController : MonoBehaviour {
   public GameObject healthbars;
   public GameObject floorPrefab;
   public GameObject wirePrefab;
+  public GameObject deathUI;
 
   public GameObject[] editModeObjects;
 
@@ -76,7 +78,8 @@ public class GameModelController : MonoBehaviour {
 
   private void HandleFragmentRemoved(Fragment fragment) {
     fragmentControllers.Remove(fragment.controller);
-    fragment.controller.Removed();
+    // there are weird cases where fragments are double-removed but it's fine
+    fragment.controller?.Removed();
   }
 
   private void HandleFragmentAdded(Fragment fragment) {
@@ -140,6 +143,19 @@ public class GameModelController : MonoBehaviour {
   void Update() {
     healthbars?.SetActive(Input.GetKey(KeyCode.LeftAlt));
     GameModel.main.simulate(Time.deltaTime);
+  }
+
+  public void PlayerDied() {
+    deathUI.SetActive(true);
+  }
+
+  bool bIsLoading = false;
+  public void RetryGame() {
+    if (bIsLoading) {
+      return;
+    }
+    bIsLoading = true;
+    SceneManager.LoadSceneAsync("Scenes/Arena", LoadSceneMode.Single);
   }
 }
 

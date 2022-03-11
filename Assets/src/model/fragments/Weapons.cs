@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
 
-public abstract class Weapon : Fragment {
+public abstract class Weapon : Fragment, IActivatable {
   public Action<Projectile> OnShootProjectile;
   protected Weapon(string name) : base("weapon") {
   }
 
   public abstract (int, int) damageSpread { get; }
+  public abstract void Activate();
+  public abstract bool CanActivateInner();
+
   public int rollDamage() {
     var (min, max) = damageSpread;
     return UnityEngine.Random.Range(min, max + 1);
@@ -23,7 +26,7 @@ public static class ActivatableExtensions {
   }
 }
 
-public class Pistol : Weapon, IActivatable {
+public class Pistol : Weapon {
   public override (int, int) damageSpread => (8, 12);
   public override float outFlowRate => 0;
   public override float inFlowRate => 7;
@@ -36,16 +39,13 @@ public class Pistol : Weapon, IActivatable {
 
   public override void Update(float dt) {
     base.Update(dt);
-    if (this.CanActivate()) {
-      Activate();
-    }
   }
 
-  public bool CanActivateInner() {
-    return (isPlayerOwned ? Input.GetMouseButtonDown(0) : true) && Mana > 10;
+  public override bool CanActivateInner() {
+    return Mana > 10;
   }
 
-  public void Activate() {
+  public override void Activate() {
     ChangeMana(-10);
     Projectile p = info;
     p.damage = rollDamage();

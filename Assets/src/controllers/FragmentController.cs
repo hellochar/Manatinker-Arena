@@ -90,6 +90,12 @@ public class FragmentController : MonoBehaviour {
     fragment.controller = null;
   }
 
+  void OnDestroy() {
+    if (healthbar) {
+      Destroy(healthbar);
+    }
+  }
+
   void OnMouseDown() {
     EditModeInputController.instance.mouseDownOnFragment(this);
   }

@@ -53,6 +53,10 @@ public class Circuit {
       System.Console.WriteLine(f);
     }
 	}
+
+  internal bool HasFragment(Fragment f) {
+    return fragments.Contains(f);
+  }
 }
 
 public class FlowGraph {

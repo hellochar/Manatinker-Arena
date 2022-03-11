@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 public class GameModel {
   public static GameModel main;
 
+  // in seconds
+  public float time = 0;
+  public int round;
   private bool _isEditMode = false;
   public bool isEditMode {
     get => _isEditMode;
@@ -54,6 +57,9 @@ public class GameModel {
   }
 
   public void RemoveFragment(Fragment f) {
+    if (!circuit.HasFragment(f)) {
+      Debug.LogWarning("ignoring double remove on " + f, f.controller);
+    }
     circuit.RemoveFragment(f);
     OnFragmentRemoved?.Invoke(f);
   }
@@ -105,6 +111,7 @@ public class GameModel {
   void spawnEnemy() {
     var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
     var enemy = new Enemy(pos);
+    enemy.builtinAngle = Random.Range(0, 360f);
     main.AddFragment(enemy);
 
     var engine = new Engine();
@@ -119,6 +126,7 @@ public class GameModel {
   }
 
   float timeUntilNextSpawn = 1;
+
   public void simulate(float dt) {
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
@@ -126,5 +134,6 @@ public class GameModel {
       spawnEnemy();
     }
     circuit.simulate(dt);
+    time += dt;
   }
 }
