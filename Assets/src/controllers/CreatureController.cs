@@ -1,15 +1,12 @@
 using UnityEngine;
 
 public class CreatureController : MonoBehaviour {
-  FragmentController fc;
+  public FragmentController fc;
   Fragment fragment => fc.fragment;
-
-  void Start() {
-    fc = GetComponent<FragmentController>();
-  }
 
   // happens when you hit another component
   void OnCollisionEnter2D(Collision2D collision) {
+    // in rare cases this can happen before start?
     Debug.Log(fragment.GetType() + ": collision enter " + collision.gameObject);
   }
 

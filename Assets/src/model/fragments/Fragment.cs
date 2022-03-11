@@ -11,7 +11,7 @@ public class Fragment {
   [ReadOnly]
   private float mana;
   public float Mana => mana;
-  private float hp;
+  protected float hp;
   public float Hp => hp;
   public virtual float manaMax => 100;
   public virtual float outFlowRate => 0;
@@ -20,6 +20,7 @@ public class Fragment {
   public virtual float weight => (1 + builtinOffset.magnitude) * mass;
 
   public virtual float hpMax => 30;
+  public bool isDead => hp <= 0;
   public bool isBroken = false;
 
   // e.g. the player
@@ -35,11 +36,12 @@ public class Fragment {
       if (_owner != null) {
         _owner.children.Add(this);
       }
+      controller?.UpdateOwner(owner);
     }
   }
   public bool isPlayerOwned => owner is Player;
 
-  public Vector2 _builtinOffset;
+  private Vector2 _builtinOffset;
   public Vector2 builtinOffset {
     get => _builtinOffset;
     set {
@@ -47,7 +49,7 @@ public class Fragment {
       controller?.UpdateOffset(value);
     }
   }
-  public float _builtinAngle;
+  private float _builtinAngle;
   public float builtinAngle {
     get => _builtinAngle;
     set {
@@ -122,10 +124,13 @@ public class Fragment {
     }
   }
 
-  private void Die() {
+  public virtual void Die() {
     // remove connections
     // remove fragment controller
     GameModel.main.RemoveFragment(this);
+    if (owner != null) {
+      owner.FragmentDied(this);
+    }
   }
 
   public bool isConnected(Fragment other) {

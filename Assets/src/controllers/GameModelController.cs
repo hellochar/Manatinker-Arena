@@ -87,7 +87,7 @@ public class GameModelController : MonoBehaviour {
   }
 
   internal void UpdateIsEditMode(bool value, Action callback = null) {
-    if (activeAnimation != null) {
+    if (activeAnimation != null || GameModel.main.player.isDead) {
       return;
     }
     Action cb = () => {
@@ -106,7 +106,7 @@ public class GameModelController : MonoBehaviour {
 
   private IEnumerator ResetRotationThenAddRigidbodies(Action callback) {
     {
-      var playerController = GameModel.main.player.controller;
+      var playerController = model.player.controller;
       var rb2d = playerController.GetComponent<Rigidbody2D>();
       rb2d.SetRotation(0);
 

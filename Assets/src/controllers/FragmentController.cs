@@ -30,13 +30,25 @@ public class FragmentController : MonoBehaviour {
     fragment.controller = this;
     if (fragment.owner != null) {
       transform.SetParent(fragment.owner.controller.transform);
+    } else {
+      transform.SetParent(null);
     }
     if (fragment is Creature c) {
-      transform.position = c.startPosition.z(transform.position.z);
+      UpdateOffset(c.startPosition);
+      UpdateAngle(c.startAngle);
     } else {
       UpdateOffset(fragment.builtinOffset);
       UpdateAngle(fragment.builtinAngle);
     }
+  }
+
+  internal void UpdateOwner(Creature owner) {
+    // we might be very far away. What happens?
+    // 1) we immediately go to their side, no problem
+    // 2) teleport to your side in the same orientation (lets do this)
+    
+    // THIS WORKS FOR NOW
+    Init(fragment);
   }
 
   void Start() {

@@ -62,6 +62,8 @@ public class GameModel {
     main = new GameModel();
     main.circuit = new Circuit();
 
+    main.floor = new Floor(25, 25).surroundWithWalls();
+
     var player = new Player(new Vector2(5, 5));
 
     var engine = new Engine();
@@ -88,7 +90,16 @@ public class GameModel {
     // core.connect(pistol3);
 
     main.AddFragment(player, engine, battery, pistol1);//, pistol2, pistol3);
-    main.floor = new Floor(25, 25).surroundWithWalls();
+
+    // scatter random items around
+    var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
+    for(var i = 0; i < fragments.Count(); i++) {
+      var newFragment = fragments[i];
+      newFragment.builtinAngle = Random.Range(0, 360);
+      var pos = new Vector2(Random.Range(2, main.floor.width - 2), Random.Range(2, main.floor.height - 2));
+      newFragment.builtinOffset = pos;
+      main.AddFragment(newFragment);
+    }
   }
 
   void spawnEnemy() {

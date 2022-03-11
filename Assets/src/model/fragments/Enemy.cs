@@ -9,6 +9,9 @@ public class Enemy : Creature {
 
   public override void Update(float dt) {
     var player = GameModel.main.player;
+    if (player.isDead) {
+      return;
+    }
     var offset = player.worldPos - this.worldPos;
 
     // e.g. 8 units away
@@ -29,7 +32,7 @@ public class Enemy : Creature {
     setRotation(desiredAngle);
 
     // if close enough, fire at player
-    if (Mathf.DeltaAngle(worldRotation, desiredAngle) < 10) {
+    if (Mathf.DeltaAngle(worldRotation, desiredAngle) < 1) {
       foreach(var f in children) {
         if (f is Pistol p) {
           if (p.CanActivate()) {
