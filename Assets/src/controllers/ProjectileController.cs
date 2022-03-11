@@ -44,6 +44,9 @@ public class ProjectileController : MonoBehaviour {
       // ignore
       return;
     }
+    if (col.gameObject.CompareTag("Projectile")) {
+      return;
+    }
     // Debug.Log("projectile: trigger enter " + col.gameObject);
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
     // we've hit a fragment, process it

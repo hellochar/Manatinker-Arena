@@ -126,11 +126,11 @@ public class Fragment {
     return wires.Any(w => w.to == other);
   }
 
-  float incomingTotal, outgoingTotal;
-  float lastMana;
+  public float incomingTotal, outgoingTotal;
+  public float lastMana;
 
   // assumes all edges on my nodes are solved
-  public void exchange() {
+  public virtual void exchange() {
     outgoingTotal = outt.edges.Select(e => e.flow).Sum();
     incomingTotal = inn.edges.Select(e => e.flow).Sum();
 
@@ -141,7 +141,7 @@ public class Fragment {
     ChangeMana(netManaDiff);
   }
 
-	public void assignNodeFlows(float dt) {
+	public virtual void assignNodeFlows(float dt) {
     // cannot give more mana than I have
     outt.flow = Math.Min(outFlowRate * dt, mana);
 

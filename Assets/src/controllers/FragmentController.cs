@@ -9,11 +9,15 @@ public class FragmentController : MonoBehaviour {
   [ReadOnly]
   public SpriteRenderer spriteRenderer;
   public SpriteRenderer manaCover;
+  public SpriteMask mask;
   public GameObject input;
   public GameObject output;
   public static GameObject healthbarPrefab;
   [ReadOnly]
   public GameObject healthbar;
+
+  private static int globalId = 0;
+  public readonly int id = globalId++;
 
   void Awake() {
     if (healthbarPrefab == null) {
@@ -43,9 +47,6 @@ public class FragmentController : MonoBehaviour {
     if (manaCover != null) {
       manaCover.sprite = spriteRenderer.sprite;
     }
-    if (input == null) {
-      input = transform.Find("Input")?.gameObject;
-    }
     if (output == null) {
       output = transform.Find("Output")?.gameObject;
     }
@@ -53,6 +54,8 @@ public class FragmentController : MonoBehaviour {
       healthbar = Instantiate(healthbarPrefab, Vector3.zero, Quaternion.identity, GameModelController.main.healthbars.transform);
       healthbar.GetComponent<HealthbarController>()?.Init(this);
     }
+    mask.frontSortingOrder = id - 32766;
+    mask.backSortingOrder = mask.frontSortingOrder - 1;
   }
 
   internal void UpdateOffset(Vector2 offset) {

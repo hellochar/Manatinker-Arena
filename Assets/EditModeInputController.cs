@@ -7,7 +7,8 @@ public class EditModeInputController : MonoBehaviour {
   public static EditModeInputController instance;
   public string instructions => inputState.instructions;
   public InputState inputState = InputState.Default;
-  void Start() {
+
+  void Awake() {
     instance = this;
   }
 

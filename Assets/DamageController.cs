@@ -7,6 +7,17 @@ public class DamageController : MonoBehaviour {
   public FragmentController fc;
   public SpriteRenderer sr;
 
+  void Start() {
+    // scale up until we are at least the bounding size of the fragment's sprite
+    var fragmentSprite = fc.spriteRenderer;
+    var fragmentSpriteBoundsSize = fragmentSprite.bounds.size.xy();
+    var cracksBoundsSize = sr.bounds.size.xy();
+    var boundsRatio = fragmentSpriteBoundsSize / cracksBoundsSize;
+    var maxRatio = Mathf.Max(boundsRatio.x, boundsRatio.y);
+    transform.localScale = (transform.localScale.xy() * maxRatio).z(transform.localScale.z);
+    sr.sortingOrder = fc.mask.frontSortingOrder;
+  }
+
   // Update is called once per frame
   void Update() {
     var hpPercent = fc.fragment.Hp / fc.fragment.hpMax;

@@ -21,7 +21,7 @@ public class WireController : MonoBehaviour {
     splineContainer.Spline[0] = knot0;
 
     var knot1 = splineContainer.Spline[1];
-    var inTransform = wire.to.controller.input.transform;
+    var inTransform = wire.to.controller.input?.transform ?? wire.to.controller.transform;
     knot1.Position = inTransform.position;
     // var inRotation = inTransform.localPosition.xy().angleDeg() * Mathf.Deg2Rad;
     var inRotation = inTransform.eulerAngles.z * Mathf.Deg2Rad;

@@ -64,13 +64,18 @@ public class GameModel {
 
     var player = new Player(new Vector2(5, 5));
 
-    var core = new Core();
-    core.owner = player;
+    var engine = new Engine();
+    engine.owner = player;
+
+    var battery = new Battery();
+    battery.owner = player;
+    battery.builtinOffset = new Vector2(0.25f, 1.5f);
+    engine.connect(battery);
 
     var pistol1 = new Pistol();
     pistol1.owner = player;
     pistol1.builtinOffset = new Vector2(1.5f, 0);
-    core.connect(pistol1);
+    battery.connect(pistol1);
 
     // var pistol2 = new Pistol();
     // pistol2.owner = player;
@@ -82,7 +87,7 @@ public class GameModel {
     // pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
     // core.connect(pistol3);
 
-    main.AddFragment(player, core, pistol1);//, pistol2, pistol3);
+    main.AddFragment(player, engine, battery, pistol1);//, pistol2, pistol3);
     main.floor = new Floor(25, 25).surroundWithWalls();
   }
 
@@ -91,14 +96,14 @@ public class GameModel {
     var enemy = new Enemy(pos);
     main.AddFragment(enemy);
 
-    var core = new Core();
-    core.owner = enemy;
-    main.AddFragment(core);
+    var engine = new Engine();
+    engine.owner = enemy;
+    main.AddFragment(engine);
 
     var pistol1 = new Pistol();
     pistol1.owner = enemy;
     pistol1.builtinOffset = new Vector2(1.5f, 0);
-    core.connect(pistol1);
+    engine.connect(pistol1);
     main.AddFragment(pistol1);
   }
 

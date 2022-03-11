@@ -37,7 +37,9 @@ public class GameModelController : MonoBehaviour {
 
   void Start() {
     Init(GameModel.main);
-    UpdateIsEditMode(GameModel.main.isEditMode);
+    foreach (var o in editModeObjects) {
+      o.SetActive(model.isEditMode);
+    }
   }
 
   void Init(GameModel model) {

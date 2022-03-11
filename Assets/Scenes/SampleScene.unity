@@ -841,14 +841,17 @@ MonoBehaviour:
   Mapping:
   - className: Player
     prefab: {fileID: 680559606912736472, guid: bab6113e82485814f893c12104352548, type: 3}
+  - className: Enemy
+    prefab: {fileID: 5281574128029448156, guid: 0cc95d28b65b9414f9130c64ae3b08c6,
+      type: 3}
   - className: Pistol
     prefab: {fileID: 2832894760019680421, guid: 889667485ca391745a2f2dd9e6241c79,
       type: 3}
-  - className: Core
-    prefab: {fileID: 2145530139324960989, guid: 8a3f7d791b4b82f479811bf8524f7082,
+  - className: Engine
+    prefab: {fileID: 5535818792714377297, guid: 7fdeee7db506ead46a0ba71e801ec089,
       type: 3}
-  - className: Enemy
-    prefab: {fileID: 5281574128029448156, guid: 0cc95d28b65b9414f9130c64ae3b08c6,
+  - className: Battery
+    prefab: {fileID: 2800328936572384588, guid: 4ebf25ba37b5e3f4788ebdb8a87563f0,
       type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
