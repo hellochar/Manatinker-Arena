@@ -9,7 +9,7 @@ public class GameModel {
 
   // in seconds
   public float time = 0;
-  public int round;
+  public GameRound currentRound;
   private bool _isEditMode = false;
   public bool isEditMode {
     get => _isEditMode;
@@ -27,6 +27,12 @@ public class GameModel {
     }
   }
 
+  internal void GoNextRound() {
+    if (currentRound.state == GameRoundState.Preparing) {
+      currentRound = new GameRound(currentRound.roundNumber++);
+    }
+  }
+
   public Player player;
   public Circuit circuit = new Circuit();
   public Floor floor;
@@ -35,6 +41,7 @@ public class GameModel {
   public Action<Fragment> OnFragmentAdded;
   public Action<Wire> OnWireAdded;
   public Action<Wire> OnWireRemoved;
+  internal List<Enemy> enemies;
 
   public IEnumerable<Fragment> Fragments => circuit.Fragments;
 
@@ -69,6 +76,8 @@ public class GameModel {
     main.circuit = new Circuit();
 
     main.floor = new Floor(25, 25).surroundWithWalls();
+    main.currentRound = new GameRound(0);
+    main.currentRound.GoToPreparing();
 
     var player = new Player(new Vector2(5, 5));
 
@@ -97,41 +106,11 @@ public class GameModel {
 
     main.AddFragment(player, engine, battery, pistol1);//, pistol2, pistol3);
 
-    // scatter random items around
-    var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
-    for(var i = 0; i < fragments.Count(); i++) {
-      var newFragment = fragments[i];
-      newFragment.builtinAngle = Random.Range(0, 360);
-      var pos = new Vector2(Random.Range(2, main.floor.width - 2), Random.Range(2, main.floor.height - 2));
-      newFragment.builtinOffset = pos;
-      main.AddFragment(newFragment);
-    }
   }
-
-  void spawnEnemy() {
-    var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
-    var enemy = new Enemy(pos);
-    enemy.builtinAngle = Random.Range(0, 360f);
-    main.AddFragment(enemy);
-
-    var engine = new Engine();
-    engine.owner = enemy;
-    main.AddFragment(engine);
-
-    var pistol1 = new Pistol();
-    pistol1.owner = enemy;
-    pistol1.builtinOffset = new Vector2(1.5f, 0);
-    engine.connect(pistol1);
-    main.AddFragment(pistol1);
-  }
-
-  float timeUntilNextSpawn = 1;
 
   public void simulate(float dt) {
-    timeUntilNextSpawn -= dt;
-    if (timeUntilNextSpawn < 0) {
-      timeUntilNextSpawn += 15;
-      spawnEnemy();
+    if (currentRound != null) {
+      currentRound.Update(dt);
     }
     circuit.simulate(dt);
     time += dt;

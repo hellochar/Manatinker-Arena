@@ -7,7 +7,7 @@ public class DeathTextController : MonoBehaviour {
   float timeSurvived;
   int roundsSurvived;
   void Start() {
-    roundsSurvived = GameModel.main.round;
+    roundsSurvived = GameModel.main.currentRound.roundNumber;
     timeSurvived = GameModel.main.time;
     TimeSpan time = TimeSpan.FromSeconds(timeSurvived);
 
