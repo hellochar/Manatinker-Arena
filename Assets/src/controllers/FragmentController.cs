@@ -113,7 +113,8 @@ public class FragmentController : MonoBehaviour {
   }
 
   internal void UpdateOffset(Vector2 offset) {
-    transform.localPosition = offset.z(transform.position.z);
+    var z = fragment is Creature ? -1 : 0;
+    transform.localPosition = offset.z(z);
   }
 
   internal void UpdateAngle(float value) {

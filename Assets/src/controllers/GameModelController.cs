@@ -100,7 +100,7 @@ public class GameModelController : MonoBehaviour {
   }
 
   private void HandleFragmentAdded(Fragment fragment) {
-    var go = Instantiate(fragmentPrefabs[fragment.GetType()], Vector3.zero, Quaternion.identity);
+    var go = Instantiate(fragmentPrefabs[fragment.GetType()]);
     FragmentController f = go.GetComponent<FragmentController>();
     fragmentControllers.Add(f);
     f.Init(fragment);

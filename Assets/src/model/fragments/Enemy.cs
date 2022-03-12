@@ -3,7 +3,7 @@ using UnityEngine;
 public class Enemy : Creature {
   public Enemy(Vector2 start) : base("enemy-fragment", start) {
   }
-  public override float turnRate => 2;
+  public override float baseTurnRate => 2;
 
   public float cooldown = 1.5f;
 

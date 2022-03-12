@@ -5,6 +5,8 @@ using UnityEngine;
 public class Creature : Fragment {
   public override float hpMax => 1;
   public override float manaMax => 0;
+  public override float weight => 0;
+  public override float mass => 0;
   public override bool hasInput => false;
   public override bool hasOutput => false;
   public Vector2 startPosition;
@@ -19,14 +21,27 @@ public class Creature : Fragment {
     }
   }
   public List<Fragment> children = new List<Fragment>();
-  public virtual float speed => 10;
-  public virtual float turnRate => 10f;
+  public virtual float baseSpeed => 10;
+  public virtual float baseTurnRate => 10f;
+  public float speed => totalWeight > 0 ? baseSpeed / totalWeight : baseSpeed;
+  public float turnRate => totalWeight > 0 ? baseTurnRate / totalWeight : baseTurnRate;
+  public float totalWeight;
+
   public Creature(string name, Vector2 startPosition) : base(name) {
     this.startPosition = startPosition;
+    recomputeTotalWeight();
   }
 
   public override void Update(float dt) {
+    recomputeTotalWeight();
     // do not reparent
+  }
+
+  void recomputeTotalWeight() {
+    totalWeight = 0f;
+    foreach (var c in children) {
+      totalWeight += c.weight;
+    }
   }
 
   public override void ChangeHP(float diff) {
@@ -39,7 +54,7 @@ public class Creature : Fragment {
       if (dir.magnitude > 1) {
         dir = dir.normalized;
       }
-      rb2d.velocity = dir * speed;
+      rb2d.velocity = dir * baseSpeed;
     }
   }
 
