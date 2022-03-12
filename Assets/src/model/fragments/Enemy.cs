@@ -5,7 +5,7 @@ public class Enemy : Creature {
   }
   public override float baseTurnRate => 2;
 
-  public float cooldown = 1.5f;
+  public float cooldown = 3f;
 
   public override void Update(float dt) {
     var player = GameModel.main.player;
@@ -33,7 +33,7 @@ public class Enemy : Creature {
     setRotation(desiredAngle);
 
     // if close enough, fire at player
-    if (Mathf.Abs(Mathf.DeltaAngle(worldRotation, desiredAngle)) < 15) {
+    if (Mathf.Abs(Mathf.DeltaAngle(worldRotation, desiredAngle)) < 15 && distanceOffset < 8) {
       foreach(var f in children) {
         if (f is Pistol p) {
           if (p.CanActivate()) {
