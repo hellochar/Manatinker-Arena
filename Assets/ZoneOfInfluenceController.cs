@@ -23,7 +23,7 @@ public class ZoneOfInfluenceController : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
-    lineRenderer.enabled = GameModel.main.isEditMode;
+    lineRenderer.enabled = GameModelController.main.isEditMode;
     if (pc.player.influenceRadius != lastRadius) {
       RebuildLineRenderer(pc.player.influenceRadius);
     }

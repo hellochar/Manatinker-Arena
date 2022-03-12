@@ -5,6 +5,6 @@ public interface IActivatable {
 
 public static class ActivatableExtensions {
   public static bool CanActivate(this IActivatable a) {
-    return a.CanActivateInner() && !GameModel.main.isEditMode;
+    return a.CanActivateInner() && !GameModelController.main.isEditMode;
   }
 }

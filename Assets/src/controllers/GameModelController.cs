@@ -13,7 +13,10 @@ public class GameModelController : MonoBehaviour {
   public GameObject floorPrefab;
   public GameObject wirePrefab;
   public GameObject deathUI;
+  public EditModeInputController editModeController;
 
+  public bool _isEditMode;
+  public bool isEditMode => _isEditMode;
   public GameObject[] editModeObjects;
 
   [ReadOnly]
@@ -29,6 +32,19 @@ public class GameModelController : MonoBehaviour {
   private Coroutine activeAnimation;
   public bool hasActiveAnimation => activeAnimation != null;
 
+  public void EnterEditMode() {
+    // set true immediately
+    _isEditMode = true;
+    UpdateIsEditMode(true);
+  }
+
+  public void ExitEditMode() {
+    editModeController.Reset();
+    UpdateIsEditMode(false, () => {
+      _isEditMode = false;
+    });
+  }
+
   void Awake() {
     main = this;
     foreach (var entry in Mapping) {
@@ -41,7 +57,7 @@ public class GameModelController : MonoBehaviour {
   void Start() {
     Init(GameModel.main);
     foreach (var o in editModeObjects) {
-      o.SetActive(model.isEditMode);
+      o.SetActive(isEditMode);
     }
   }
 

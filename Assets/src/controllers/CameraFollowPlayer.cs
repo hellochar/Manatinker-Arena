@@ -22,21 +22,25 @@ public class CameraFollowPlayer : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     if (Input.GetKeyDown(KeyCode.E)) {
-      GameModel.main.isEditMode = !GameModel.main.isEditMode;
+      if (GameModelController.main.isEditMode) {
+        GameModelController.main.ExitEditMode();
+      } else {
+        GameModelController.main.EnterEditMode();
+      }
     }
     if (Player == null) {
       return;
     }
     var targetPosition = Player.transform.position.xy();
 
-    if (!GameModel.main.isEditMode) {
+    if (!GameModelController.main.isEditMode) {
       var screenCenter = new Vector2(Screen.width, Screen.height) / 2f;
       // -1 -> 1
       var mouseOffset = (Input.mousePosition.xy() - screenCenter) / screenCenter;
       targetPosition += mouseOffset * mouseMovement;
     }
 
-    float targetProjectionSize = GameModel.main.isEditMode ? nearModeProjectionSize : originalProjectionSize;
+    float targetProjectionSize = GameModelController.main.isEditMode ? nearModeProjectionSize : originalProjectionSize;
     camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetProjectionSize, 0.1f);
     // float targetFov = nearMode ? nearModeFov : originalFov;
     // camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, 0.2f);

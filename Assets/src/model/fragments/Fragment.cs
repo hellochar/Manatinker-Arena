@@ -18,6 +18,7 @@ public class Fragment {
   public virtual float inFlowRate => 0;
   public virtual float mass => 1;
   public virtual float weight => (1 + builtinOffset.magnitude) * mass;
+  public virtual bool loseManaOnOwnerChange => true;
 
   public virtual float hpMax => 30;
   public bool isDead => hp <= 0;
@@ -35,6 +36,10 @@ public class Fragment {
       _owner = value;
       if (_owner != null) {
         _owner.children.Add(this);
+      }
+      if (loseManaOnOwnerChange) {
+        // when we owners, reset mana to 0
+        mana = 0;
       }
       controller?.UpdateOwner(owner);
     }

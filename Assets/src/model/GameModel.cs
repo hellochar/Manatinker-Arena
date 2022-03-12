@@ -10,19 +10,6 @@ public class GameModel {
   // in seconds
   public float time = 0;
   public GameRound currentRound;
-  private bool _isEditMode = false;
-  public bool isEditMode {
-    get => _isEditMode;
-    set {
-      if (value == true) {
-        // set true immediately
-        _isEditMode = true;
-      }
-      GameModelController.main.UpdateIsEditMode(value, () => {
-        _isEditMode = value;
-      });
-    }
-  }
 
   internal void GoNextRound() {
     if (currentRound.state == GameRoundState.Preparing) {

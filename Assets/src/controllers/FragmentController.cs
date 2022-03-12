@@ -19,6 +19,7 @@ public class FragmentController : MonoBehaviour {
 
   private static int globalId = 0;
   public readonly int id = globalId++;
+  private static readonly Color onGroundColor = new Color(0.5f, 0.5f, 0.5f);
 
   void Awake() {
     if (healthbarPrefab == null) {
@@ -34,7 +35,7 @@ public class FragmentController : MonoBehaviour {
     } else {
       transform.SetParent(null);
     }
-    UpdateRigidbody(GameModel.main.isEditMode);
+    UpdateRigidbody(GameModelController.main.isEditMode);
     if (fragment is Creature c) {
       UpdateOffset(c.startPosition);
       UpdateAngle(c.startAngle);
@@ -110,6 +111,10 @@ public class FragmentController : MonoBehaviour {
   public virtual void Update() {
     if (manaCover != null) {
       manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
+      manaCover.color = fragment.owner == null ? onGroundColor : Color.white;
+    }
+    if (spriteRenderer != null) {
+      spriteRenderer.color = fragment.owner == null ? onGroundColor : Color.white;
     }
     // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
