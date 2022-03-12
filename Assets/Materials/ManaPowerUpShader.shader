@@ -86,7 +86,7 @@ Shader "Unlit/ManaPowerUpShader"
                 c.a = alpha;
 
                 float pctScalar = IN.texcoord.x < _Percentage;
-                c *= pctScalar;
+                c.rgb *= pctScalar;
                 return c;
 				// c.rgb *= c.a;
 
