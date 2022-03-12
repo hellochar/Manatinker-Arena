@@ -68,16 +68,23 @@ public class EditModeInputController : MonoBehaviour {
   private void UpdateSelected(FragmentController selected) {
     if (selected == null) {
       selectionRing.enabled = false;
-      return;
     }
     if (selected != lastSelected) {
-      var selectedWorldSize = selected.worldSize();
-      var diameter = Mathf.Max(selectedWorldSize.x, selectedWorldSize.y) * 1.5f;
-      ZoneOfInfluenceController.RebuildLineRenderer(selectionRing, positions, diameter / 2);
+      if (lastSelected != null) {
+        lastSelected.StopSelection();
+      }
+      if (selected != null) {
+        selected.StartSelection();
+        var selectedWorldSize = selected.worldSize();
+        var diameter = Mathf.Max(selectedWorldSize.x, selectedWorldSize.y) * 1.5f;
+        ZoneOfInfluenceController.RebuildLineRenderer(selectionRing, positions, diameter / 2);
+        selectionRing.enabled = true;
+      }
       lastSelected = selected;
     }
-    selectionRing.transform.position = selected.transform.position;
-    selectionRing.enabled = true;
+    if (selected != null) {
+      selectionRing.transform.position = selected.transform.position;
+    }
   }
 
   public void Transition(InputState next) {
@@ -270,9 +277,7 @@ internal class InputStateDragged : InputState {
   bool isObjectOutOfInfluence {
     get {
       var player = GameModel.main.player;
-      var f = dragged.fragment;
-      var distanceToPlayer = Vector2.Distance(f.worldPos, player.worldPos);
-      return distanceToPlayer > player.influenceRadius;
+      return dragged.fragment.distance(player) > player.influenceRadius;
     }
   }
 

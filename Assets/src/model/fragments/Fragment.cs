@@ -187,6 +187,10 @@ public class Fragment {
     // take damage
     ChangeHP(-p.damage);
   }
+
+  public float distance(Fragment c) {
+    return Vector2.Distance(worldPos, c.worldPos);
+  }
 }
 
 public class Wire {

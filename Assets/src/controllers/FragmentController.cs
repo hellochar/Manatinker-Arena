@@ -77,6 +77,14 @@ public class FragmentController : MonoBehaviour {
     }
   }
 
+  internal void StopSelection() {
+      rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
+  }
+
+  internal void StartSelection() {
+    rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+  }
+
   internal void UpdateOwner(Creature owner) {
     // we might be very far away. What happens?
     // 1) we immediately go to their side, no problem
