@@ -115,8 +115,15 @@ internal class InputStateSelected : InputState {
 
   public override void update() {
     if (Input.GetMouseButton(0) && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)) {
-      // player's trying to drag
-      Transition(new InputStateDragged(selected));
+      Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
+      RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
+      if(hit.transform != null) {
+        if (hit.transform.gameObject == selected.gameObject) {
+          // player's trying to drag
+          Transition(new InputStateDragged(selected));
+          return;
+        }
+      }
     }
     // aka owned by player
     if (!isNeutral) {
@@ -162,13 +169,23 @@ internal class InputStateWireEdit : InputState {
   public override string instructions => "Click a Fragment - toggle wire.\nEsc or X - cancel.";
   private FragmentController from;
   public override FragmentController selected => from;
+  public Wire tempWire;
 
   public InputStateWireEdit(FragmentController from) {
     this.from = from;
   }
 
+  public override void enter() {
+    tempWire = new Wire(from.fragment, null);
+    GameModelController.main.HandleWireAdded(tempWire);
+  }
+
+  public override void exit() {
+    GameModelController.main.HandleWireRemoved(tempWire);
+  }
+
   public override void clickGround() {
-    TransitionBack();
+    Transition(InputState.Default);
   }
 
   private void TransitionBack() {
@@ -182,6 +199,7 @@ internal class InputStateWireEdit : InputState {
     } else {
       from.fragment.connect(to.fragment);
     }
+    TransitionBack();
   }
 
   public override void update() {
@@ -204,21 +222,33 @@ internal class InputStateDragged : InputState {
     this.dragged = fc;
   }
 
+  bool isObjectOutOfInfluence {
+    get {
+      var player = GameModel.main.player;
+      var f = dragged.fragment;
+      var distanceToPlayer = Vector2.Distance(f.worldPos, player.worldPos);
+      return distanceToPlayer > player.influenceRadius;
+    }
+  }
+
   void TransitionBack() {
-    Transition(new InputStateSelected(dragged));
+    if (isObjectOutOfInfluence) {
+      Transition(InputState.Default);
+    } else {
+      Transition(new InputStateSelected(dragged));
+    }
   }
 
   public override void exit() {
     var player = GameModel.main.player;
     var f = dragged.fragment;
-    var distanceToPlayer = Vector2.Distance(f.worldPos, player.worldPos);
     // we're too far away, remove from owner
-    if (f.isPlayerOwned && distanceToPlayer > player.influenceRadius) {
+    if (f.isPlayerOwned && isObjectOutOfInfluence) {
       f.disconnectAll();
       f.builtinAngle = f.worldRotation;
       f.builtinOffset = f.worldPos;
       f.owner = null;
-    } else if (f.owner == null && distanceToPlayer < player.influenceRadius) {
+    } else if (f.owner == null && !isObjectOutOfInfluence) {
       f.builtinOffset -= player.worldPos;
       f.builtinAngle -= player.worldRotation;
       f.owner = player;

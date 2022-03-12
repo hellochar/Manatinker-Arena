@@ -80,13 +80,13 @@ public class GameModelController : MonoBehaviour {
     model.OnWireRemoved += HandleWireRemoved;
   }
 
-  private void HandleWireRemoved(Wire w) {
+  public void HandleWireRemoved(Wire w) {
     wireControllers.Remove(w.controller);
     w.controller.Removed();
     // wireControllers.
   }
 
-  private void HandleWireAdded(Wire w) {
+  public void HandleWireAdded(Wire w) {
     var wire = Instantiate(wirePrefab, Vector3.zero, Quaternion.identity, wireContainer);
     var wireController = wire.GetComponent<WireController>();
     wireControllers.Add(wireController);

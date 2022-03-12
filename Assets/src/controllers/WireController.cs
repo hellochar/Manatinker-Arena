@@ -21,10 +21,19 @@ public class WireController : MonoBehaviour {
     splineContainer.Spline[0] = knot0;
 
     var knot1 = splineContainer.Spline[1];
-    var inTransform = wire.to.controller.input?.transform ?? wire.to.controller.transform;
-    knot1.Position = inTransform.position;
-    // var inRotation = inTransform.localPosition.xy().angleDeg() * Mathf.Deg2Rad;
-    var inRotation = inTransform.eulerAngles.z * Mathf.Deg2Rad;
+    float inRotation;
+    if (wire.to == null) {
+      knot1.Position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      inRotation = (
+        new Vector2(knot0.Position.x, knot0.Position.y) - 
+        new Vector2(knot1.Position.x, knot1.Position.y)
+      ).angleDeg() * Mathf.Deg2Rad;
+    } else {
+      var inTransform = wire.to.controller.input?.transform ?? wire.to.controller.transform;
+      knot1.Position = inTransform.position;
+      // var inRotation = inTransform.localPosition.xy().angleDeg() * Mathf.Deg2Rad;
+      inRotation = inTransform.eulerAngles.z * Mathf.Deg2Rad;
+    }
     knot1.TangentIn = new Unity.Mathematics.float3(-Mathf.Cos(inRotation), -Mathf.Sin(inRotation), 0) * 0.5f;
     splineContainer.Spline[1] = knot1;
   }
