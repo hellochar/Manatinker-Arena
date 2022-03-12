@@ -15,7 +15,7 @@ public class Engine : Fragment {
   public override float inFlowRate => 0;
   public override bool hasInput => false;
 
-  public override string Description => "Your main source of Mana. Connect to other Fragments!";
+  public override string Description => "Your main source of Mana. Connect to other Fragments!\n\nCannot be repositioned.";
 
   public Engine() {
     this.fuel = fuelMax;

@@ -134,6 +134,8 @@ public class InputStateDefault : InputState {
 
 internal class InputStateSelected : InputState {
   private FragmentController _selected;
+  private bool isDraggable => !(selected.fragment is Engine);
+
   public override FragmentController selected => _selected;
   bool isNeutral => selected.fragment.owner == null;
 
@@ -143,9 +145,10 @@ internal class InputStateSelected : InputState {
 
   public bool canMakeWire => selected.fragment.hasOutput;
 
+  private static string dragText = "Drag - move.\nMouse-wheel - rotate (hold Alt for more control).";
   public override string instructions => isNeutral ?
     "Drag into your zone of influence!" :
-    $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).{(canMakeWire ? "\nX - create a wire." : "")}";
+    $"{(isDraggable ? dragText : "")}{(canMakeWire ? "\nX - create a wire." : "")}".Trim();
 
   public override void clickGround() {
     Transition(InputState.Default);
@@ -153,7 +156,7 @@ internal class InputStateSelected : InputState {
 
   public override void update() {
     if (Input.GetMouseButton(0) && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)) {
-      if (getHovered() == selected) {
+      if (getHovered() == selected && isDraggable) {
         // player's trying to drag
         Transition(new InputStateDragged(selected));
         return;
@@ -166,28 +169,30 @@ internal class InputStateSelected : InputState {
       }
 
       // rotation
-      var shouldRotateSnap = !Input.GetKey(KeyCode.LeftAlt);
-      var amplitude = shouldRotateSnap ? 15 : 1;
-      var mouseWheelAmount = Input.GetAxis("Mouse ScrollWheel");
+      if (isDraggable) {
+        var shouldRotateSnap = !Input.GetKey(KeyCode.LeftAlt);
+        var amplitude = shouldRotateSnap ? 15 : 1;
+        var mouseWheelAmount = Input.GetAxis("Mouse ScrollWheel");
 
-      var diff = 0;
-      if (mouseWheelAmount < 0) {
-        diff = -amplitude;
-      } else if (mouseWheelAmount > 0) {
-        diff = amplitude;
-      }
-      if (diff != 0) {
-        var newAngle = selected.fragment.builtinAngle + diff;
-        if (shouldRotateSnap) {
-          newAngle = Util.Snap(newAngle, amplitude);
+        var diff = 0;
+        if (mouseWheelAmount < 0) {
+          diff = -amplitude;
+        } else if (mouseWheelAmount > 0) {
+          diff = amplitude;
         }
-        selected.fragment.builtinAngle = newAngle;
+        if (diff != 0) {
+          var newAngle = selected.fragment.builtinAngle + diff;
+          if (shouldRotateSnap) {
+            newAngle = Util.Snap(newAngle, amplitude);
+          }
+          selected.fragment.builtinAngle = newAngle;
+        }
       }
     }
   }
 
   public override void mouseDownOnFragment(FragmentController fc) {
-    if (fc == selected) {
+    if (fc == selected && isDraggable) {
       // starting a drag
       Transition(new InputStateDragged(fc));
       return;
