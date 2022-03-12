@@ -12,4 +12,8 @@ public static class Util {
   public static Vector2 Snap(Vector2 v, float factor) {
     return new Vector2(Snap(v.x, factor), Snap(v.y, factor));
   }
+
+  public static Vector2 fromDeg(float deg) {
+    return new Vector2(Mathf.Cos(deg * Mathf.Deg2Rad), Mathf.Sin(deg * Mathf.Deg2Rad));
+  }
 }

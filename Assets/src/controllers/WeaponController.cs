@@ -25,7 +25,7 @@ public class WeaponController : MonoBehaviour {
     if (p.angleSpread != 0) {
       rotation = rotation * Quaternion.Euler(0, 0, Random.Range(-p.angleSpread / 2, p.angleSpread / 2));
     }
-    var projectile = Instantiate(projectilePrefab, spawnPoint.position, rotation).GetComponent<ProjectileController>();
+    var projectile = Instantiate(projectilePrefab, spawnPoint.position, rotation).GetComponent<ProjectileControllerBase>();
     projectile.Init(p);
   }
 }

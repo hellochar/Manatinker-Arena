@@ -148,12 +148,4 @@ public class FragmentController : MonoBehaviour {
       Destroy(healthbar);
     }
   }
-
-  void OnMouseDown() {
-    EditModeInputController.instance.mouseDownOnFragment(this);
-  }
-
-  void OnMouseUp() {
-    EditModeInputController.instance.mouseUpOnFragment(this);
-  }
 }

@@ -2,25 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileController : MonoBehaviour {
-  [SerializeField]
-  [ReadOnly]
-  public Projectile projectile;
+public class ProjectileController : ProjectileControllerBase {
   Rigidbody2D rb2d;
 
   [SerializeField]
   [ReadOnly]
   float distanceTravelled = 0;
-
-  [SerializeField]
-  [ReadOnly]
-  float timeSpawned = 0;
-  float elapsed => Time.time - timeSpawned;
-
-  public void Init(Projectile p) {
-    this.projectile = p;
-    timeSpawned = Time.time;
-  }
 
   Vector2 lastPos;
   // Start is called before the first frame update
@@ -50,20 +37,7 @@ public class ProjectileController : MonoBehaviour {
   // void OnCollisionEnter2D(Collision2D col) { }
 
   void OnTriggerEnter2D(Collider2D col) {
-    if (col.gameObject.name == "Clickthrough") {
-      // ignore
-      return;
-    }
-    if (col.gameObject.CompareTag("Projectile")) {
-      return;
-    }
-    // Debug.Log("projectile: trigger enter " + col.gameObject);
-    var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
-    // we've hit a fragment, process it
-    if (hitFC) {
-      hitFC.fragment.Hit(projectile);
-    }
+    ProcessHit(col);
     Destroy(gameObject);
-    // col.gameObject.GetComponentInParent<
   }
 }

@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1582543699892955196}
   - component: {fileID: 335094642259576536}
   - component: {fileID: 786828067037412230}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3521038241880500141}
   - component: {fileID: 5325409710869402135}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ManaCover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 929435363090133365}
   - component: {fileID: 1787473703562407200}
   - component: {fileID: 5285943924398833447}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

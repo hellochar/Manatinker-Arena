@@ -83,19 +83,33 @@ public class Laser : Weapon, IActivatable {
   public override float inFlowRate => 25;
   public override float hpMax => 18;
   public override float manaMax => 25;
-  public override bool isHold => false;
-  public float manaDrainWhileActivated => -25;
+  public override bool isHold => true;
+  public float manaDrainWhileActivated => 30;
+  public bool needsRecharge = false;
 
-  static Projectile info = new Projectile() { isRay = true, maxDistance = 50f };
+  static Projectile info = new Projectile() { isRay = true, maxDistance = 15f };
+
+  public override void Update(float dt) {
+    if (needsRecharge && Mathf.Abs(Mana - manaMax) < 0.001f) {
+      needsRecharge = false;
+    }
+  }
 
   public bool CanActivateInner() {
-    return Time.deltaTime * manaDrainWhileActivated < Mana;
+    return !needsRecharge;
   }
 
   public void Activate() {
+    var wantedMana = Time.deltaTime * manaDrainWhileActivated;
+    var actualMana = Mathf.Min(Mana, wantedMana);
+    var powerScale = actualMana / wantedMana;
+    if (actualMana < wantedMana) {
+      needsRecharge = true;
+    }
+    ChangeMana(-actualMana);
     // shoot a ray
     Projectile p = info;
-    p.damage = rollDamage() * Time.deltaTime;
+    p.damage = rollDamage() * Time.deltaTime * powerScale;
     OnShootProjectile?.Invoke(p);
   }
 }

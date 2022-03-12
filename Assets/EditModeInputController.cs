@@ -28,11 +28,28 @@ public class EditModeInputController : MonoBehaviour {
 
   void Update() {
     UpdateHovered();
+    UpdateMouse();
     if (Input.GetKeyDown(KeyCode.Escape)) {
       clickGround();
     }
     inputState.update();
     UpdateSelected(inputState.selected);
+  }
+
+  void UpdateMouse() {
+    if (Input.GetMouseButtonDown(0)) {
+      var fc = hovered?.GetComponent<FragmentController>();
+      if (fc != null) {
+        mouseDownOnFragment(fc);
+      } else {
+        clickGround();
+      }
+    } else if (Input.GetMouseButtonUp(0)) {
+      var fc = hovered?.GetComponent<FragmentController>();
+      if (fc != null) {
+        mouseUpOnFragment(fc);
+      }
+    }
   }
 
   public GameObject hovered = null;

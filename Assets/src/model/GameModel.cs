@@ -80,10 +80,10 @@ public class GameModel {
     battery.builtinOffset = new Vector2(0.25f, 1.5f);
     engine.connect(battery);
 
-    var pistol1 = new Pistol();
-    pistol1.owner = player;
-    pistol1.builtinOffset = new Vector2(1.5f, 0);
-    battery.connect(pistol1);
+    var gun1 = new Laser();
+    gun1.owner = player;
+    gun1.builtinOffset = new Vector2(1.5f, 0);
+    battery.connect(gun1);
 
     // var pistol2 = new Pistol();
     // pistol2.owner = player;
@@ -95,7 +95,7 @@ public class GameModel {
     // pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
     // core.connect(pistol3);
 
-    main.AddFragment(player, engine, battery, pistol1);//, pistol2, pistol3);
+    main.AddFragment(player, engine, battery, gun1);//, pistol2, pistol3);
 
   }
 
