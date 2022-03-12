@@ -23,9 +23,18 @@ public class Creature : Fragment {
   public List<Fragment> children = new List<Fragment>();
   public virtual float baseSpeed => 10;
   public virtual float baseTurnRate => 10f;
-  public float speed => totalWeight > 0 ? baseSpeed / totalWeight : baseSpeed;
-  public float turnRate => totalWeight > 0 ? baseTurnRate / totalWeight : baseTurnRate;
+  public float encumbranceThreshold => 10;
+  public float speed => scaleByEncumbrance(baseSpeed);
+  public float turnRate => scaleByEncumbrance(baseTurnRate);
   public float totalWeight;
+
+  float scaleByEncumbrance(float v) {
+    if (totalWeight < encumbranceThreshold) {
+      return v;
+    }
+    float overloadedAmount = totalWeight / encumbranceThreshold;
+    return v / (overloadedAmount);
+  }
 
   public Creature(Vector2 startPosition) {
     this.startPosition = startPosition;
@@ -54,7 +63,7 @@ public class Creature : Fragment {
       if (dir.magnitude > 1) {
         dir = dir.normalized;
       }
-      rb2d.velocity = dir * baseSpeed;
+      rb2d.velocity = dir * speed;
     }
   }
 
