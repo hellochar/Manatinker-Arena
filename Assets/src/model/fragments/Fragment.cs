@@ -18,8 +18,7 @@ public class Fragment {
   public virtual float outFlowRate => 0;
   public virtual bool hasInput => true;
   public virtual float inFlowRate => 0;
-  public virtual float mass => 1;
-  public virtual float weight => (1 + builtinOffset.magnitude) * mass;
+  public virtual float weight => 1;
   public virtual bool loseManaOnOwnerChange => true;
 
   public virtual float hpMax => 30;

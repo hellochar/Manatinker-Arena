@@ -18,12 +18,18 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     var engineHPMax = engine.hpMax;
     var speed = player.speed;
     var speedBase = player.baseSpeed;
-    var weight = player.totalWeight;
+    var totalWeight = player.totalWeight;
+    var encumbrance = player.encumbranceThreshold;
+
+    // e.g. 3 / 1 => 3 - 1 = 200% slower
+    float overloadedAmount = totalWeight / encumbrance;
+
+    var slowerText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% slower from overweight)" : "";
 
     text.text = $@"
-Engine HP: {engineHP}/{engineHPMax}
-Speed: {speed} / {speedBase}
-Weight:  {weight}
+Engine HP: {engineHP} / {engineHPMax}
+Weight: {totalWeight} / {encumbrance}
+Speed: {speed} {slowerText}
     ".Trim();
   }
 }

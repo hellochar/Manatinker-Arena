@@ -6,7 +6,6 @@ public class Creature : Fragment {
   public override float hpMax => 1;
   public override float manaMax => 0;
   public override float weight => 0;
-  public override float mass => 0;
   public override bool hasInput => false;
   public override bool hasOutput => false;
   public Vector2 startPosition;
@@ -23,7 +22,7 @@ public class Creature : Fragment {
   public List<Fragment> children = new List<Fragment>();
   public virtual float baseSpeed => 10;
   public virtual float baseTurnRate => 10f;
-  public float encumbranceThreshold => 10;
+  public virtual float encumbranceThreshold => 10;
   public float speed => scaleByEncumbrance(baseSpeed);
   public float turnRate => scaleByEncumbrance(baseTurnRate);
   public float totalWeight;
@@ -38,15 +37,15 @@ public class Creature : Fragment {
 
   public Creature(Vector2 startPosition) {
     this.startPosition = startPosition;
-    recomputeTotalWeight();
+    recomputeTotalMass();
   }
 
   public override void Update(float dt) {
-    recomputeTotalWeight();
+    recomputeTotalMass();
     // do not reparent
   }
 
-  void recomputeTotalWeight() {
+  void recomputeTotalMass() {
     totalWeight = 0f;
     foreach (var c in children) {
       totalWeight += c.weight;

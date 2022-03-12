@@ -10,7 +10,7 @@ public class Engine : Fragment {
 
   public override float hpMax => 100;
   public override float outFlowRate => 25;
-  public override float mass => 1;
+  public override float weight => 1;
   public override float manaMax => 0;
   public override float inFlowRate => 0;
   public override bool hasInput => false;
