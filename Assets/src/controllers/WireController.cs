@@ -4,6 +4,7 @@ using UnityEngine.Splines;
 
 public class WireController : MonoBehaviour {
   public SplineContainer splineContainer;
+  public LineRenderer lineRenderer;
   Wire wire;
 
   internal void Init(Wire w) {
@@ -36,6 +37,12 @@ public class WireController : MonoBehaviour {
     }
     knot1.TangentIn = new Unity.Mathematics.float3(-Mathf.Cos(inRotation), -Mathf.Sin(inRotation), 0) * 0.5f;
     splineContainer.Spline[1] = knot1;
+
+    float flowRate = wire.lastFlow / Time.deltaTime;
+    float lerpAmount = flowRate / 2;
+
+    var targetColor = Color.Lerp(Color.black, Color.white, lerpAmount);
+    lineRenderer.endColor = lineRenderer.startColor = Color.Lerp(lineRenderer.endColor, targetColor, 0.1f);
   }
 
   internal void Removed() {

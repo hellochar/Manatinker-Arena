@@ -123,10 +123,10 @@ public class Fragment {
     if (isConnected(other)) {
       return;
     }
-    var wire = new Wire(this, other);
+    var edge = outt.connectInn(other.inn);
+    var wire = new Wire(this, other, edge);
     wires.Add(wire);
     other.wiresIn.Add(wire);
-    outt.connectInn(other.inn);
     GameModel.main.OnWireAdded?.Invoke(wire);
   }
 
@@ -232,9 +232,12 @@ public class Wire {
   public Fragment from;
   public Fragment to;
   public WireController controller;
+  public float lastFlow => edge?.flow ?? 0;
+  public Edge edge;
 
-  public Wire(Fragment from, Fragment to) {
+  public Wire(Fragment from, Fragment to, Edge edge) {
     this.from = from;
     this.to = to;
+    this.edge = edge;
   }
 }

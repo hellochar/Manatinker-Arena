@@ -101,13 +101,14 @@ public class Node {
   public List<Edge> edges = new List<Edge>();
 
 	// assumes we're supplier, other is demander
-	public void connectInn(Node inn) {
+	public Edge connectInn(Node inn) {
     // if (edges.Any(e => e.outt == this)) {
     //   System.Console.WriteLine($"duplicate edge {this.name}, {other.name}");
     // }
     Edge e = new Edge(this, inn);
     edges.Add(e);
     inn.edges.Add(e);
+    return e;
   }
 
   public void disconnectInn(Node inn) {

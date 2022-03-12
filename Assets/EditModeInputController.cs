@@ -215,7 +215,7 @@ internal class InputStateWireEdit : InputState {
   }
 
   public override void enter() {
-    tempWire = new Wire(from.fragment, null);
+    tempWire = new Wire(from.fragment, null, null);
     GameModelController.main.HandleWireAdded(tempWire);
   }
 

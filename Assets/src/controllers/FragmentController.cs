@@ -23,7 +23,7 @@ public class FragmentController : MonoBehaviour {
 
   private static int globalId = 0;
   public readonly int id = globalId++;
-  private static readonly Color onGroundColor = new Color(0.5f, 0.5f, 0.5f);
+  public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
 
   void Awake() {
     if (healthbarPrefab == null) {
@@ -135,16 +135,16 @@ public class FragmentController : MonoBehaviour {
   public virtual void Update() {
     if (manaCover != null) {
       manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
-      manaCover.color = fragment.owner == null ? onGroundColor : Color.white;
+      manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (spriteRenderer != null) {
-      spriteRenderer.color = fragment.owner == null ? onGroundColor : Color.white;
+      spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (input != null) {
-      input.GetComponent<SpriteRenderer>().color = fragment.owner == null ? onGroundColor : Color.white;
+      input.GetComponent<SpriteRenderer>().color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (output != null) {
-      output.GetComponent<SpriteRenderer>().color = fragment.owner == null ? onGroundColor : Color.white;
+      output.GetComponent<SpriteRenderer>().color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
