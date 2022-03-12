@@ -15,6 +15,7 @@ public class FragmentController : MonoBehaviour {
   public static GameObject healthbarPrefab;
   [ReadOnly]
   public GameObject healthbar;
+  public Rigidbody2D rb2d;
 
   private static int globalId = 0;
   public readonly int id = globalId++;
@@ -33,12 +34,36 @@ public class FragmentController : MonoBehaviour {
     } else {
       transform.SetParent(null);
     }
+    UpdateRigidbody(GameModel.main.isEditMode);
     if (fragment is Creature c) {
       UpdateOffset(c.startPosition);
       UpdateAngle(c.startAngle);
     } else {
       UpdateOffset(fragment.builtinOffset);
       UpdateAngle(fragment.builtinAngle);
+    }
+  }
+
+  // call when owner or edit mode changes
+  public void UpdateRigidbody(bool isEditMode) {
+    if (fragment.owner == null) {
+      rb2d.bodyType = RigidbodyType2D.Dynamic;
+      return;
+    }
+
+    // while playing, we are kinematic to allow the Creature owner's transform to apply
+    if (!isEditMode) {
+      rb2d.bodyType = RigidbodyType2D.Kinematic;
+      return;
+    }
+
+    // We're in edit mode, and we're either player owned or enemy owned
+    if (fragment.isPlayerOwned) {
+      // we once again use dynamic so they hit each other when dragging
+      rb2d.bodyType = RigidbodyType2D.Dynamic;
+    } else {
+      // for enemies, keep them kinematic
+      rb2d.bodyType = RigidbodyType2D.Kinematic;
     }
   }
 

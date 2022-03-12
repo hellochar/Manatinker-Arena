@@ -45,6 +45,9 @@ public class EditModeInputController : MonoBehaviour {
 public abstract class InputState {
   public abstract string instructions { get; }
   public static InputStateDefault Default = new InputStateDefault();
+  public static bool canSelect(Fragment f) {
+    return f.isPlayerOwned || f.owner == null;
+  }
 
   public virtual void mouseDownOnFragment(FragmentController fc) { }
   public virtual void mouseUpOnFragment(FragmentController fc) { }
@@ -63,7 +66,7 @@ public class InputStateDefault : InputState {
   public override void mouseDownOnFragment(FragmentController fc) {
     var fragment = fc.fragment;
     // only allow dragging fragments that the player controls
-    if (fragment.isPlayerOwned || fragment.owner == null) {
+    if (canSelect(fragment)) {
       Transition(new InputStateSelected(fc));
     }
   }
@@ -122,7 +125,7 @@ internal class InputStateSelected : InputState {
       // starting a drag
       Transition(new InputStateDragged(fc));
       return;
-    } else {
+    } else if (canSelect(fc.fragment)) {
       // selecting a different one
       Transition(new InputStateSelected(fc));
       return;
@@ -184,7 +187,10 @@ internal class InputStateDragged : InputState {
     }
     Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     var fragment = dragged.fragment;
-    Vector2 worldOffset = worldPosition.xy() - fragment.owner.controller.transform.position.xy();
+    Vector2 worldOffset = worldPosition.xy();
+    if (fragment.owner != null) {
+      worldOffset -= fragment.owner.controller.transform.position.xy();
+    } 
     // hold alt to get precise
     var offset = Input.GetKey(KeyCode.LeftAlt) ? worldOffset : Util.Snap(worldOffset, 0.25f);
     fragment.builtinOffset = offset;

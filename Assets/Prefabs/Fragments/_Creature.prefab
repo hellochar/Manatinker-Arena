@@ -65,6 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1959762766203104642, guid: 1e59fcb8e698c244aacb132a761060af,
         type: 3}
+      propertyPath: rb2d
+      value: 
+      objectReference: {fileID: -2991902927914328889}
+    - target: {fileID: 1959762766203104642, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
       propertyPath: input
       value: 
       objectReference: {fileID: 0}

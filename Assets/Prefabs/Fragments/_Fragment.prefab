@@ -629,6 +629,27 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2739003623783368507}
   m_PrefabAsset: {fileID: 0}
+--- !u!50 &3444408949431368685
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4443691110170069772}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 1
+  m_Mass: 0.83496094
+  m_LinearDrag: 100
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &1959762766203104642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,3 +668,4 @@ MonoBehaviour:
   input: {fileID: 2145200279502194030}
   output: {fileID: 3573726924322902615}
   healthbar: {fileID: 0}
+  rb2d: {fileID: 3444408949431368685}

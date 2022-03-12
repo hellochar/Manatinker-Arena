@@ -101,13 +101,14 @@ public class GameModelController : MonoBehaviour {
       callback?.Invoke();
     };
     if (value) {
-      activeAnimation = StartCoroutine(ResetRotationThenAddRigidbodies(cb));
+      activeAnimation = StartCoroutine(ResetRotationThenUpdateRigidbodies(value, cb));
     } else {
-      activeAnimation = StartCoroutine(RemoveRigidbodies(cb));
+      UpdateRigidbodies(value);
+      cb();
     }
   }
 
-  private IEnumerator ResetRotationThenAddRigidbodies(Action callback) {
+  private IEnumerator ResetRotationThenUpdateRigidbodies(bool value, Action cb) {
     {
       var playerController = model.player.controller;
       var rb2d = playerController.GetComponent<Rigidbody2D>();
@@ -121,23 +122,14 @@ public class GameModelController : MonoBehaviour {
       }
     }
 
-    foreach (var child in model.player.children) {
-      // make them clickable
-      var rb2d = child.controller.gameObject.AddComponent<Rigidbody2D>();
-      rb2d.bodyType = RigidbodyType2D.Static;
-    }
-    callback();
+    UpdateRigidbodies(value);
+    cb();
   }
 
-  private IEnumerator RemoveRigidbodies(Action callback) {
-    foreach (var child in model.player.children) {
-      var rb2d = child.controller.gameObject.GetComponent<Rigidbody2D>();
-      if (rb2d) {
-        Destroy(rb2d);
-      }
+  private void UpdateRigidbodies(bool value) {
+    foreach (var child in model.Fragments) {
+      child.controller.UpdateRigidbody(value);
     }
-    yield return new WaitForEndOfFrame();
-    callback();
   }
 
   void Update() {
