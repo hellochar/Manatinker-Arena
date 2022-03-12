@@ -1754,6 +1754,8 @@ MonoBehaviour:
   wirePrefab: {fileID: 1862279530375939376, guid: 16f1871ed2dfe284f91c353a11a31f89,
     type: 3}
   deathUI: {fileID: 1161888078}
+  editModeController: {fileID: 2067820320}
+  _isEditMode: 0
   editModeObjects:
   - {fileID: 2067820318}
   - {fileID: 455638155}
