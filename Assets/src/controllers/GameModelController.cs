@@ -27,6 +27,7 @@ public class GameModelController : MonoBehaviour {
   public List<FragmentController> fragmentControllers = new List<FragmentController>();
   public HashSet<WireController> wireControllers = new HashSet<WireController>();
   private Coroutine activeAnimation;
+  public bool hasActiveAnimation => activeAnimation != null;
 
   void Awake() {
     main = this;
@@ -90,7 +91,7 @@ public class GameModelController : MonoBehaviour {
   }
 
   internal void UpdateIsEditMode(bool value, Action callback = null) {
-    if (activeAnimation != null || GameModel.main.player.isDead) {
+    if (hasActiveAnimation || GameModel.main.player.isDead) {
       return;
     }
     Action cb = () => {
@@ -109,17 +110,15 @@ public class GameModelController : MonoBehaviour {
   }
 
   private IEnumerator ResetRotationThenUpdateRigidbodies(bool value, Action cb) {
-    {
-      var playerController = model.player.controller;
-      var rb2d = playerController.GetComponent<Rigidbody2D>();
-      rb2d.SetRotation(0);
+    var playerController = model.player.controller;
+    var rb2d = playerController.GetComponent<Rigidbody2D>();
+    rb2d.SetRotation(0);
 
-      yield return new WaitForSeconds(0.25f);
+    yield return new WaitForSeconds(0.25f);
 
-      // let physics catch up
-      while (rb2d.rotation != 0) {
-        yield return new WaitForEndOfFrame();
-      }
+    // let physics catch up
+    while (rb2d.rotation != 0) {
+      yield return new WaitForEndOfFrame();
     }
 
     UpdateRigidbodies(value);

@@ -14,6 +14,10 @@ public class GameModel {
   public bool isEditMode {
     get => _isEditMode;
     set {
+      if (value == true) {
+        // set true immediately
+        _isEditMode = true;
+      }
       GameModelController.main.UpdateIsEditMode(value, () => {
         _isEditMode = value;
       });

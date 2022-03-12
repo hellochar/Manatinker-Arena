@@ -181,6 +181,23 @@ internal class InputStateDragged : InputState {
     Transition(new InputStateSelected(dragged));
   }
 
+  public override void exit() {
+    var player = GameModel.main.player;
+    var f = dragged.fragment;
+    var distanceToPlayer = Vector2.Distance(f.worldPos, player.worldPos);
+    // we're too far away, remove from owner
+    if (f.isPlayerOwned && distanceToPlayer > player.influenceRadius) {
+      f.disconnectAll();
+      f.builtinAngle = f.worldRotation;
+      f.builtinOffset = f.worldPos;
+      f.owner = null;
+    } else if (f.owner == null && distanceToPlayer < player.influenceRadius) {
+      f.builtinOffset -= player.worldPos;
+      f.builtinAngle -= player.worldRotation;
+      f.owner = player;
+    }
+  }
+
   public override void update() {
     if (!Input.GetMouseButton(0)) {
       TransitionBack();

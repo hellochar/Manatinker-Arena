@@ -79,21 +79,6 @@ public class Fragment {
   }
 
   public virtual void Update(float dt) {
-    if (GameModel.main.isEditMode) {
-      var player = GameModel.main.player;
-      var distanceToPlayer = Vector2.Distance(worldPos, player.worldPos);
-      // we're too far away, remove from owner
-      if (isPlayerOwned && distanceToPlayer > player.influenceRadius) {
-        disconnectAll();
-        builtinAngle = worldRotation;
-        builtinOffset = worldPos;
-        owner = null;
-      } else if (owner == null && distanceToPlayer < player.influenceRadius) {
-        builtinOffset -= player.worldPos;
-        builtinAngle -= player.worldRotation;
-        owner = player;
-      }
-    }
   }
 
   public void connect(Fragment other) {

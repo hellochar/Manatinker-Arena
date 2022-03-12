@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
   }
 
   void Update() {
-    if (GameModel.main.isEditMode) {
+    if (GameModel.main.isEditMode || GameModelController.main.hasActiveAnimation) {
       return;
     }
 
