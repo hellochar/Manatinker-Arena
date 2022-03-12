@@ -8,11 +8,12 @@ public class Engine : Fragment {
   public virtual float fuelMax => 500;
   public virtual float manaPerFuel => 10;
 
-  public override float hpMax => 15;
+  public override float hpMax => 100;
   public override float outFlowRate => 25;
   public override float mass => 1;
   public override float manaMax => 0;
   public override float inFlowRate => 0;
+  public override bool hasInput => false;
 
   public Engine() : base("engine") {
     this.fuel = fuelMax;

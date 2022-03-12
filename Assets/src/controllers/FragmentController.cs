@@ -103,6 +103,13 @@ public class FragmentController : MonoBehaviour {
     }
     mask.frontSortingOrder = id - 32766;
     mask.backSortingOrder = mask.frontSortingOrder - 1;
+
+    if (input != null) {
+      input.SetActive(fragment.hasInput);
+    }
+    if (output != null) {
+      output.SetActive(fragment.hasOutput);
+    }
   }
 
   internal void UpdateOffset(Vector2 offset) {
@@ -120,6 +127,12 @@ public class FragmentController : MonoBehaviour {
     }
     if (spriteRenderer != null) {
       spriteRenderer.color = fragment.owner == null ? onGroundColor : Color.white;
+    }
+    if (input != null) {
+      input.GetComponent<SpriteRenderer>().color = fragment.owner == null ? onGroundColor : Color.white;
+    }
+    if (output != null) {
+      output.GetComponent<SpriteRenderer>().color = fragment.owner == null ? onGroundColor : Color.white;
     }
     // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }

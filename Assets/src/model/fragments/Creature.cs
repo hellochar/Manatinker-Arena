@@ -5,6 +5,8 @@ using UnityEngine;
 public class Creature : Fragment {
   public override float hpMax => 1;
   public override float manaMax => 0;
+  public override bool hasInput => false;
+  public override bool hasOutput => false;
   public Vector2 startPosition;
   public float startAngle;
   private Rigidbody2D _rb2d;

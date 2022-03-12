@@ -27,6 +27,7 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   void Update() {
+    UpdateHovered();
     if (Input.GetKeyDown(KeyCode.Escape)) {
       clickGround();
     }
@@ -34,7 +35,19 @@ public class EditModeInputController : MonoBehaviour {
     UpdateSelected(inputState.selected);
   }
 
+  public GameObject hovered = null;
+  private void UpdateHovered() {
+    Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
+    RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
+    if (hit.transform != null) {
+      hovered = hit.transform.gameObject;
+      return;
+    }
+    hovered = null;
+  }
+
   private FragmentController lastSelected;
+
   private void UpdateSelected(FragmentController selected) {
     if (selected == null) {
       selectionRing.enabled = false;
@@ -82,6 +95,8 @@ public abstract class InputState {
   protected void Transition(InputState other) {
     EditModeInputController.instance.Transition(other);
   }
+
+  public GameObject getHovered() => EditModeInputController.instance.hovered;
 }
 
 public class InputStateDefault : InputState {
@@ -105,9 +120,11 @@ internal class InputStateSelected : InputState {
     this._selected = fc;
   }
 
+  public bool canMakeWire => selected.fragment.hasOutput;
+
   public override string instructions => isNeutral ?
     "Drag into your zone of influence!" :
-    $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).\nX - create a wire.";
+    $"Selected {selected.fragment.DisplayName}.\nDrag - move.\nMouse-wheel - rotate (hold Alt for more control).{(canMakeWire ? "\nX - create a wire." : "")}";
 
   public override void clickGround() {
     Transition(InputState.Default);
@@ -115,19 +132,15 @@ internal class InputStateSelected : InputState {
 
   public override void update() {
     if (Input.GetMouseButton(0) && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)) {
-      Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
-      RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
-      if(hit.transform != null) {
-        if (hit.transform.gameObject == selected.gameObject) {
-          // player's trying to drag
-          Transition(new InputStateDragged(selected));
-          return;
-        }
+      if (getHovered() == selected.gameObject) {
+        // player's trying to drag
+        Transition(new InputStateDragged(selected));
+        return;
       }
     }
     // aka owned by player
     if (!isNeutral) {
-      if (Input.GetKeyDown(KeyCode.X)) {
+      if (Input.GetKeyDown(KeyCode.X) && canMakeWire) {
         Transition(new InputStateWireEdit(selected));
       }
 
@@ -193,6 +206,9 @@ internal class InputStateWireEdit : InputState {
   }
 
   void ToggleWire(FragmentController to) {
+    if (!to.fragment.hasInput) {
+      return;
+    }
     var isConnected = from.fragment.isConnected(to.fragment);
     if (isConnected) {
       from.fragment.disconnect(to.fragment);
@@ -203,6 +219,18 @@ internal class InputStateWireEdit : InputState {
   }
 
   public override void update() {
+    Fragment to;
+    if (getHovered() == null) {
+      to = null;
+    } else {
+      var targetFc = getHovered().GetComponent<FragmentController>();
+      if (targetFc != null && targetFc.fragment.hasInput) {
+        to = targetFc.fragment;
+      } else {
+        to = null;
+      }
+    }
+    tempWire.to = to;
     if (Input.GetKeyDown(KeyCode.X)) {
       TransitionBack();
     }
@@ -264,7 +292,7 @@ internal class InputStateDragged : InputState {
     Vector2 worldOffset = worldPosition.xy();
     if (fragment.owner != null) {
       worldOffset -= fragment.owner.controller.transform.position.xy();
-    } 
+    }
     // hold alt to get precise
     var offset = Input.GetKey(KeyCode.LeftAlt) ? worldOffset : Util.Snap(worldOffset, 0.25f);
     fragment.builtinOffset = offset;

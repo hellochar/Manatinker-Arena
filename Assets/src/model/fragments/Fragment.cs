@@ -14,7 +14,9 @@ public class Fragment {
   protected float hp;
   public float Hp => hp;
   public virtual float manaMax => 100;
+  public virtual bool hasOutput => true;
   public virtual float outFlowRate => 0;
+  public virtual bool hasInput => true;
   public virtual float inFlowRate => 0;
   public virtual float mass => 1;
   public virtual float weight => (1 + builtinOffset.magnitude) * mass;
@@ -192,8 +194,8 @@ public class Fragment {
 }
 
 public class Wire {
-  public readonly Fragment from;
-  public readonly Fragment to;
+  public Fragment from;
+  public Fragment to;
   public WireController controller;
 
   public Wire(Fragment from, Fragment to) {

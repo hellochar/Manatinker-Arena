@@ -19,6 +19,7 @@ public abstract class Weapon : Fragment, IActivatable {
 [RegisteredFragment]
 public class Pistol : Weapon {
   public override (int, int) damageSpread => (8, 12);
+  public override bool hasOutput => false;
   public override float outFlowRate => 0;
   public override float inFlowRate => 7;
   public override float hpMax => 15;
