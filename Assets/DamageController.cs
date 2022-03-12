@@ -9,8 +9,7 @@ public class DamageController : MonoBehaviour {
 
   void Start() {
     // scale up until we are at least the bounding size of the fragment's sprite
-    var fragmentSprite = fc.spriteRenderer;
-    var fragmentSpriteBoundsSize = fragmentSprite.bounds.size.xy();
+    var fragmentSpriteBoundsSize = fc.worldSize();
     var cracksBoundsSize = sr.bounds.size.xy();
     var boundsRatio = fragmentSpriteBoundsSize / cracksBoundsSize;
     var maxRatio = Mathf.Max(boundsRatio.x, boundsRatio.y);

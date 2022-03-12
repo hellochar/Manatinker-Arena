@@ -24,13 +24,15 @@ public class ZoneOfInfluenceController : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     lineRenderer.enabled = GameModelController.main.isEditMode;
-    if (pc.player.influenceRadius != lastRadius) {
-      RebuildLineRenderer(pc.player.influenceRadius);
+    var radius = pc.player.influenceRadius;
+    if (radius != lastRadius) {
+      RebuildLineRenderer(lineRenderer, positions, radius);
+      lastRadius = radius;
     }
     transform.localRotation = Quaternion.Euler(0, 0, transform.localEulerAngles.z + 0.01f);
   }
 
-  private void RebuildLineRenderer(float radius) {
+  public static void RebuildLineRenderer(LineRenderer lineRenderer, Vector3[] positions, float radius) {
     lineRenderer.positionCount = positions.Length;
 
     for(var i = 0; i < positions.Length; i++) {
@@ -39,7 +41,5 @@ public class ZoneOfInfluenceController : MonoBehaviour {
       positions[i] = new Vector3(radius * Mathf.Cos(angle), radius * Mathf.Sin(angle), 0);
     }
     lineRenderer.SetPositions(positions);
-
-    lastRadius = radius;
   }
 }

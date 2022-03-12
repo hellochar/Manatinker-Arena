@@ -4,12 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EditModeInputController : MonoBehaviour {
+  public LineRenderer selectionRing;
+
   public static EditModeInputController instance;
   public string instructions => inputState.instructions;
   public InputState inputState = InputState.Default;
 
   void Awake() {
     instance = this;
+  }
+
+  private Vector3[] positions = new Vector3[63];
+  void Start() {
   }
 
   public void Reset() {
@@ -25,6 +31,23 @@ public class EditModeInputController : MonoBehaviour {
       clickGround();
     }
     inputState.update();
+    UpdateSelected(inputState.selected);
+  }
+
+  private FragmentController lastSelected;
+  private void UpdateSelected(FragmentController selected) {
+    if (selected == null) {
+      selectionRing.enabled = false;
+      return;
+    }
+    if (selected != lastSelected) {
+      var selectedWorldSize = selected.worldSize();
+      var diameter = Mathf.Max(selectedWorldSize.x, selectedWorldSize.y) * 1.5f;
+      ZoneOfInfluenceController.RebuildLineRenderer(selectionRing, positions, diameter / 2);
+      lastSelected = selected;
+    }
+    selectionRing.transform.position = selected.transform.position;
+    selectionRing.enabled = true;
   }
 
   public void Transition(InputState next) {
@@ -45,6 +68,7 @@ public class EditModeInputController : MonoBehaviour {
 public abstract class InputState {
   public abstract string instructions { get; }
   public static InputStateDefault Default = new InputStateDefault();
+  public virtual FragmentController selected => null;
   public static bool canSelect(Fragment f) {
     return f.isPlayerOwned || f.owner == null;
   }
@@ -73,11 +97,12 @@ public class InputStateDefault : InputState {
 }
 
 internal class InputStateSelected : InputState {
-  private FragmentController selected;
+  private FragmentController _selected;
+  public override FragmentController selected => _selected;
   bool isNeutral => selected.fragment.owner == null;
 
   public InputStateSelected(FragmentController fc) {
-    this.selected = fc;
+    this._selected = fc;
   }
 
   public override string instructions => isNeutral ?
@@ -136,6 +161,7 @@ internal class InputStateSelected : InputState {
 internal class InputStateWireEdit : InputState {
   public override string instructions => "Click a Fragment - toggle wire.\nEsc or X - cancel.";
   private FragmentController from;
+  public override FragmentController selected => from;
 
   public InputStateWireEdit(FragmentController from) {
     this.from = from;
@@ -172,6 +198,7 @@ internal class InputStateWireEdit : InputState {
 internal class InputStateDragged : InputState {
   public override string instructions => $"Alt - disable snapping.";
   private FragmentController dragged;
+  public override FragmentController selected => dragged;
 
   public InputStateDragged(FragmentController fc) {
     this.dragged = fc;

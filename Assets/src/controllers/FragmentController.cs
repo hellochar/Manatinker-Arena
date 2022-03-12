@@ -12,6 +12,11 @@ public class FragmentController : MonoBehaviour {
   public SpriteMask mask;
   public GameObject input;
   public GameObject output;
+
+  public Vector2 worldSize() {
+    return spriteRenderer.bounds.size.xy();
+  }
+
   public static GameObject healthbarPrefab;
   [ReadOnly]
   public GameObject healthbar;
