@@ -20,7 +20,6 @@ public class FragmentController : MonoBehaviour {
   public static GameObject healthbarPrefab;
   [ReadOnly]
   public GameObject healthbar;
-  public Rigidbody2D rb2d;
 
   private static int globalId = 0;
   public readonly int id = globalId++;
@@ -40,7 +39,7 @@ public class FragmentController : MonoBehaviour {
     } else {
       transform.SetParent(null);
     }
-    UpdateRigidbody(GameModelController.main.isEditMode);
+    // UpdateRigidbody(GameModelController.main.isEditMode);
     if (fragment is Creature c) {
       UpdateOffset(c.startPosition);
       UpdateAngle(c.startAngle);
@@ -50,39 +49,43 @@ public class FragmentController : MonoBehaviour {
     }
   }
 
-  // call when owner or edit mode changes
-  public void UpdateRigidbody(bool isEditMode) {
-    // never modify creature Rigidbody type
-    if (fragment is Creature) {
-      return;
-    }
-    if (fragment.owner == null) {
-      rb2d.bodyType = RigidbodyType2D.Kinematic;
-      return;
-    }
+  // // call when owner or edit mode changes
+  // public void UpdateRigidbody(bool isEditMode) {
+  //   // never modify creature Rigidbody type
+  //   if (fragment is Creature) {
+  //     return;
+  //   }
+  //   if (fragment.owner == null) {
+  //     rb2d.bodyType = RigidbodyType2D.Kinematic;
+  //     return;
+  //   }
 
-    // while playing, we are kinematic to allow the Creature owner's transform to apply
-    if (!isEditMode) {
-      rb2d.bodyType = RigidbodyType2D.Kinematic;
-      return;
-    }
+  //   // while playing, we are kinematic to allow the Creature owner's transform to apply
+  //   if (!isEditMode) {
+  //     rb2d.bodyType = RigidbodyType2D.Kinematic;
+  //     return;
+  //   }
 
-    // We're in edit mode, and we're either player owned or enemy owned
-    if (fragment.isPlayerOwned) {
-      // we once again use dynamic so they hit each other when dragging
-      rb2d.bodyType = RigidbodyType2D.Dynamic;
-    } else {
-      // for enemies, keep them kinematic
-      rb2d.bodyType = RigidbodyType2D.Kinematic;
-    }
-  }
+  //   // We're in edit mode, and we're either player owned or enemy owned
+  //   if (fragment.isPlayerOwned) {
+  //     // we once again use dynamic so they hit each other when dragging
+  //     rb2d.bodyType = RigidbodyType2D.Dynamic;
+  //   } else {
+  //     // for enemies, keep them kinematic
+  //     rb2d.bodyType = RigidbodyType2D.Kinematic;
+  //   }
+  // }
 
   internal void StopSelection() {
-      rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
+    Destroy(rb2d);
   }
 
+  private Rigidbody2D rb2d;
   internal void StartSelection() {
+    rb2d = gameObject.AddComponent<Rigidbody2D>();
+    rb2d.bodyType = RigidbodyType2D.Dynamic;
     rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+    rb2d.drag = 100;
   }
 
   internal void UpdateOwner(Creature owner) {

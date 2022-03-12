@@ -35,11 +35,13 @@ public class GameModelController : MonoBehaviour {
   public void EnterEditMode() {
     // set true immediately
     _isEditMode = true;
+    GameModel.main.player.controller.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
     UpdateIsEditMode(true);
   }
 
   public void ExitEditMode() {
     editModeController.Reset();
+    GameModel.main.player.controller.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
     UpdateIsEditMode(false, () => {
       _isEditMode = false;
     });
@@ -120,7 +122,7 @@ public class GameModelController : MonoBehaviour {
     if (value) {
       activeAnimation = StartCoroutine(ResetRotationThenUpdateRigidbodies(value, cb));
     } else {
-      UpdateRigidbodies(value);
+      // UpdateRigidbodies(value);
       cb();
     }
   }
@@ -137,15 +139,15 @@ public class GameModelController : MonoBehaviour {
       yield return new WaitForEndOfFrame();
     }
 
-    UpdateRigidbodies(value);
+    // UpdateRigidbodies(value);
     cb();
   }
 
-  private void UpdateRigidbodies(bool value) {
-    foreach (var child in model.Fragments) {
-      child.controller.UpdateRigidbody(value);
-    }
-  }
+  // private void UpdateRigidbodies(bool value) {
+  //   foreach (var child in model.Fragments) {
+  //     child.controller.UpdateRigidbody(value);
+  //   }
+  // }
 
   void Update() {
     healthbars?.SetActive(Input.GetKey(KeyCode.LeftAlt));

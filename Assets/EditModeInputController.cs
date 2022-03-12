@@ -52,15 +52,11 @@ public class EditModeInputController : MonoBehaviour {
     }
   }
 
-  public GameObject hovered = null;
+  public FragmentController hovered = null;
   private void UpdateHovered() {
     Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
     RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
-    if (hit.transform != null) {
-      hovered = hit.transform.gameObject;
-      return;
-    }
-    hovered = null;
+    hovered = hit.collider?.GetComponentInParent<FragmentController>();
   }
 
   private FragmentController lastSelected;
@@ -91,6 +87,7 @@ public class EditModeInputController : MonoBehaviour {
     inputState.exit();
     inputState = next;
     inputState.enter();
+    UpdateSelected(inputState.selected);
   }
 
   public void mouseDownOnFragment(FragmentController fc) {
@@ -120,7 +117,7 @@ public abstract class InputState {
     EditModeInputController.instance.Transition(other);
   }
 
-  public GameObject getHovered() => EditModeInputController.instance.hovered;
+  public FragmentController getHovered() => EditModeInputController.instance.hovered;
 }
 
 public class InputStateDefault : InputState {
@@ -156,7 +153,7 @@ internal class InputStateSelected : InputState {
 
   public override void update() {
     if (Input.GetMouseButton(0) && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)) {
-      if (getHovered() == selected.gameObject) {
+      if (getHovered() == selected) {
         // player's trying to drag
         Transition(new InputStateDragged(selected));
         return;
@@ -247,7 +244,7 @@ internal class InputStateWireEdit : InputState {
     if (getHovered() == null) {
       to = null;
     } else {
-      var targetFc = getHovered().GetComponent<FragmentController>();
+      var targetFc = getHovered();
       if (targetFc != null && targetFc.fragment.hasInput) {
         to = targetFc.fragment;
       } else {
