@@ -19,16 +19,6 @@ public class Circuit {
   }
 
   public void RemoveFragment(Fragment f) {
-    // remove outgoing
-    var fWiresCopy = new List<Wire>(f.wires);
-    foreach(var wire in fWiresCopy) {
-      f.disconnect(wire.to);
-    }
-    // remove incoming
-    var fWiresInCopy = new List<Wire>(f.wiresIn);
-    foreach(var wire in fWiresInCopy) {
-      wire.from.disconnect(f);
-    }
     fragments.Remove(f);
     graph.RemoveNodes(f.outt, f.inn);
   }

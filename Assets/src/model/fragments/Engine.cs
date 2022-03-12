@@ -18,6 +18,7 @@ public class Engine : Fragment {
   }
 
   public override void Update(float dt) {
+    base.Update(dt);
     var manaToAdd = dt * manaPerFuel;
     if (Mana + manaToAdd <= manaMax) {
       fuel -= dt;

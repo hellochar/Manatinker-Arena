@@ -46,6 +46,10 @@ public class FragmentController : MonoBehaviour {
 
   // call when owner or edit mode changes
   public void UpdateRigidbody(bool isEditMode) {
+    // never modify creature Rigidbody type
+    if (fragment is Creature) {
+      return;
+    }
     if (fragment.owner == null) {
       rb2d.bodyType = RigidbodyType2D.Dynamic;
       return;

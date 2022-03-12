@@ -23,6 +23,10 @@ public class Creature : Fragment {
     this.startPosition = startPosition;
   }
 
+  public override void Update(float dt) {
+    // do not reparent
+  }
+
   public override void ChangeHP(float diff) {
     throw new System.Exception("Creature itself should not change HP!");
   }
@@ -52,6 +56,7 @@ public class Creature : Fragment {
     // remove all fragments from your ownership
     var children = new List<Fragment>(this.children);
     foreach (var c in children) {
+      // maintain their existing transform
       c.builtinAngle = c.worldRotation;
       c.builtinOffset = c.worldPos;
       c.owner = null;

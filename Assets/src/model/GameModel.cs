@@ -73,6 +73,7 @@ public class GameModel {
     if (f is Enemy e) {
       enemies.Remove(e);
     }
+    f.disconnectAll();
     circuit.RemoveFragment(f);
     OnFragmentRemoved?.Invoke(f);
   }
