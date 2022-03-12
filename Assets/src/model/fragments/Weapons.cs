@@ -33,7 +33,7 @@ public class Pistol : Weapon, IActivatable {
   public override float inFlowRate => 7;
   public override float hpMax => 15;
   public override float manaMax => 30;
-  static Projectile info = new Projectile() { baseSpeed = 10, maxDistance = 100 };
+  static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
 
   public override void Update(float dt) {
     base.Update(dt);
@@ -57,7 +57,7 @@ public class Shotgun : Weapon, IActivatable {
   public override float inFlowRate => 8;
   public override float hpMax => 22;
   public override float manaMax => 32;
-  static Projectile info = new Projectile() { baseSpeed = 15, maxDistance = 50, lifeTime = 1.5f, angleSpread = 45 };
+  static Projectile info = new Projectile() { baseSpeed = 10, lifeTime = 1.5f, angleSpread = 45 };
 
   public bool CanActivateInner() {
     return Mana > 16;
@@ -69,7 +69,7 @@ public class Shotgun : Weapon, IActivatable {
     ChangeMana(-manaUsed);
     for (var i = 0; i < numBullets; i++) {
       Projectile p = info;
-      p.baseSpeed *= UnityEngine.Random.Range(0.8f, 1 / 0.8f);
+      p.baseSpeed *= UnityEngine.Random.Range(0.9f, 1 / 0.9f);
       p.damage = rollDamage();
       OnShootProjectile?.Invoke(p);
     }

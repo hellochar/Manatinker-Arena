@@ -80,7 +80,7 @@ public class GameModel {
     battery.builtinOffset = new Vector2(0.25f, 1.5f);
     engine.connect(battery);
 
-    var gun1 = new Shotgun();
+    var gun1 = new Pistol();
     gun1.owner = player;
     gun1.builtinOffset = new Vector2(1.5f, 0);
     battery.connect(gun1);

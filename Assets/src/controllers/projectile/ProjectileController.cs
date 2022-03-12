@@ -23,12 +23,12 @@ public class ProjectileController : ProjectileControllerBase {
   void Update() {
     var newPos = rb2d.position;
     lastPos = newPos;
-    if (elapsed > projectile.lifeTime) {
+    if (projectile.lifeTime > 0 && elapsed > projectile.lifeTime) {
       Destroy(gameObject);
       return;
     }
     distanceTravelled += (newPos - lastPos).magnitude;
-    if (distanceTravelled > projectile.maxDistance) {
+    if (projectile.maxDistance > 0 && distanceTravelled > projectile.maxDistance) {
       Destroy(gameObject);
     }
   }
