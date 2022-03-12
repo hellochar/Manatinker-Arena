@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[RegisteredFragment]
 public class Engine : Fragment {
   public float fuel;
   public virtual float fuelMax => 500;

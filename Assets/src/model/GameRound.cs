@@ -28,11 +28,12 @@ public class GameRound {
   // scatter random items around
   public static void ScatterItems() {
     var main = GameModel.main;
-    var itemTypes = RegisteredFragmentAttribute.GetAllFragmentTypes();
+    var spawnInfos = RegisteredFragmentAttribute.GetAllFragmentTypes();
     // var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
     var numToScatter = 15;
     for(var i = 0; i < numToScatter; i++) {
-      var typeToScatter = itemTypes[Random.Range(0, itemTypes.Count)];
+      var info = spawnInfos[Random.Range(0, spawnInfos.Count)];
+      var typeToScatter = info.type;
       var noArgConstructor = typeToScatter.GetConstructor(new System.Type[0]);
       var newFragment = (Fragment) noArgConstructor.Invoke(new object[0]);
       newFragment.builtinAngle = Random.Range(0, 360);

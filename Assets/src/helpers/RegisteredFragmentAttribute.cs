@@ -4,21 +4,31 @@ using System.Linq;
 using System.Reflection;
 
 public class RegisteredFragmentAttribute : Attribute {
-  private static List<Type> cachedTypes;
-  public static List<Type> GetAllFragmentTypes() {
+  public RegisteredFragmentAttribute(float spawnWeight = 1) {
+    SpawnWeight = spawnWeight;
+  }
+  public Type type;
+
+  public float SpawnWeight { get; }
+  private static List<RegisteredFragmentAttribute> cachedTypes;
+
+  public static List<RegisteredFragmentAttribute> GetAllFragmentTypes() {
     if (cachedTypes == null) {
       cachedTypes = GetRegisteredTypesImpl().ToList();
-      UnityEngine.Debug.Log(String.Join(", ", cachedTypes.Select(t => t.FullName)));
+      UnityEngine.Debug.Log(String.Join(", ", cachedTypes.Select(t => t.type.FullName)));
     }
     return cachedTypes;
   }
 
-  private static IEnumerable<Type> GetRegisteredTypesImpl() {
+  private static IEnumerable<RegisteredFragmentAttribute> GetRegisteredTypesImpl() {
     Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
     foreach (var assembly in assemblies) {
       foreach (Type type in assembly.GetTypes()) {
-        if (type.GetCustomAttributes(typeof(RegisteredFragmentAttribute), true).Length > 0) {
-          yield return type;
+        var attributes = type.GetCustomAttributes(typeof(RegisteredFragmentAttribute), true);
+        if (attributes.Length > 0) {
+          var regAttribute = attributes[0] as RegisteredFragmentAttribute;
+          regAttribute.type = type;
+          yield return regAttribute;
         }
       }
     }
