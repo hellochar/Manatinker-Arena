@@ -52,7 +52,7 @@ public class FragmentController : MonoBehaviour {
       return;
     }
     if (fragment.owner == null) {
-      rb2d.bodyType = RigidbodyType2D.Dynamic;
+      rb2d.bodyType = RigidbodyType2D.Kinematic;
       return;
     }
 
