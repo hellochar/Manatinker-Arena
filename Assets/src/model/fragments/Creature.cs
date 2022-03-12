@@ -27,7 +27,7 @@ public class Creature : Fragment {
   public float turnRate => totalWeight > 0 ? baseTurnRate / totalWeight : baseTurnRate;
   public float totalWeight;
 
-  public Creature(string name, Vector2 startPosition) : base(name) {
+  public Creature(Vector2 startPosition) {
     this.startPosition = startPosition;
     recomputeTotalWeight();
   }

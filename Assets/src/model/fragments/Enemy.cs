@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class Enemy : Creature {
-  public Enemy(Vector2 start) : base("enemy-fragment", start) {
+  public Enemy(Vector2 start) : base(start) {
   }
   public override float baseTurnRate => 2;
 

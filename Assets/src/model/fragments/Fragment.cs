@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Fragment {
   public Node outt, inn;
-  public string name;
+  public string name => DisplayName;
   [SerializeField]
   [ReadOnly]
   private float mana;
@@ -75,11 +75,7 @@ public class Fragment {
 
   public string DisplayName => GetType().Name;
 
-  public Fragment() : this("") {
-  }
-
-  public Fragment(string name) {
-    this.name = name;
+  public Fragment() {
     outt = new Node("out" + name);
     inn = new Node("in" + name);
     hp = hpMax;

@@ -15,7 +15,7 @@ public class Engine : Fragment {
   public override float inFlowRate => 0;
   public override bool hasInput => false;
 
-  public Engine() : base("engine") {
+  public Engine() {
     this.fuel = fuelMax;
   }
 
