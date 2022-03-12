@@ -15,19 +15,17 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     timeSpawned = Time.time;
   }
 
-  public void ProcessHit(Collider2D col) {
-    if (col.gameObject.name == "Clickthrough") {
-      // ignore
-      return;
-    }
+  public bool ProcessHit(Collider2D col) {
     if (col.gameObject.CompareTag("Projectile")) {
-      return;
+      return false;
     }
     // Debug.Log("projectile: trigger enter " + col.gameObject);
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
     // we've hit a fragment, process it
     if (hitFC) {
       hitFC.fragment.Hit(projectile);
+      return true;
     }
+    return false;
   }
 }

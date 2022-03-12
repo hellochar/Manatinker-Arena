@@ -37,7 +37,8 @@ public class ProjectileController : ProjectileControllerBase {
   // void OnCollisionEnter2D(Collision2D col) { }
 
   void OnTriggerEnter2D(Collider2D col) {
-    ProcessHit(col);
-    Destroy(gameObject);
+    if (ProcessHit(col)) {
+      Destroy(gameObject);
+    }
   }
 }
