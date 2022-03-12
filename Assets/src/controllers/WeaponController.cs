@@ -18,7 +18,11 @@ public class WeaponController : MonoBehaviour {
   }
 
   void HandleShootProjectile(Projectile p) {
-    var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<ProjectileController>();
+    var rotation = spawnPoint.rotation;
+    if (p.angleSpread != 0) {
+      rotation = rotation * Quaternion.Euler(0, 0, Random.Range(-p.angleSpread / 2, p.angleSpread / 2));
+    }
+    var projectile = Instantiate(projectilePrefab, spawnPoint.position, rotation).GetComponent<ProjectileController>();
     projectile.Init(p);
   }
 }

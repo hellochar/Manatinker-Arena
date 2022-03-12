@@ -2039,6 +2039,9 @@ MonoBehaviour:
   - className: Buckler
     prefab: {fileID: 2908724252148680555, guid: 52a186591a9313e4c8ce472d6803750e,
       type: 3}
+  - className: Shotgun
+    prefab: {fileID: 7017095106686296936, guid: c099d5c2c252cb148ad99060ed399d45,
+      type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
 Transform:

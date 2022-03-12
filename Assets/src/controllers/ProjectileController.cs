@@ -12,8 +12,14 @@ public class ProjectileController : MonoBehaviour {
   [ReadOnly]
   float distanceTravelled = 0;
 
+  [SerializeField]
+  [ReadOnly]
+  float timeSpawned = 0;
+  float elapsed => Time.time - timeSpawned;
+
   public void Init(Projectile p) {
     this.projectile = p;
+    timeSpawned = Time.time;
   }
 
   Vector2 lastPos;
@@ -29,8 +35,12 @@ public class ProjectileController : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     var newPos = rb2d.position;
-    distanceTravelled += (newPos - lastPos).magnitude;
     lastPos = newPos;
+    if (elapsed > projectile.lifeTime) {
+      Destroy(gameObject);
+      return;
+    }
+    distanceTravelled += (newPos - lastPos).magnitude;
     if (distanceTravelled > projectile.maxDistance) {
       Destroy(gameObject);
     }
