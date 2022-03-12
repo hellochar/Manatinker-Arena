@@ -25,7 +25,7 @@ public class GameModel {
   public Action<Fragment> OnFragmentAdded;
   public Action<Wire> OnWireAdded;
   public Action<Wire> OnWireRemoved;
-  internal List<Enemy> enemies;
+  internal List<Enemy> enemies = new List<Enemy>();
 
   public IEnumerable<Fragment> Fragments => circuit.Fragments;
 
