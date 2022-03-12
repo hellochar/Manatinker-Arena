@@ -112,13 +112,16 @@ public class GameModelController : MonoBehaviour {
     if (hasActiveAnimation || GameModel.main.player.isDead) {
       return;
     }
+    foreach (var o in editModeObjects) {
+      o.SetActive(value);
+    }
     Action cb = () => {
-      foreach (var o in editModeObjects) {
-        o.SetActive(value);
-      }
       activeAnimation = null;
       callback?.Invoke();
     };
+    var rect = Camera.main.rect;
+    rect.x = value ? 0.2f : 0;
+    Camera.main.rect = rect;
     if (value) {
       activeAnimation = StartCoroutine(ResetRotationThenUpdateRigidbodies(value, cb));
     } else {

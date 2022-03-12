@@ -12,7 +12,7 @@ public class RoundUIController : MonoBehaviour {
 
   void Update() {
     var round = GameModel.main.currentRound;
-    // nextRoundButton.gameObject.SetActive(round.state == GameRoundState.Preparing && !GameModelController.main.isEditMode);
+    nextRoundButton.gameObject.SetActive(round.state == GameRoundState.Preparing && !GameModelController.main.isEditMode);
     if (round.state == GameRoundState.Active) {
       TimeSpan span = TimeSpan.FromSeconds(round.elapsed);
       activeText.text = span.ToString(@"mm\:ss");
