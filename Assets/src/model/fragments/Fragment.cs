@@ -25,6 +25,42 @@ public class Fragment {
   public bool isDead => hp <= 0;
   public bool isBroken = false;
 
+  public string GetInfo() {
+    List<String> lines = new List<string>();
+    lines.Add($"HP			{hp.ToString("N0")}/{hpMax}");
+    lines.Add($"Weight 		{weight} kg");
+
+    lines.Add("");
+
+    if (manaMax > 0) {
+      lines.Add($"Mana			{mana.ToString("N0")}/{manaMax}");
+    }
+    if (hasInput) {
+      lines.Add($"Inflow 		{inFlowRate.ToString("00.#")} mana/sec");
+    }
+    if (hasOutput) {
+      lines.Add($"Outflow 		{outFlowRate.ToString("00.#")} mana/sec");
+    }
+
+    if (lines[lines.Count - 1] != "") {
+      lines.Add("");
+    }
+
+    PopulateInfoStrings(lines);
+
+    if (lines[lines.Count - 1] != "") {
+      lines.Add("");
+    }
+
+    lines.Add(Description);
+
+    var info = String.Join("\n", lines).Trim();
+    return info;
+  }
+
+  protected virtual void PopulateInfoStrings(List<string> lines) {}
+  public virtual string Description => "";
+
   // e.g. the player
   public Creature _owner;
   public Creature owner {
