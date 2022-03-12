@@ -16,16 +16,7 @@ public abstract class Weapon : Fragment, IActivatable {
   }
 }
 
-public interface IActivatable {
-  bool CanActivateInner();
-  void Activate();
-}
-public static class ActivatableExtensions {
-  public static bool CanActivate(this IActivatable a) {
-    return a.CanActivateInner() && !GameModel.main.isEditMode;
-  }
-}
-
+[RegisteredFragment]
 public class Pistol : Weapon {
   public override (int, int) damageSpread => (8, 12);
   public override float outFlowRate => 0;

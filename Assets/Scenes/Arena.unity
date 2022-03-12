@@ -1773,6 +1773,9 @@ MonoBehaviour:
   - className: Battery
     prefab: {fileID: 2800328936572384588, guid: 4ebf25ba37b5e3f4788ebdb8a87563f0,
       type: 3}
+  - className: Buckler
+    prefab: {fileID: 2908724252148680555, guid: 52a186591a9313e4c8ce472d6803750e,
+      type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
 Transform:

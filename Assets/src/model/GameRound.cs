@@ -28,9 +28,13 @@ public class GameRound {
   // scatter random items around
   public static void ScatterItems() {
     var main = GameModel.main;
-    var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
-    for(var i = 0; i < fragments.Count; i++) {
-      var newFragment = fragments[i];
+    var itemTypes = RegisteredFragmentAttribute.GetAllFragmentTypes();
+    // var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
+    var numToScatter = 15;
+    for(var i = 0; i < numToScatter; i++) {
+      var typeToScatter = itemTypes[Random.Range(0, itemTypes.Count)];
+      var noArgConstructor = typeToScatter.GetConstructor(new System.Type[0]);
+      var newFragment = (Fragment) noArgConstructor.Invoke(new object[0]);
       newFragment.builtinAngle = Random.Range(0, 360);
       var pos = new Vector2(Random.Range(2, main.floor.width - 2), Random.Range(2, main.floor.height - 2));
       newFragment.builtinOffset = pos;

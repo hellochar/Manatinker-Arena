@@ -1,3 +1,4 @@
+[RegisteredFragment]
 public class Battery : Fragment {
   public override float hpMax => 40;
   public override float outFlowRate => 10;

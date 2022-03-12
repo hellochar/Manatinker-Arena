@@ -14,15 +14,8 @@ public class GameModel {
   public bool isEditMode {
     get => _isEditMode;
     set {
-      if (value) {
-        // immediately set editmode to true
-        _isEditMode = true;
-      }
-      var isFalse = value == false;
       GameModelController.main.UpdateIsEditMode(value, () => {
-        if (isFalse) {
-          _isEditMode = false;
-        }
+        _isEditMode = value;
       });
     }
   }
