@@ -92,7 +92,10 @@ public class GameRound {
       for(int i = 0; i < spawnsPerTime; i++) {
         var numWeapons = Random.Range(1, roundNumber + 1);
         var numShields = roundNumber - numWeapons;
-        spawnEnemy(numWeapons, numShields);
+
+        var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
+        var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
+        spawnEnemy(numWeapons, numShields, pos);
       }
     }
     if ((dt + elapsed) > duration) {
@@ -112,12 +115,11 @@ public class GameRound {
     PlaceItems(3, 3);
   }
 
-  public void spawnEnemy(int numWeapons, int numShields) {
+  public void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
     var main = GameModel.main;
     var floor = main.floor;
-    var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
     var enemy = new Enemy(pos);
-    enemy.builtinAngle = Random.Range(0, 360f);
+    enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
     var engine = new Engine();
