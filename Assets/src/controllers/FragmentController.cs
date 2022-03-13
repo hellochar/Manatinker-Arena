@@ -23,7 +23,8 @@ public class FragmentController : MonoBehaviour {
 
   private static int globalId = 0;
   public readonly int id = globalId++;
-  public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
+  // public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
+  public static readonly Color unactivatedColor = Color.white;
 
   void Awake() {
     if (healthbarPrefab == null) {
@@ -138,6 +139,9 @@ public class FragmentController : MonoBehaviour {
       manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (spriteRenderer != null) {
+      var flowActivity = Mathf.Max(fragment.incomingTotal, fragment.outgoingTotal) / Time.deltaTime;
+      var maxFlowActivity = Mathf.Max(fragment.inFlowRate, fragment.outFlowRate);
+      spriteRenderer.material.SetFloat("_Percentage", flowActivity / maxFlowActivity);
       spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (input != null) {

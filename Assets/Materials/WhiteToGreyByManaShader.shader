@@ -1,9 +1,9 @@
-Shader "Unlit/ManaCoverShader"
+Shader "Unlit/WhiteToGreyByMana"
 {
     Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        [PerRendererData] _Percentage ("DrawPercent", Float) = 1.0
+        [PerRendererData] _Percentage ("ManaPercent", Float) = 0.5
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 	}
@@ -80,17 +80,16 @@ Shader "Unlit/ManaCoverShader"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 alpha = SampleSpriteTexture (IN.texcoord).a;
-                fixed4 c = IN.color;
-                c.rgb *= alpha;
-                c.a = alpha;
-
-                float pctScalar = IN.texcoord.x < _Percentage;
-                c.rgb *= pctScalar;
-                return c;
-				// c.rgb *= c.a;
-
-				// return c;
+				fixed4 texColor = SampleSpriteTexture (IN.texcoord);
+				if (length(texColor.rgb - fixed3(1, 1, 1)) < 1) {
+					texColor.rgb = lerp(fixed3(0, 0, 0), texColor.rgb, _Percentage);
+					texColor.rgb *= texColor.a;
+					return texColor;
+				} else {
+					texColor.rgb *= texColor.a;
+					texColor *= _Color;
+					return texColor;
+				}
 			}
 		ENDCG
 		}
