@@ -1,17 +1,15 @@
-using System;
-using System.Linq;
-using UnityEngine;
 
-[RegisteredFragment]
-public class Engine : Fragment {
-  public override float hpMax => 20;
-  public override float outFlowRate => 3;
-  public override float weight => 1;
+using System.Linq;
+
+// embodiment of the creature
+public class Avatar : Fragment {
+  public override float hpMax => 100;
+  public override float outFlowRate => 10;
+  public override float weight => 0;
   public override float manaMax => 0;
   public override float inFlowRate => 0;
   public override bool hasInput => false;
 
-  // not bounded by mana
   public override void assignNodeFlows(float dt) {
     // base.assignNodeFlows(dt);
     outt.flow = outFlowRate * dt;

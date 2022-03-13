@@ -12,10 +12,6 @@ public class UpdateCriticalInfoText : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     var player = GameModel.main.player;
-    var engine = player.Children.Find(f => f is Engine);
-
-    var engineHP = engine.Hp;
-    var engineHPMax = engine.hpMax;
     var speed = player.speed;
     var speedBase = player.baseSpeed;
     var totalWeight = player.totalWeight;

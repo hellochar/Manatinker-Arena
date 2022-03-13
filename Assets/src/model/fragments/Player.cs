@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : Creature {
   public float influenceRadius = 2;
+
   public override float encumbranceThreshold => 2;
   public override float baseSpeed => 10;
 
@@ -14,4 +15,9 @@ public class Player : Creature {
     base.Die();
     GameModelController.main.PlayerDied();
   }
+}
+
+public class PlayerAvatar : Avatar {
+  public override string DisplayName => "Player";
+  public override string Description => "Create wires to other Fragments to power them up!\n\nProtect yourself at all costs.\n\nYour Fragments only take 25% damage.";
 }

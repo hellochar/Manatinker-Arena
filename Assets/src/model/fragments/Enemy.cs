@@ -47,3 +47,14 @@ public class Enemy : Creature {
     }
   }
 }
+
+public class EnemyAvatar : Avatar {
+  public override float hpMax => _hpMax;
+  public float _hpMax;
+  public override string DisplayName => "Enemy";
+
+  public EnemyAvatar(float hpMax = 25) {
+    _hpMax = hpMax;
+    hp = hpMax;
+  }
+}

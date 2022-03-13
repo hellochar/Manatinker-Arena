@@ -135,7 +135,7 @@ public class GameModelController : MonoBehaviour {
     rb2d.SetRotation(0);
 
     yield return new WaitForSeconds(0.25f);
-
+    
     // let physics catch up
     while (rb2d.rotation != 0) {
       yield return new WaitForEndOfFrame();

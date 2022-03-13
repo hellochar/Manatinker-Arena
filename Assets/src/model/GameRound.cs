@@ -122,9 +122,9 @@ public class GameRound {
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
-    var engine = new Engine();
-    engine.owner = enemy;
-    main.AddFragment(engine);
+    var avatar = new EnemyAvatar();
+    avatar.owner = enemy;
+    main.AddFragment(avatar);
 
     for(var i = 0; i < numShields; i++) {
       var shield = randomShield();
@@ -141,7 +141,7 @@ public class GameRound {
       var y = (i - numWeapons / 2f) * 0.5f;
       // put weapons outside shield
       weapon.builtinOffset = new Vector2(2, y);
-      engine.connect(weapon);
+      avatar.connect(weapon);
       main.AddFragment(weapon);
     }
   }

@@ -78,10 +78,10 @@ public class GameModel {
 
     var player = new Player(new Vector2(2, main.floor.height / 2));
 
-    var engine = new Engine();
-    engine.owner = player;
+    var avatar = new PlayerAvatar();
+    avatar.owner = player;
 
-    main.AddFragment(player, engine);//, pistol2, pistol3);
+    main.AddFragment(player, avatar);//, pistol2, pistol3);
 
   }
 

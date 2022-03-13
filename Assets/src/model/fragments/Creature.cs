@@ -28,6 +28,7 @@ public class Creature : Fragment {
   public float speed => scaleByEncumbrance(baseSpeed);
   public float turnRate => scaleByEncumbrance(baseTurnRate);
   public float totalWeight;
+  public Avatar avatar;
 
   public event Action<Fragment> OnGetFragment;
   public event Action<Fragment> OnLoseFragment;
@@ -51,6 +52,12 @@ public class Creature : Fragment {
   }
 
   public void AddChild(Fragment c) {
+    if (c is Avatar a) {
+      if (avatar != null) {
+        Debug.LogError("two avatars");
+      }
+      this.avatar = a;
+    }
     children.Add(c);
     OnGetFragment?.Invoke(c);
   }
@@ -108,7 +115,7 @@ public class Creature : Fragment {
     // accounting for it on our end 
     RemoveChild(fragment);
     // oof
-    if (!children.Any(c => c is Engine)) {
+    if (fragment == avatar) {
       hp = 0;
       Die();
     }

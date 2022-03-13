@@ -2208,6 +2208,12 @@ MonoBehaviour:
   - className: TowerShield
     prefab: {fileID: 2908724252148680555, guid: a724fec13c1f00a4396f7064de6dd863,
       type: 3}
+  - className: PlayerAvatar
+    prefab: {fileID: 6470644292675284001, guid: acc3c16d49c4f054b8b0fb313ba92b47,
+      type: 3}
+  - className: EnemyAvatar
+    prefab: {fileID: 6470644292675284001, guid: 0b2ddb7d6c48b52468c85b965b7de656,
+      type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
 Transform:

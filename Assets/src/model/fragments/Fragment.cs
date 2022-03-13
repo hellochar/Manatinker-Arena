@@ -108,7 +108,7 @@ public class Fragment {
   public Vector2 worldPos => controller.transform.position.xy();
   public float worldRotation => controller.transform.eulerAngles.z;
 
-  public string DisplayName => GetType().Name;
+  public virtual string DisplayName => GetType().Name;
 
   public Fragment() {
     outt = new Node("out" + name);

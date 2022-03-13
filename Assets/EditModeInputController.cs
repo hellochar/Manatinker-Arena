@@ -134,7 +134,7 @@ public class InputStateDefault : InputState {
 
 internal class InputStateSelected : InputState {
   private FragmentController _selected;
-  private bool isDraggable => !(selected.fragment is Engine);
+  private bool isDraggable => !(selected.fragment is Avatar);
 
   public override FragmentController selected => _selected;
   bool isNeutral => selected.fragment.owner == null;
@@ -304,6 +304,7 @@ internal class InputStateDragged : InputState {
       f.builtinOffset -= player.worldPos;
       f.builtinAngle -= player.worldRotation;
       f.owner = player;
+      player.avatar.connect(f);
     }
   }
 
