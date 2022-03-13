@@ -20,7 +20,7 @@ public class QuickInfoController : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
-    if (!fragment.isPlayerOwned) {
+    if (!fragment.isPlayerOwned || fragment.isDead) {
       Destroy(gameObject);
     } else {
       string extraText = "";
