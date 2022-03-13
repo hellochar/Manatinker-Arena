@@ -18,13 +18,13 @@ public class RoundUIController : MonoBehaviour {
   void Update() {
     var round = GameModel.main.currentRound;
     nextRoundButton.gameObject.SetActive(round.state == GameRoundState.Preparing && !GameModelController.main.isEditMode);
-    nextRoundButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Start Round " + (round.roundNumber + 1);
+    nextRoundButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Start Round " + (round.roundNumber + 1) + " / 10";
     if (round.state == GameRoundState.Active) {
       TimeSpan span = TimeSpan.FromSeconds(round.remaining);
-      activeText.text = span.ToString(@"mm\:ss") + " remaining";
+      activeText.text = $"Round {round.roundNumber} - {span.ToString(@"mm\:ss")} remaining";
       activeBar.fillAmount = round.remaining / round.duration;
     } else if (round.state == GameRoundState.WaitingForClear) {
-      activeText.text = $"{GameModel.main.enemies.Count} enemies left!";
+      activeText.text = $"Round {round.roundNumber} - {GameModel.main.enemies.Count} enemies left!";
     } else {
       activeBar.fillAmount = 0;
       activeText.text = "";
