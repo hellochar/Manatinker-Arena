@@ -3,29 +3,27 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthbarController : MonoBehaviour {
-  private FragmentController fC;
-  private Fragment fragment => fC.fragment;
+  private Fragment fragment => qfc.fragment;
   public Image hpFilled;
-  private RectTransform rt;
-
-  public void Init(FragmentController fragmentController) {
-    this.fC = fragmentController;
-  }
+  public TMPro.TMP_Text text;
+  public bool bIsMana = false;
+  private QuickInfoController qfc;
 
   void Start() {
-    rt = GetComponent<RectTransform>();
+    qfc = GetComponentInParent<QuickInfoController>();
     Update();
+    if (bIsMana && fragment.manaMax == 0) {
+      gameObject.SetActive(false);
+    }
   }
 
   void Update() {
-    // set position to above the fragment
-    var spriteSize = fC.gameObject.transform.Find("Sprite").localScale;
-    var worldOffset = new Vector2(0, spriteSize.y + 0.1f);
-    var screenPoint = Camera.main.WorldToScreenPoint(fC.gameObject.transform.position + worldOffset.z());
-
-    var scale = spriteSize;
-    rt.anchoredPosition = screenPoint.xy();
-    rt.localScale = scale;
-    hpFilled.fillAmount = fragment.Hp / fragment.hpMax;
+    if (bIsMana) {
+      text.text = $"{fragment.Mana.ToString("0.#")}/{fragment.manaMax}";
+      hpFilled.fillAmount = fragment.Mana / fragment.manaMax;
+    } else {
+      text.text = $"{fragment.Hp.ToString("0.#")}/{fragment.hpMax}";
+      hpFilled.fillAmount = fragment.Hp / fragment.hpMax;
+    }
   }
 }

@@ -34,12 +34,13 @@ public class Enemy : Creature {
 
     // if close enough, fire at player
     if (Mathf.Abs(Mathf.DeltaAngle(worldRotation, desiredAngle)) < 15 && distanceOffset < 8) {
-      foreach(var f in children) {
-        if (f is Pistol p) {
+      foreach(var f in Children) {
+        // fire weapons
+        if (f is Weapon w && f is IActivatable p) {
           if (p.CanActivate()) {
             p.Activate();
             // wait for 2 seconds after firing
-            cooldown += 2f;
+            cooldown = 2f;
           }
         }
       }

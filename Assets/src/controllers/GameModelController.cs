@@ -9,7 +9,6 @@ public class GameModelController : MonoBehaviour {
   public GameModel model => GameModel.main;
 
   public Transform wireContainer;
-  public GameObject healthbars;
   public GameObject floorPrefab;
   public GameObject wirePrefab;
   public GameObject deathUI;
@@ -153,7 +152,6 @@ public class GameModelController : MonoBehaviour {
   // }
 
   void Update() {
-    healthbars?.SetActive(Input.GetKey(KeyCode.LeftAlt));
     GameModel.main.simulate(Time.deltaTime);
   }
 

@@ -84,6 +84,8 @@ Shader "Unlit/ManaCoverShader"
                 fixed4 c = IN.color;
                 c.rgb *= alpha;
                 c.a = alpha;
+				// HES
+				c *= 2;
 
                 float pctScalar = IN.texcoord.x < _Percentage;
                 c.rgb *= pctScalar;

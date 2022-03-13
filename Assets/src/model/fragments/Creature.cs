@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,13 +20,17 @@ public class Creature : Fragment {
       return _rb2d;
     }
   }
-  public List<Fragment> children = new List<Fragment>();
+  private List<Fragment> children = new List<Fragment>();
+  public List<Fragment> Children => children;
   public virtual float baseSpeed => 10;
   public virtual float baseTurnRate => 10f;
   public virtual float encumbranceThreshold => 10;
   public float speed => scaleByEncumbrance(baseSpeed);
   public float turnRate => scaleByEncumbrance(baseTurnRate);
   public float totalWeight;
+
+  public event Action<Fragment> OnGetFragment;
+  public event Action<Fragment> OnLoseFragment;
 
   float scaleByEncumbrance(float v) {
     if (totalWeight < encumbranceThreshold) {
@@ -43,6 +48,15 @@ public class Creature : Fragment {
   public override void Update(float dt) {
     recomputeTotalMass();
     // do not reparent
+  }
+
+  public void AddChild(Fragment c) {
+    children.Add(c);
+    OnGetFragment?.Invoke(c);
+  }
+  public void RemoveChild(Fragment c) {
+    children.Remove(c);
+    OnLoseFragment?.Invoke(c);
   }
 
   void recomputeTotalMass() {
@@ -92,7 +106,7 @@ public class Creature : Fragment {
   internal void FragmentDied(Fragment fragment) {
     // hack - don't unset fragment's owner since that will trigger the FragmentController to update. Just stop
     // accounting for it on our end 
-    children.Remove(fragment);
+    RemoveChild(fragment);
     // oof
     if (!children.Any(c => c is Engine)) {
       hp = 0;

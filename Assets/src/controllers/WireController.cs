@@ -39,7 +39,7 @@ public class WireController : MonoBehaviour {
     splineContainer.Spline[1] = knot1;
 
     float flowRate = wire.lastFlow / Time.deltaTime;
-    float lerpAmount = flowRate / 2;
+    float lerpAmount = wire.to == null ? 1 : flowRate * FragmentController.HES;
 
     var targetColor = Color.Lerp(Color.black, Color.white, lerpAmount);
     lineRenderer.endColor = lineRenderer.startColor = Color.Lerp(lineRenderer.endColor, targetColor, 0.05f);

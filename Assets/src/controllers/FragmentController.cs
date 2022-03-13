@@ -6,31 +6,22 @@ using UnityEngine;
 public class FragmentController : MonoBehaviour {
   [NonSerialized]
   public Fragment fragment;
-  [ReadOnly]
   public SpriteRenderer spriteRenderer;
   public SpriteRenderer manaCover;
   public SpriteMask mask;
   public GameObject input;
   public GameObject output;
 
+  public static float HES = 2;
+
   public Vector2 worldSize() {
     return spriteRenderer.bounds.size.xy();
   }
 
-  public static GameObject healthbarPrefab;
-  [ReadOnly]
-  public GameObject healthbar;
-
   private static int globalId = 0;
   public readonly int id = globalId++;
-  // public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
-  public static readonly Color unactivatedColor = Color.white;
-
-  void Awake() {
-    if (healthbarPrefab == null) {
-      healthbarPrefab = Resources.Load<GameObject>("Healthbar");
-    }
-  }
+  public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
+  // public static readonly Color unactivatedColor = Color.white;
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -98,9 +89,13 @@ public class FragmentController : MonoBehaviour {
     Init(fragment);
   }
 
+  private SpriteRenderer inputSR;
+  private SpriteRenderer outputSR;
   void Start() {
-    spriteRenderer = transform.Find("Sprite")?.GetComponent<SpriteRenderer>();
-    if (spriteRenderer) {
+    if (spriteRenderer == null) {
+      spriteRenderer = transform.Find("Sprite")?.GetComponent<SpriteRenderer>();
+    }
+    if (spriteRenderer != null) {
       spriteRenderer.GetComponent<SpriteMask>().sprite = spriteRenderer.sprite;
     }
     if (manaCover != null) {
@@ -109,17 +104,15 @@ public class FragmentController : MonoBehaviour {
     if (output == null) {
       output = transform.Find("Output")?.gameObject;
     }
-    if (!(fragment is Creature)) {
-      healthbar = Instantiate(healthbarPrefab, Vector3.zero, Quaternion.identity, GameModelController.main.healthbars.transform);
-      healthbar.GetComponent<HealthbarController>()?.Init(this);
-    }
     mask.frontSortingOrder = id - 32766;
     mask.backSortingOrder = mask.frontSortingOrder - 1;
 
     if (input != null) {
+      inputSR = input.GetComponent<SpriteRenderer>();
       input.SetActive(fragment.hasInput);
     }
     if (output != null) {
+      outputSR = output.GetComponent<SpriteRenderer>();
       output.SetActive(fragment.hasOutput);
     }
   }
@@ -134,6 +127,8 @@ public class FragmentController : MonoBehaviour {
   }
 
   float currentFlowPercent;
+  float currentInputPercent;
+  float currentOutputPercent;
   public virtual void Update() {
     if (manaCover != null) {
       manaCover.enabled = fragment.owner != null;
@@ -143,18 +138,26 @@ public class FragmentController : MonoBehaviour {
       }
     }
     if (spriteRenderer != null) {
-      var flowActivity = Mathf.Max(fragment.incomingTotal, fragment.outgoingTotal) / Time.deltaTime;
-      var maxFlowActivity = Mathf.Max(fragment.inFlowRate, fragment.outFlowRate);
-      var flowPercent = flowActivity / maxFlowActivity;
+      var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
       currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
-      spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent);
+      spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent * HES);
       spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (input != null) {
-      input.GetComponent<SpriteRenderer>().color = fragment.owner == null ? unactivatedColor : Color.white;
+      if (fragment.owner == null) {
+        inputSR.color = unactivatedColor;
+      } else {
+        currentInputPercent = Mathf.Lerp(currentInputPercent, (float)fragment.inputPercent * HES, 0.05f);
+        inputSR.color = Color.Lerp(Color.black, Color.white, currentInputPercent);
+      }
     }
     if (output != null) {
-      output.GetComponent<SpriteRenderer>().color = fragment.owner == null ? unactivatedColor : Color.white;
+      if (fragment.owner == null) {
+        outputSR.color = unactivatedColor;
+      } else {
+        currentOutputPercent = Mathf.Lerp(currentOutputPercent, (float)fragment.outputPercent * HES, 0.05f);
+        outputSR.color = Color.Lerp(Color.black, Color.white, currentOutputPercent);
+      }
     }
     // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
@@ -162,11 +165,5 @@ public class FragmentController : MonoBehaviour {
   internal void Removed() {
     Destroy(gameObject);
     fragment.controller = null;
-  }
-
-  void OnDestroy() {
-    if (healthbar) {
-      Destroy(healthbar);
-    }
   }
 }

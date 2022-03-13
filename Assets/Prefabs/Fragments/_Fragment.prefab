@@ -641,9 +641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed346dad0e6674408fb87f37e8d9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 929435363090133365}
   manaCover: {fileID: 5325409710869402135}
   mask: {fileID: 5285943924398833447}
   input: {fileID: 2145200279502194030}
   output: {fileID: 3573726924322902615}
-  healthbar: {fileID: 0}

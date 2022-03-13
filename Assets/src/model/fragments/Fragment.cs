@@ -67,12 +67,12 @@ public class Fragment {
     get => _owner;
     set {
       if (_owner != null) {
-        _owner.children.Remove(this);
+        _owner.RemoveChild(this);
       }
       // TODO update dynamically changing owners on GameObject side, with builtin angle and builtin rotation
       _owner = value;
       if (_owner != null) {
-        _owner.children.Add(this);
+        _owner.AddChild(this);
       }
       if (loseManaOnOwnerChange) {
         // when we owners, reset mana to 0
@@ -226,6 +226,9 @@ public class Fragment {
   public float distance(Fragment c) {
     return Vector2.Distance(worldPos, c.worldPos);
   }
+
+  public float outputPercent => outFlowRate == 0 ? 0 : (outgoingTotal / Time.deltaTime) / outFlowRate;
+  public float inputPercent => inFlowRate == 0 ? 0 : (incomingTotal / Time.deltaTime) / inFlowRate;
 }
 
 public class Wire {
