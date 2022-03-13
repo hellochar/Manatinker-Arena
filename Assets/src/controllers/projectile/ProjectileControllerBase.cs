@@ -19,7 +19,7 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     timeSpawned = Time.time;
   }
 
-  public bool ProcessHit(Collider2D col) {
+  public bool ProcessHit(Collider2D col, Vector2 pos) {
     if (col.gameObject.CompareTag("Projectile")) {
       return false;
     }
@@ -27,7 +27,7 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
     // we've hit a fragment, process it
     if (hitFC) {
-      hitFC.fragment.Hit(projectile);
+      hitFC.fragment.Hit(projectile, pos);
       return true;
     }
     var hitWall = col.gameObject.CompareTag("Wall");

@@ -167,4 +167,8 @@ public class FragmentController : MonoBehaviour {
     Destroy(gameObject);
     fragment.controller = null;
   }
+
+  internal void OnHit(Projectile p, Vector2 position) {
+    Instantiate(VFX.Get("damageTick"), position, Quaternion.identity);
+  }
 }

@@ -218,7 +218,8 @@ public class Fragment {
 		return $"{base.ToString()}[{name} {netManaDiff.ToString("+#0.000;-#0.000")} {lastMana.ToString("F3")} -->{incomingTotal.ToString("F3")}({inn.flow}) {outgoingTotal.ToString("F3")}({outt.flow})--> {mana.ToString("F3")} (max {manaMax})]";
 	}
 
-  public void Hit(Projectile p) {
+  public void Hit(Projectile p, Vector2 position) {
+    controller.OnHit(p, position);
     // take damage
     ChangeHP(-p.damage);
   }
