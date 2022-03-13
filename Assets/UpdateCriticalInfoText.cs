@@ -13,7 +13,6 @@ public class UpdateCriticalInfoText : MonoBehaviour {
   void Update() {
     var player = GameModel.main.player;
     var speed = player.speed;
-    var speedBase = player.baseSpeed;
     var totalWeight = player.totalWeight;
     var encumbrance = player.encumbranceThreshold;
 
@@ -22,7 +21,7 @@ public class UpdateCriticalInfoText : MonoBehaviour {
 
     var overweightText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% overweight)" : "";
 
-    var speedPercent = speed / 15;
+    var speedPercent = speed / player.baseSpeed;
 
     text.text = $@"
 Weight: {totalWeight}kg / {encumbrance}kg {overweightText}

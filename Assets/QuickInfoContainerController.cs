@@ -17,7 +17,7 @@ public class QuickInfoContainerController : MonoBehaviour {
   void Update() {
     var rt = transform.parent.GetComponent<RectTransform>();
     if (GameModelController.main.isEditMode) {
-      rt.anchoredPosition = new Vector2(300, -64);
+      rt.anchoredPosition = new Vector2(288, 0);
     } else {
       rt.anchoredPosition = new Vector2(0, 0);
     }

@@ -14,8 +14,8 @@ public class RoundUIController : MonoBehaviour {
     var round = GameModel.main.currentRound;
     nextRoundButton.gameObject.SetActive(round.state == GameRoundState.Preparing && !GameModelController.main.isEditMode);
     if (round.state == GameRoundState.Active) {
-      TimeSpan span = TimeSpan.FromSeconds(round.elapsed);
-      activeText.text = span.ToString(@"mm\:ss");
+      TimeSpan span = TimeSpan.FromSeconds(round.remaining);
+      activeText.text = span.ToString(@"mm\:ss") + " remaining";
       activeBar.fillAmount = round.remaining / round.duration;
     } else if (round.state == GameRoundState.WaitingForClear) {
       activeText.text = $"{GameModel.main.enemies} enemies left!";
