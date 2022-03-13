@@ -9,10 +9,16 @@ public class RoundUIController : MonoBehaviour {
   public GameObject nextRoundButton;
   public Image activeBar;
   public TMPro.TMP_Text activeText;
+  internal static RoundUIController main;
+
+  void Awake() {
+    main = this;
+  }
 
   void Update() {
     var round = GameModel.main.currentRound;
     nextRoundButton.gameObject.SetActive(round.state == GameRoundState.Preparing && !GameModelController.main.isEditMode);
+    nextRoundButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Start Round " + (round.roundNumber + 1);
     if (round.state == GameRoundState.Active) {
       TimeSpan span = TimeSpan.FromSeconds(round.remaining);
       activeText.text = span.ToString(@"mm\:ss") + " remaining";
@@ -26,7 +32,13 @@ public class RoundUIController : MonoBehaviour {
   }
 
   public void GoNextRound() {
-    Instantiate(roundMarkerPrefab, transform);
     GameModel.main.GoNextRound();
+    var roundMarker = Instantiate(roundMarkerPrefab, transform);
+    roundMarker.GetComponentInChildren<TMPro.TMP_Text>().text = "Round " + GameModel.main.currentRound.roundNumber;
+  }
+
+  internal void RoundFinished() {
+    var roundMarker = Instantiate(roundMarkerPrefab, transform);
+    roundMarker.GetComponentInChildren<TMPro.TMP_Text>().text = "Round " + GameModel.main.currentRound.roundNumber + " complete!";
   }
 }

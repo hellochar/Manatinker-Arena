@@ -120,7 +120,7 @@ public class Fragment {
   }
 
   public void connect(Fragment other) {
-    if (isConnected(other)) {
+    if (isConnected(other) || !this.hasOutput || !other.hasInput) {
       return;
     }
     var edge = outt.connectInn(other.inn);

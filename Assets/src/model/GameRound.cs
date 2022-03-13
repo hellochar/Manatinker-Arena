@@ -14,13 +14,13 @@ public class GameRound {
   public float remaining => duration - elapsed;
   float timeStarted;
 
-  public float timeUntilNextSpawn = 3;
+  public float timeUntilNextSpawn = 1.5f;
   public float timeBetweenSpawns = 15;
   public readonly float duration;
   private readonly int spawnsPerTime;
   public int roundNumber;
 
-  public GameRound(int roundNumber, float duration = 60, float timeBetweenSpawns = 15, int spawnsPerTime = 1) {
+  public GameRound(int roundNumber, float duration = 62, float timeBetweenSpawns = 15, int spawnsPerTime = 1) {
     this.roundNumber = roundNumber;
     this.duration = duration;
     this.spawnsPerTime = spawnsPerTime;
@@ -106,6 +106,7 @@ public class GameRound {
 
   private void UpdateWaitingForArenaCleared() {
     if (GameModel.main.enemies.Count == 0) {
+      RoundUIController.main.RoundFinished();
       GoToPreparing();
     }
   }
