@@ -15,10 +15,11 @@ public class QuickInfoContainerController : MonoBehaviour {
   }
 
   void Update() {
+    var rt = transform.parent.GetComponent<RectTransform>();
     if (GameModelController.main.isEditMode) {
-      GetComponent<RectTransform>().anchoredPosition = new Vector2(285, -57);
+      rt.anchoredPosition = new Vector2(300, -64);
     } else {
-      GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+      rt.anchoredPosition = new Vector2(0, 0);
     }
   }
 

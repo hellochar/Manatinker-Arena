@@ -24,12 +24,11 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     // e.g. 3 / 1 => 3 - 1 = 200% slower
     float overloadedAmount = totalWeight / encumbrance;
 
-    var slowerText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% slower from overweight)" : "";
+    var overweightText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% overweight)" : "";
 
     text.text = $@"
-Engine HP: {engineHP} / {engineHPMax}
-Weight: {totalWeight} / {encumbrance}
-Speed: {speed} {slowerText}
+Weight: {totalWeight}/{encumbrance} {overweightText}
+Speed: {speed.ToString("#0.#")}
     ".Trim();
   }
 }
