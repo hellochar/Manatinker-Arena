@@ -93,8 +93,10 @@ public class GameRound {
         var numWeapons = Random.Range(1, roundNumber + 1);
         var numShields = roundNumber - numWeapons;
 
-        var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
-        var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
+        // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
+        // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
+        var floor = GameModel.main.floor;
+        var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
         spawnEnemy(numWeapons, numShields, pos);
       }
     }
@@ -119,11 +121,11 @@ public class GameRound {
   public void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
     var main = GameModel.main;
     var floor = main.floor;
-    var enemy = new Enemy(pos);
+    var enemy = new Enemy(pos, getAi());
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
-    var avatar = new EnemyAvatar();
+    var avatar = new EnemyAvatar(25 + roundNumber * 5);
     avatar.owner = enemy;
     main.AddFragment(avatar);
 
@@ -139,11 +141,26 @@ public class GameRound {
     for (var i = 0; i < numWeapons; i++) {
       var weapon = randomWeapon();
       weapon.owner = enemy;
-      var y = (i - numWeapons / 2f) * 0.5f;
+      // 0 1 = 0
+      // 0 2 = 
+      var y = (i + 0.5f - numWeapons / 2f) * 0.5f;
       // put weapons outside shield
-      weapon.builtinOffset = new Vector2(2, y);
+      var builtinX = numShields > 0 ? 2 : 1;
+      weapon.builtinOffset = new Vector2(builtinX, y);
       avatar.connect(weapon);
       main.AddFragment(weapon);
     }
+  }
+
+  private EnemyAI getAi() {
+    return new EnemyAI() {
+      baseTurnRate = 2.5f * (1 + roundNumber / 10f),
+      baseSpeed = 10f + roundNumber,
+      minActiveDuration = 2,
+      cooldown = 2 - roundNumber * 0.1f,
+      deltaAngleThreshold = 15,
+      desiredDistance = 5,
+      minDistance = 8,
+    };
   }
 }

@@ -42,9 +42,9 @@ public struct Projectile {
 [RegisteredFragment]
 public class Pistol : Weapon, IActivatable {
   public override (int, int) damageSpread => (8, 12);
-  public override float inFlowRate => 7;
+  public override float inFlowRate => 8;
   public override float hpMax => 15;
-  public override float manaMax => 30;
+  public override float manaMax => 40;
   public override float weight => 0.5f;
   static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
 
@@ -68,11 +68,11 @@ public class Pistol : Weapon, IActivatable {
 
 [RegisteredFragment]
 public class Shotgun : Weapon, IActivatable {
-  public override (int, int) damageSpread => (2, 4);
+  public override (int, int) damageSpread => (2, 3);
   public override float inFlowRate => 8;
   public override float hpMax => 22;
   public override float manaMax => 32;
-  static Projectile info = new Projectile() { baseSpeed = 10, lifeTime = 1.5f, angleSpread = 45 };
+  static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
 
   public bool CanActivateInner() {
     return Mana > 16;
@@ -90,7 +90,7 @@ public class Shotgun : Weapon, IActivatable {
     }
   }
 
-  protected override string dmgString => $"2-4 x8";
+  protected override string dmgString => $"2-3 x8";
   public override string Description => "Click (16 mana) - fire.\nShoots 8 bullets in a 45 degree spread.";
 }
 

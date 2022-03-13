@@ -15,7 +15,6 @@ public class QuickInfoController : MonoBehaviour {
 
   void Start() {
     img.sprite = fragment.controller.spriteRenderer.sprite;
-    Name.text = fragment.DisplayName;
   }
 
   // Update is called once per frame
@@ -26,14 +25,14 @@ public class QuickInfoController : MonoBehaviour {
       string extraText = "";
       if (fragment.inputPercent > 0) {
         var inputPercent = fragment.inputPercent;
-        extraText += $"→{(inputPercent * 100).ToString("##0")}% ";
+        extraText += $"→ {(inputPercent * 100).ToString("##0")}%\t\t";
       }
       if (fragment.outputPercent > 0) {
         var outputPercent = fragment.outputPercent;
-        extraText += $"{(outputPercent * 100).ToString("##0")}%→";
+        extraText += $"{(outputPercent * 100).ToString("##0")}% →";
 
       }
-      Name.text = $"{fragment.DisplayName} {extraText}";
+      Name.text = $"{extraText}";
     }
   }
 }

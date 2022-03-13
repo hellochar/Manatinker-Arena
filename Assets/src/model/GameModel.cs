@@ -66,10 +66,10 @@ public class GameModel {
     main = new GameModel();
     main.circuit = new Circuit();
 
-    main.floor = new Floor(32 + 2, 18 + 2).surroundWithWalls();
-    for (int x = 6; x < main.floor.width; x += 6) {
-      var yMin = 10 - 4;
-      var yMax = 10 + 4;
+    main.floor = new Floor(39 + 2, 24 + 2).surroundWithWalls();
+    for (int x = 8; x < main.floor.width; x += 8) {
+      var yMin = 13 - 6;
+      var yMax = 13 + 6;
       main.floor.tiles[x, yMin] = TileType.WALL;
       main.floor.tiles[x, yMax] = TileType.WALL;
     }
