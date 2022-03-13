@@ -829,7 +829,7 @@ MonoBehaviour:
   nextRoundButton: {fileID: 908480772}
   activeBar: {fileID: 960333199}
   activeText: {fileID: 905572467}
-  youWin: {fileID: 0}
+  youWin: {fileID: 993102570}
 --- !u!1 &558632507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1866,7 +1866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &993102571
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3716,8 +3716,8 @@ MonoBehaviour:
     Made for 2022 7drl.
 
 
-    by hellochar
-    (Xiaohan Zhang)'
+    by Xiaohan
+    Zhang @hellochar'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
