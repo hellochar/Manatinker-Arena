@@ -52,7 +52,7 @@ public class GameRound {
       var fragment = randomWeapon();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numWeapons - 1) / 2f) * 1.5f;
-      var x = 5;
+      var x = 7;
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
@@ -62,7 +62,7 @@ public class GameRound {
       var fragment = randomShield();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numShields - 1) / 2f) * 3f;
-      var x = 9;
+      var x = 11;
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;

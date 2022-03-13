@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
   public Rigidbody2D rb2d;
   public FragmentController fragmentController;
+  public GameObject letterE;
   public Player player => (Player)fragmentController.fragment;
   void Start() {
     if (rb2d == null) {
@@ -18,6 +20,16 @@ public class PlayerController : MonoBehaviour {
   }
 
   void Update() {
+    letterE.transform.position = GameModel.main.player.worldPos + Vector2.up;
+    letterE.transform.eulerAngles = Vector3.zero;
+    if (GameModelController.main.isEditMode) {
+      letterE.SetActive(false);
+    } else if (GameModel.main.currentRound.state == GameRoundState.Preparing) {
+      var hasNearbyFragment = GameModel.main.Fragments.Any(f => !(f is Creature) && f.owner == null && f.distance(GameModel.main.player) < 2);
+      letterE.SetActive(hasNearbyFragment);
+    } else {
+      letterE.SetActive(false);
+    }
     if (GameModelController.main.isEditMode || GameModelController.main.hasActiveAnimation) {
       return;
     }
