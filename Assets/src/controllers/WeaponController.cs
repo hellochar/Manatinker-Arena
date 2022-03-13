@@ -21,6 +21,9 @@ public class WeaponController : MonoBehaviour {
   }
 
   void HandleShootProjectile(Projectile p) {
+    if (p.owner == null) {
+      p.owner = weapon.owner;
+    }
     var rotation = spawnPoint.rotation;
     if (p.angleSpread != 0) {
       rotation = rotation * Quaternion.Euler(0, 0, Random.Range(-p.angleSpread / 2, p.angleSpread / 2));

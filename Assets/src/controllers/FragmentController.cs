@@ -131,11 +131,8 @@ public class FragmentController : MonoBehaviour {
   float currentOutputPercent;
   public virtual void Update() {
     if (manaCover != null) {
-      manaCover.enabled = fragment.owner != null;
-      if (manaCover.enabled) {
-        manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
-        manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
-      }
+      manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
+      manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (spriteRenderer != null) {
       var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);

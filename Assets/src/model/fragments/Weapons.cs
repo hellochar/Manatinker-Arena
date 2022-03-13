@@ -36,6 +36,7 @@ public struct Projectile {
   public string name;
   public float angleSpread;
   internal bool isRay;
+  public Creature owner;
 }
 
 [RegisteredFragment]
