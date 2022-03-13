@@ -162,10 +162,13 @@ public class FragmentController : MonoBehaviour {
   internal void Removed() {
     var explode = Instantiate(VFX.Get("componentExplode"), transform.position, transform.rotation);
     var size = worldSize();
-    var maxSize = Mathf.Max(size.x, size.y);
-    explode.transform.localScale *= maxSize * 1.5f;
+    var maxSize = Mathf.Max(size.x, size.y) * 1.6f;
+    explode.transform.localScale *= maxSize;
     Destroy(gameObject);
     fragment.controller = null;
+    
+    var dirt = Instantiate(VFX.Get("dirt"), transform.position, transform.rotation);
+    dirt.transform.localScale *= maxSize;
   }
 
   internal void OnHit(Projectile p, Vector2 position) {
