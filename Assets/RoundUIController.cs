@@ -24,7 +24,7 @@ public class RoundUIController : MonoBehaviour {
       activeText.text = span.ToString(@"mm\:ss") + " remaining";
       activeBar.fillAmount = round.remaining / round.duration;
     } else if (round.state == GameRoundState.WaitingForClear) {
-      activeText.text = $"{GameModel.main.enemies} enemies left!";
+      activeText.text = $"{GameModel.main.enemies.Count} enemies left!";
     } else {
       activeBar.fillAmount = 0;
       activeText.text = "";
