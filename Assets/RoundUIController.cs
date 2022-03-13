@@ -33,6 +33,7 @@ public class RoundUIController : MonoBehaviour {
   }
 
   public void GoNextRound() {
+    Instantiate(VFX.Get("bigSweep"));
     GameModel.main.GoNextRound();
     var roundMarker = Instantiate(roundMarkerPrefab, transform);
     roundMarker.GetComponentInChildren<TMPro.TMP_Text>().text = "Round " + GameModel.main.currentRound.roundNumber;
