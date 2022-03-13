@@ -26,9 +26,10 @@ public class UpdateCriticalInfoText : MonoBehaviour {
 
     var overweightText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% overweight)" : "";
 
+    var speedPercent = speed / 15;
+
     text.text = $@"
-Weight: {totalWeight}/{encumbrance} {overweightText}
-Speed: {speed.ToString("#0.#")}
-    ".Trim();
+Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
+Speed: {(speedPercent * 100).ToString("##0")}%".Trim();
   }
 }

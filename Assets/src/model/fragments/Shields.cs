@@ -11,7 +11,7 @@ public abstract class Shield : Fragment {
 [RegisteredFragment]
 public class Buckler : Shield {
   public override float hpMax => 60;
-  public override float weight => 3;
+  public override float weight => 1;
   public Buckler() {
   }
 }
@@ -19,7 +19,7 @@ public class Buckler : Shield {
 [RegisteredFragment]
 public class TowerShield : Shield {
   public override float hpMax => 120;
-  public override float weight => 7;
+  public override float weight => 2;
   public TowerShield() {
   }
 }
@@ -27,7 +27,7 @@ public class TowerShield : Shield {
 [RegisteredFragment]
 public class Crenel : Shield {
   public override float hpMax => 50;
-  public override float weight => 3;
+  public override float weight => 1;
   public Crenel() {
   }
 }
@@ -43,7 +43,7 @@ public class DotMatrix : Shield {
 [RegisteredFragment]
 public class PlowShield : Shield {
   public override float hpMax => 90;
-  public override float weight => 5;
+  public override float weight => 1.5f;
   public PlowShield() {
   }
 }

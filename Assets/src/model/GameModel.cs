@@ -66,36 +66,22 @@ public class GameModel {
     main = new GameModel();
     main.circuit = new Circuit();
 
-    main.floor = new Floor(25, 25).surroundWithWalls();
+    main.floor = new Floor(32 + 2, 18 + 2).surroundWithWalls();
+    for (int x = 6; x < main.floor.width; x += 6) {
+      var yMin = 10 - 4;
+      var yMax = 10 + 4;
+      main.floor.tiles[x, yMin] = TileType.WALL;
+      main.floor.tiles[x, yMax] = TileType.WALL;
+    }
     main.currentRound = new GameRound(0);
     main.currentRound.GoToPreparing();
 
-    var player = new Player(new Vector2(5, 5));
+    var player = new Player(new Vector2(2, main.floor.height / 2));
 
     var engine = new Engine();
     engine.owner = player;
 
-    var battery = new Battery();
-    battery.owner = player;
-    battery.builtinOffset = new Vector2(0.25f, 1.5f);
-    engine.connect(battery);
-
-    var gun1 = new Pistol();
-    gun1.owner = player;
-    gun1.builtinOffset = new Vector2(1.5f, 0);
-    battery.connect(gun1);
-
-    // var pistol2 = new Pistol();
-    // pistol2.owner = player;
-    // pistol2.builtinOffset = new Vector2(1.5f, 0.5f);
-    // core.connect(pistol2);
-
-    // var pistol3 = new Pistol();
-    // pistol3.owner = player;
-    // pistol3.builtinOffset = new Vector2(1.5f, -0.5f);
-    // core.connect(pistol3);
-
-    main.AddFragment(player, engine, battery, gun1);//, pistol2, pistol3);
+    main.AddFragment(player, engine);//, pistol2, pistol3);
 
   }
 

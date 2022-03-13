@@ -17,30 +17,64 @@ public class GameRound {
   public float timeUntilNextSpawn = 3;
   public float timeBetweenSpawns = 15;
   public readonly float duration;
+  private readonly int spawnsPerTime;
   public int roundNumber;
 
-  public GameRound(int roundNumber, float duration = 60, float timeBetweenSpawns = 15) {
+  public GameRound(int roundNumber, float duration = 60, float timeBetweenSpawns = 15, int spawnsPerTime = 1) {
     this.roundNumber = roundNumber;
     this.duration = duration;
+    this.spawnsPerTime = spawnsPerTime;
     timeStarted = GameModel.main.time;
   }
 
-  // scatter random items around
-  public static void ScatterItems() {
-    var main = GameModel.main;
-    var spawnInfos = RegisteredFragmentAttribute.GetAllFragmentTypes();
-    // var fragments = new List<Fragment>() { new Pistol(), new Pistol(), new Engine(), new Battery() };
-    var numToScatter = 15;
-    for(var i = 0; i < numToScatter; i++) {
-      var info = spawnInfos[Random.Range(0, spawnInfos.Count)];
-      var typeToScatter = info.type;
-      var noArgConstructor = typeToScatter.GetConstructor(new System.Type[0]);
-      var newFragment = (Fragment) noArgConstructor.Invoke(new object[0]);
-      newFragment.builtinAngle = Random.Range(0, 360);
-      var pos = new Vector2(Random.Range(2, main.floor.width - 2), Random.Range(2, main.floor.height - 2));
-      newFragment.builtinOffset = pos;
-      main.AddFragment(newFragment);
+  private static List<RegisteredFragmentAttribute> allWeapons;
+  private static List<RegisteredFragmentAttribute> allShields;
+  public static Weapon randomWeapon() {
+    if (allWeapons == null) {
+      allWeapons = RegisteredFragmentAttribute.GetAllFragmentTypes<Weapon>();
     }
+    var spawn = allWeapons[Random.Range(0, allWeapons.Count)];
+    return (Weapon)NewFragmentFrom(spawn);
+  }
+
+  public static Shield randomShield() {
+    if (allShields == null) {
+      allShields = RegisteredFragmentAttribute.GetAllFragmentTypes<Shield>();
+    }
+    var spawn = allShields[Random.Range(0, allShields.Count)];
+    return (Shield)NewFragmentFrom(spawn);
+  }
+
+  // scatter random items around
+  public static void PlaceItems(int numWeapons, int numShields) {
+    var main = GameModel.main;
+    for(int i = 0; i < numWeapons; i++) {
+      var fragment = randomWeapon();
+      fragment.builtinAngle = 0;
+      var yOffset = (i - (numWeapons - 1) / 2f) * 1.5f;
+      var x = 5;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      fragment.builtinOffset = pos;
+      main.AddFragment(fragment);
+    }
+    for(int i = 0; i < numShields; i++) {
+      var fragment = randomShield();
+      fragment.builtinAngle = 0;
+      var yOffset = (i - (numShields - 1) / 2f) * 3f;
+      var x = 9;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      fragment.builtinOffset = pos;
+      main.AddFragment(fragment);
+    }
+  }
+
+  private static Fragment NewFragmentFrom(RegisteredFragmentAttribute info) {
+    var typeToScatter = info.type;
+    var noArgConstructor = typeToScatter.GetConstructor(new System.Type[0]);
+    var newFragment = (Fragment)noArgConstructor.Invoke(new object[0]);
+    return newFragment;
   }
 
   public void Update(float dt) {
@@ -55,7 +89,11 @@ public class GameRound {
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
-      spawnEnemy();
+      for(int i = 0; i < spawnsPerTime; i++) {
+        var numWeapons = Random.Range(1, roundNumber + 1);
+        var numShields = roundNumber - numWeapons;
+        spawnEnemy(numWeapons, numShields);
+      }
     }
     if ((dt + elapsed) > duration) {
       state = GameRoundState.WaitingForClear;
@@ -71,10 +109,10 @@ public class GameRound {
 
   internal void GoToPreparing() {
     state = GameRoundState.Preparing;
-    ScatterItems();
+    PlaceItems(3, 3);
   }
 
-  public void spawnEnemy() {
+  public void spawnEnemy(int numWeapons, int numShields) {
     var main = GameModel.main;
     var floor = main.floor;
     var pos = new Vector2(Random.Range(2, floor.width - 2), Random.Range(2, floor.height - 2));
@@ -86,10 +124,23 @@ public class GameRound {
     engine.owner = enemy;
     main.AddFragment(engine);
 
-    var pistol1 = new Pistol();
-    pistol1.owner = enemy;
-    pistol1.builtinOffset = new Vector2(1.5f, 0);
-    engine.connect(pistol1);
-    main.AddFragment(pistol1);
+    for(var i = 0; i < numShields; i++) {
+      var shield = randomShield();
+      shield.owner = enemy;
+      main.AddFragment(shield);
+      var angle = (i + 0.5f) * 360f / numShields;
+      shield.builtinOffset = Util.fromDeg(angle);
+      shield.builtinAngle = angle;
+    }
+
+    for (var i = 0; i < numWeapons; i++) {
+      var weapon = randomWeapon();
+      weapon.owner = enemy;
+      var y = (i - numWeapons / 2f) * 0.5f;
+      // put weapons outside shield
+      weapon.builtinOffset = new Vector2(2, y);
+      engine.connect(weapon);
+      main.AddFragment(weapon);
+    }
   }
 }

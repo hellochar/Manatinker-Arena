@@ -12,12 +12,12 @@ public class RegisteredFragmentAttribute : Attribute {
   public float SpawnWeight { get; }
   private static List<RegisteredFragmentAttribute> cachedTypes;
 
-  public static List<RegisteredFragmentAttribute> GetAllFragmentTypes() {
+  public static List<RegisteredFragmentAttribute> GetAllFragmentTypes<T>() where T : Fragment {
     if (cachedTypes == null) {
       cachedTypes = GetRegisteredTypesImpl().ToList();
       UnityEngine.Debug.Log(String.Join(", ", cachedTypes.Select(t => t.type.FullName)));
     }
-    return cachedTypes;
+    return cachedTypes.Where(attr => attr.type.IsSubclassOf(typeof(T))).ToList();
   }
 
   private static IEnumerable<RegisteredFragmentAttribute> GetRegisteredTypesImpl() {
