@@ -13,7 +13,7 @@ public class GameModel {
 
   internal void GoNextRound() {
     if (currentRound.state == GameRoundState.Preparing) {
-      currentRound = new GameRound(currentRound.roundNumber++);
+      currentRound = new GameRound(currentRound.roundNumber + 1);
     }
   }
 
