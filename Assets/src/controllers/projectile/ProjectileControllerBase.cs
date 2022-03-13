@@ -26,6 +26,10 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
       hitFC.fragment.Hit(projectile);
       return true;
     }
+    var hitWall = col.gameObject.CompareTag("Wall");
+    if (hitWall) {
+      return true;
+    }
     return false;
   }
 }
