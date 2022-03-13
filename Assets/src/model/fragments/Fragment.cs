@@ -219,7 +219,9 @@ public class Fragment {
 	}
 
   public void Hit(Projectile p, Vector2 position) {
-    controller.OnHit(p, position);
+    if (controller != null) {
+      controller.OnHit(p, position);
+    }
     // take damage
     ChangeHP(-p.damage);
   }

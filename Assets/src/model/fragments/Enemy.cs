@@ -13,6 +13,12 @@ public class Enemy : Creature {
 
   public float cooldown = 0f;
 
+  public override void Die() {
+    var die = UnityEngine.Object.Instantiate(VFX.Get("enemyDie"), worldPos, Quaternion.identity);
+    die.transform.localScale *= 1.5f;
+    base.Die();
+  }
+
   public override void Update(float dt) {
     var player = GameModel.main.player;
     if (player.isDead) {
