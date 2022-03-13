@@ -42,7 +42,7 @@ public class WireController : MonoBehaviour {
     float lerpAmount = flowRate / 2;
 
     var targetColor = Color.Lerp(Color.black, Color.white, lerpAmount);
-    lineRenderer.endColor = lineRenderer.startColor = Color.Lerp(lineRenderer.endColor, targetColor, 0.1f);
+    lineRenderer.endColor = lineRenderer.startColor = Color.Lerp(lineRenderer.endColor, targetColor, 0.05f);
   }
 
   internal void Removed() {

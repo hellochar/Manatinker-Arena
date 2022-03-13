@@ -87,6 +87,10 @@ Shader "Unlit/ManaCoverShader"
 
                 float pctScalar = IN.texcoord.x < _Percentage;
                 c.rgb *= pctScalar;
+				// if we're full, hide us
+				if (_Percentage > 0.999) {
+					c *= 0.1f;
+				}
                 return c;
 				// c.rgb *= c.a;
 

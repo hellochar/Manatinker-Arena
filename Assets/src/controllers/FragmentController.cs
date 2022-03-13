@@ -133,15 +133,21 @@ public class FragmentController : MonoBehaviour {
     transform.localRotation = Quaternion.Euler(0, 0, fragment.builtinAngle);
   }
 
+  float currentFlowPercent;
   public virtual void Update() {
     if (manaCover != null) {
-      manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
-      manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
+      manaCover.enabled = fragment.owner != null;
+      if (manaCover.enabled) {
+        manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
+        manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
+      }
     }
     if (spriteRenderer != null) {
       var flowActivity = Mathf.Max(fragment.incomingTotal, fragment.outgoingTotal) / Time.deltaTime;
       var maxFlowActivity = Mathf.Max(fragment.inFlowRate, fragment.outFlowRate);
-      spriteRenderer.material.SetFloat("_Percentage", flowActivity / maxFlowActivity);
+      var flowPercent = flowActivity / maxFlowActivity;
+      currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
+      spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent);
       spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (input != null) {
