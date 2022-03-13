@@ -10,6 +10,7 @@ public class RoundUIController : MonoBehaviour {
   public Image activeBar;
   public TMPro.TMP_Text activeText;
   internal static RoundUIController main;
+  public GameObject youWin;
 
   void Awake() {
     main = this;
@@ -38,7 +39,15 @@ public class RoundUIController : MonoBehaviour {
   }
 
   internal void RoundFinished() {
+    if (GameModel.main.currentRound.roundNumber == 10) {
+      GameModel.main.playerHasWon = true;
+      youWin.SetActive(true);
+    }
     var roundMarker = Instantiate(roundMarkerPrefab, transform);
     roundMarker.GetComponentInChildren<TMPro.TMP_Text>().text = "Round " + GameModel.main.currentRound.roundNumber + " complete!";
+  }
+
+  public void keepPlaying() {
+    youWin.SetActive(false);
   }
 }

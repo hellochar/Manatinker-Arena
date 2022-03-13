@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class GameModel {
   public static GameModel main;
 
+  public bool playerHasWon = false;
   // in seconds
   public float time = 0;
   public GameRound currentRound;
