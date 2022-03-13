@@ -232,7 +232,7 @@ internal class InputStateWireEdit : InputState {
   }
 
   void ToggleWire(FragmentController to) {
-    if (!to.fragment.hasInput) {
+    if (!to.fragment.hasInput || !to.fragment.isPlayerOwned) {
       return;
     }
     var isConnected = from.fragment.isConnected(to.fragment);
@@ -250,7 +250,7 @@ internal class InputStateWireEdit : InputState {
       to = null;
     } else {
       var targetFc = getHovered();
-      if (targetFc != null && targetFc.fragment.hasInput) {
+      if (targetFc != null && targetFc.fragment.hasInput && targetFc.fragment.isPlayerOwned) {
         to = targetFc.fragment;
       } else {
         to = null;
