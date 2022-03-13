@@ -154,6 +154,19 @@ internal class InputStateSelected : InputState {
     Transition(InputState.Default);
   }
 
+  public override void enter() {
+    // possibly grab 
+    var f = selected.fragment;
+    var player = GameModel.main.player;
+    var isObjectOutOfInfluence = f.distance(player) > player.influenceRadius;
+    if (f.owner == null && !isObjectOutOfInfluence) {
+      f.builtinOffset -= player.worldPos;
+      f.builtinAngle -= player.worldRotation;
+      f.owner = player;
+      player.avatar.connect(f);
+    }
+  }
+
   public override void update() {
     if (Input.GetMouseButton(0) && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)) {
       if (getHovered() == selected && isDraggable) {
@@ -300,6 +313,7 @@ internal class InputStateDragged : InputState {
       f.builtinAngle = f.worldRotation;
       f.builtinOffset = f.worldPos;
       f.owner = null;
+      // give to owner
     } else if (f.owner == null && !isObjectOutOfInfluence) {
       f.builtinOffset -= player.worldPos;
       f.builtinAngle -= player.worldRotation;
