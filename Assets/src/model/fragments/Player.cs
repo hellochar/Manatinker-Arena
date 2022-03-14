@@ -5,10 +5,9 @@ using UnityEngine;
 public class Player : Creature {
   public float influenceRadius => 1.75f + level * 0.25f;
 
-  public int level = 1;
-  public int gold = 0;
+  public int gold = 5;
 
-  public void LevelUp() {
+  public override void LevelUp() {
     var playerAvatar = (PlayerAvatar)avatar;
     playerAvatar.LevelUp();
     level++;
@@ -27,14 +26,13 @@ public class Player : Creature {
 }
 
 public class PlayerAvatar : Avatar {
-  public int level = 1;
-  public override float hpMax => 60 + level * 10;
+  public override float myHpMax => 60 + level * 10;
   public override float outFlowRate => 10 + 2 * level;
-  public override string DisplayName => "Player";
+  public override string DisplayName => "Player " + level;
   public override string Description => "Create wires to other Fragments to power them up!\n\nProtect yourself at all costs.\n\nYour Fragments only take 25% damage.";
 
 
-  internal void LevelUp() {
+  public override void LevelUp() {
     level++;
     ChangeHP(hpMax / 2);
   }

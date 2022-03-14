@@ -81,7 +81,7 @@ public struct EnemyAI {
 }
 
 public class EnemyAvatar : Avatar {
-  public override float hpMax => _hpMax;
+  public override float myHpMax => _hpMax;
   public float _hpMax;
   public override string DisplayName => "Enemy";
 

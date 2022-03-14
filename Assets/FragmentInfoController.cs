@@ -9,6 +9,7 @@ public class FragmentInfoController : MonoBehaviour {
   public TMPro.TMP_Text fragmentName;
   public TMPro.TMP_Text fragmentInfo;
   public GameObject inport, outport;
+  public GameObject levelUp;
 
   void Start() {
     Update();
@@ -19,6 +20,7 @@ public class FragmentInfoController : MonoBehaviour {
     if (selected == null) {
       inset.SetActive(false);
     } else {
+      levelUp.SetActive(!(selected.fragment is PlayerAvatar));
       inport.SetActive(selected.fragment.hasInput);
       outport.SetActive(selected.fragment.hasOutput);
       inset.SetActive(true);

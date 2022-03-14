@@ -20,8 +20,11 @@ public class Fragment {
   public virtual float inFlowRate => 0;
   public virtual float weight => 1;
   public virtual bool loseManaOnOwnerChange => true;
+  public int level = 1;
+  public float levelScalar => (1f + (level - 1) * 0.2f);
 
-  public virtual float hpMax => 30;
+  public virtual float myHpMax => 30;
+  public float hpMax => myHpMax * levelScalar;
   public bool isDead => hp <= 0;
   public bool isBroken = false;
 
@@ -56,6 +59,11 @@ public class Fragment {
 
     var info = String.Join("\n", lines).Trim();
     return info;
+  }
+
+  public virtual void LevelUp() {
+    level++;
+    ChangeHP(hpMax - hp);
   }
 
   protected virtual void PopulateInfoStrings(List<string> lines) {}
@@ -108,7 +116,7 @@ public class Fragment {
   public Vector2 worldPos => controller.transform.position.xy();
   public float worldRotation => controller.transform.eulerAngles.z;
 
-  public virtual string DisplayName => GetType().Name;
+  public virtual string DisplayName => GetType().Name + " " + level;
 
   public Fragment() {
     outt = new Node("out" + name);
@@ -194,6 +202,7 @@ public class Fragment {
 
   public float incomingTotal, outgoingTotal;
   public float lastMana;
+
 
   // assumes all edges on my nodes are solved
   public virtual void exchange() {
