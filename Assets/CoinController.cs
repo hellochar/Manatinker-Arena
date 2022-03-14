@@ -18,8 +18,8 @@ public class CoinController : MonoBehaviour {
       return;
     }
     transform.Rotate(0, 0, 12);
-    transform.position = Vector3.Lerp(transform.position, pc.transform.position, 0.01f);
-    transform.position = Vector3.MoveTowards(transform.position, pc.transform.position, 0.01f);
+    transform.position = Vector3.Lerp(transform.position, pc.transform.position, 0.02f);
+    transform.position = Vector3.MoveTowards(transform.position, pc.transform.position, 0.02f);
     if ((transform.position - pc.transform.position).sqrMagnitude < 0.1f) {
       Destroy(gameObject);
     }
