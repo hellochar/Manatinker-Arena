@@ -17,6 +17,7 @@ public class ProjectileController : ProjectileControllerBase {
     rb2d.velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * projectile.baseSpeed;
     rb2d.SetRotation(angle);
     lastPos = rb2d.position;
+    GetComponent<AudioSource>().enabled = !projectile.isRay;
   }
 
   // Update is called once per frame

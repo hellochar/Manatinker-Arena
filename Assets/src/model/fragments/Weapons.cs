@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,12 +83,16 @@ public class Shotgun : Weapon, IActivatable {
     var numBullets = Mathf.Max(Mathf.Floor(Mana / 2), 8f);
     var manaUsed = numBullets * 2f;
     ChangeMana(-manaUsed);
-    for (var i = 0; i < numBullets; i++) {
-      Projectile p = info;
-      p.baseSpeed *= UnityEngine.Random.Range(0.9f, 1 / 0.9f);
-      p.damage = rollDamage();
-      OnShootProjectile?.Invoke(p);
+    IEnumerator ActivateAsync() {
+      for (var i = 0; i < numBullets; i++) {
+        Projectile p = info;
+        p.baseSpeed *= UnityEngine.Random.Range(0.9f, 1 / 0.9f);
+        p.damage = rollDamage();
+        OnShootProjectile?.Invoke(p);
+        yield return new WaitForEndOfFrame();
+      }
     }
+    controller.StartCoroutine(ActivateAsync());
   }
 
   protected override string dmgString => $"2-3 x8";
