@@ -123,7 +123,7 @@ public class Laser : Weapon, IActivatable {
   }
 
   public bool CanActivateInner() {
-    return !needsRecharge;
+    return !needsRecharge && owner != null;
   }
 
   public void Activate() {

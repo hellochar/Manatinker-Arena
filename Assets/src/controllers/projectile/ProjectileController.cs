@@ -17,7 +17,13 @@ public class ProjectileController : ProjectileControllerBase {
     rb2d.velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * projectile.baseSpeed;
     rb2d.SetRotation(angle);
     lastPos = rb2d.position;
-    GetComponent<AudioSource>().enabled = !projectile.isRay;
+    var aso = GetComponent<AudioSource>();
+    aso.enabled = !projectile.isRay;
+    if (aso.enabled) {
+      // lower volume for smaller shots
+      var volumeScalar = Mathf.Clamp(Util.MapLinear(projectile.damage, 0, 8, 0.3f, 1), 0, 1);
+      aso.volume *= volumeScalar;
+    }
   }
 
   // Update is called once per frame
