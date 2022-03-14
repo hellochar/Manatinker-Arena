@@ -9,11 +9,7 @@ public class RandomSound : MonoBehaviour {
     var aso = GetComponent<AudioSource>();
     if (aso) {
         aso.clip = clips[Random.Range(0, clips.Length)];
+        aso.Play();
     }
-  }
-
-  // Update is called once per frame
-  void Update() {
-
   }
 }
