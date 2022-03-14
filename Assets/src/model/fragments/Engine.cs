@@ -9,7 +9,7 @@ public class EngineBase : Fragment {
 }
 
 [RegisteredFragment]
-public class Engine : Fragment {
+public class Engine : EngineBase {
   public override float myManaMax => 0;
   public override float myHpMax => 60;
   public override float myOutFlowRate => 5;
@@ -31,7 +31,7 @@ public class Engine : Fragment {
 }
 
 [RegisteredFragment]
-public class PainEngine : Fragment {
+public class PainEngine : EngineBase {
   public override float myManaMax => 50;
   public override float myHpMax => 10;
   public override float myOutFlowRate => 8;
@@ -55,7 +55,7 @@ public class PainEngine : Fragment {
 }
 
 [RegisteredFragment]
-public class CalmEngine : Fragment {
+public class CalmEngine : EngineBase {
   public override float myManaMax => 50;
   public override float myHpMax => 10;
   public override float myOutFlowRate => 8;
