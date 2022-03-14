@@ -562,7 +562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   mouseMovement: 2
-  nearModeProjectionSize: 3.5
   lerpRate: 4
 --- !u!1 &410087039
 GameObject:
@@ -2209,6 +2208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699feee3857c8c04c86baf1fa14ca562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Inset: {fileID: 455638155}
   tempText: {fileID: 6016826170273802316, guid: 1e8108cd77a57f740bf433dc615d9826,
     type: 3}
   text: {fileID: 1704283756}

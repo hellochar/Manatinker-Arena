@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelUpPlayerController : MonoBehaviour {
+  public GameObject Inset;
   public GameObject tempText;
   public TMPro.TMP_Text text;
   private Button button;
@@ -27,6 +28,7 @@ public class LevelUpPlayerController : MonoBehaviour {
     if (player.gold < cost) {
       ShowText("Not enough gold!");
     } else {
+      EditModeInputController.instance.Transition(new InputStateSelected(player.avatar.controller));
       player.gold -= cost;
       player.LevelUp();
       ShowText($@"
@@ -47,8 +49,8 @@ Influence radius increased!
     if (existingText != null) {
       Destroy(existingText);
     }
-    existingText = Instantiate(tempText);
+    existingText = Instantiate(tempText, Inset.transform);
     existingText.GetComponentInChildren<TMPro.TMP_Text>().text = v;
-    Destroy(existingText, v.Length / 10f);
+    Destroy(existingText, v.Length / 20f);
   }
 }
