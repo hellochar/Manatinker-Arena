@@ -53,3 +53,27 @@ public class PainEngine : Fragment {
     }
   }
 }
+
+[RegisteredFragment]
+public class CalmEngine : Fragment {
+  public override float myManaMax => 50;
+  public override float myHpMax => 10;
+  public override float myOutFlowRate => 8;
+  public override float weight => 0.5f;
+  public override string Description => "Convert 50% of damage you take into Mana on this Engine.";
+
+  public CalmEngine() {
+    Player.OnTakesDamage += HandleTakesDamage;
+  }
+
+  public override void Die() {
+    Player.OnDealsDamage -= HandleTakesDamage;
+    base.Die();
+  }
+
+  private void HandleTakesDamage(float amount) {
+    if (isPlayerOwned) {
+      ChangeMana(amount * 0.5f);
+    }
+  }
+}

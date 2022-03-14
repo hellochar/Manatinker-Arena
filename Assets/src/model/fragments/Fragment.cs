@@ -238,6 +238,9 @@ public class Fragment {
     if (p.owner == GameModel.main.player) {
       GameModel.main.player.dealtDamage(p.damage);
     }
+    if (owner == GameModel.main.player) {
+      GameModel.main.player.tookDamage(p.damage);
+    }
     ChangeHP(-p.damage);
   }
 

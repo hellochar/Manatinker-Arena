@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Player : Creature {
   public static event Action<float> OnDealsDamage;
+  public static event Action<float> OnTakesDamage;
   public float influenceRadius => 1.75f + level * 0.25f;
 
   public int gold = 5;
 
   public void dealtDamage(float dmg) {
     OnDealsDamage?.Invoke(dmg);
+  }
+
+  public void tookDamage(float dmg) {
+    OnTakesDamage?.Invoke(dmg);
   }
 
   public override void LevelUp() {
