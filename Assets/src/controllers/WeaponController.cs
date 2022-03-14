@@ -17,6 +17,25 @@ public class WeaponController : MonoBehaviour {
       if (a.CanActivate() && weapon.isPlayerOwned && activationCheck) {
         a.Activate();
       }
+      if (weapon.isHold) {
+        var playSound = activationCheck && a.CanActivate();
+        SetAudioActive(playSound);
+      }
+    }
+  }
+
+  AudioSource aso;
+  public void SetAudioActive(bool active) {
+    if (aso == null) {
+      aso = GetComponent<AudioSource>();
+    }
+    if (aso == null) {
+      return;
+    }
+    if (active && !aso.isPlaying) {
+      aso.Play();
+    } else if (!active && aso.isPlaying) {
+      aso.Pause();
     }
   }
 
