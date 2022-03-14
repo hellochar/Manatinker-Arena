@@ -167,6 +167,9 @@ public class Fragment {
 	}
 
   public virtual void ChangeHP(float diff) {
+    if (isDead) {
+      return;
+    }
     if (hp + diff > hpMax) {
       diff = hpMax - hp;
     }

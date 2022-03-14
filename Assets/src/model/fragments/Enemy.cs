@@ -14,7 +14,6 @@ public class Enemy : Creature {
   public float cooldown = 0f;
 
   public override void Die() {
-    GameModel.main.player.gold++;
     base.Die();
   }
 
@@ -89,5 +88,18 @@ public class EnemyAvatar : Avatar {
   public EnemyAvatar(float hpMax = 25) {
     _hpMax = hpMax;
     hp = hpMax;
+  }
+
+  public override void Die() {
+    var goldEarned = GameModel.main.currentRound.roundNumber;
+    if (controller != null) {
+      for(int i = 0; i < goldEarned; i++) {
+        var t = controller.transform.position + (Random.insideUnitCircle * 0.5f).z();
+        var coin = UnityEngine.Object.Instantiate(VFX.Get("coin"), t, Quaternion.identity);
+        coin.GetComponent<CoinController>().setDelay(i + 50);
+      }
+      GameModel.main.player.gold += goldEarned;
+    }
+    base.Die();
   }
 }

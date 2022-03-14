@@ -21,7 +21,7 @@ public class LevelUpPlayerController : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     button.enabled = player.gold >= cost;
-    text.text = $"Heal & Level Up to {player.level + 1} ({cost} gp)";
+    text.text = $"Heal & Level Up to {player.level + 1} ({cost} gold)";
   }
 
   public void TryLevelUp() {
