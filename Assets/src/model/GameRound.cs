@@ -55,7 +55,7 @@ public class GameRound {
   }
 
   // scatter random items around
-  public static void PlaceItems(int numWeapons, int numShields, int numEngines) {
+  public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
     for(int i = 0; i < numWeapons; i++) {
       var fragment = randomWeapon();
@@ -85,6 +85,12 @@ public class GameRound {
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
+      main.AddFragment(fragment);
+    }
+
+    if (numBattery > 0) {
+      var fragment = new Battery();
+      fragment.builtinOffset = new Vector2(15, main.floor.height / 2 - 1);
       main.AddFragment(fragment);
     }
   }
@@ -135,11 +141,11 @@ public class GameRound {
   internal void GoToPreparing() {
     state = GameRoundState.Preparing;
     if (roundNumber == 0) {
-      PlaceItems(3, 3, 0);
+      PlaceItems(3, 3, 1, 1);
     } else {
       if (roundNumber % 3 == 0) {
         var numToPlace = roundNumber / 3;
-        PlaceItems(numToPlace, numToPlace, 1);
+        PlaceItems(numToPlace, numToPlace, 1, 1);
       }
     }
   }
@@ -163,6 +169,7 @@ public class GameRound {
       var angle = (i + 0.5f) * 360f / numShields + 180;
       shield.builtinOffset = Util.fromDeg(angle);
       shield.builtinAngle = angle;
+      avatar.connect(shield);
     }
 
     for (var i = 0; i < numWeapons; i++) {

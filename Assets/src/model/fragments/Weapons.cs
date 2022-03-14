@@ -88,7 +88,7 @@ public class Minigun : Pistol {
   }
 
   public override void Activate() {
-    cooldown = 0.1f;
+    cooldown = 0.25f;
     base.Activate();
   }
 
@@ -99,7 +99,7 @@ public class Minigun : Pistol {
 [RegisteredFragment]
 public class Shotgun : Weapon, IActivatable {
   public override (int, int) damageSpread => (2, 3);
-  public override float myInFlowRate => 8;
+  public override float myInFlowRate => 6;
   public override float myHpMax => 22;
   public override float myManaMax => 32;
   static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
@@ -131,9 +131,9 @@ public class Shotgun : Weapon, IActivatable {
 [RegisteredFragment]
 public class Laser : Weapon, IActivatable {
   // 7 dps
-  public override (int, int) damageSpread => (15, 15);
-  public override float myInFlowRate => 25;
-  public override float myHpMax => 18;
+  public override (int, int) damageSpread => (18, 18);
+  public override float myInFlowRate => 15;
+  public override float myHpMax => 20;
   public override float myManaMax => 25;
   public override bool isHold => true;
   public float manaDrainWhileActivated => 30;

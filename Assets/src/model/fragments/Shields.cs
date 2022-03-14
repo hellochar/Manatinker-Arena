@@ -3,24 +3,22 @@ using UnityEngine;
 public abstract class Shield : Fragment {
   // public override bool hasInput => false;
   public override bool hasOutput => false;
-  public override float myInFlowRate => 10;
-  public override float myManaMax => myHpMax;
+  public override float myInFlowRate => 5;
+  public override float myManaMax => myHpMax / 2;
   public override float myOutFlowRate => 0;
 
-  public override string Description => "Takes damage from mana first at a 2:1 ratio.";
+  public override string Description => "Redirects 50% of damage to Mana (3 Mana : 1 damage).";
 
   public override void ChangeHP(float diff) {
     // take mana damage first
     if (diff < 0) {
-      var dmg = -diff;
-      var manaCost = dmg * 2;
+      var dmgToSoak = -diff / 2;
+      var manaCost = dmgToSoak * 3;
       var manaUsed = Mathf.Min(Mana, manaCost);
-      var dmgTaken = manaUsed / 2;
+      var dmgTaken = manaUsed / 3;
       diff += dmgTaken;
       ChangeMana(-manaUsed);
-      if (diff < 0) {
-        base.ChangeHP(diff);
-      }
+      base.ChangeHP(diff);
     } else {
       base.ChangeHP(diff);
     }
@@ -38,7 +36,7 @@ public class Buckler : Shield {
 [RegisteredFragment]
 public class TowerShield : Shield {
   public override float myHpMax => 120;
-  public override float weight => 2;
+  public override float weight => 3;
   public TowerShield() {
   }
 }
@@ -62,7 +60,7 @@ public class DotMatrix : Shield {
 [RegisteredFragment]
 public class PlowShield : Shield {
   public override float myHpMax => 90;
-  public override float weight => 1.5f;
+  public override float weight => 2f;
   public PlowShield() {
   }
 }

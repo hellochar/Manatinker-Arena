@@ -32,11 +32,11 @@ public class Engine : EngineBase {
 
 [RegisteredFragment]
 public class PainEngine : EngineBase {
-  public override float myManaMax => 50;
+  public override float myManaMax => 10;
   public override float myHpMax => 10;
   public override float myOutFlowRate => 8;
   public override float weight => 0.5f;
-  public override string Description => "Convert 20% of damage you deal into Mana on this Engine.";
+  public override string Description => "Convert 33% of damage you deal into Mana on this Engine.";
 
   public PainEngine() {
     Player.OnDealsDamage += HandleDealsDamage;
@@ -49,7 +49,7 @@ public class PainEngine : EngineBase {
 
   private void HandleDealsDamage(float amount) {
     if (isPlayerOwned) {
-      ChangeMana(amount * 0.2f);
+      ChangeMana(amount * 0.33f);
     }
   }
 }
