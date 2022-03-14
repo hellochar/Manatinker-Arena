@@ -17,14 +17,15 @@ public class Fragment {
   public virtual bool hasOutput => true;
   public virtual float outFlowRate => 0;
   public virtual bool hasInput => true;
-  public virtual float inFlowRate => 0;
+  public virtual float myInFlowRate => 0;
+  public float inFlowRate => myInFlowRate * levelScalar;
   public virtual float weight => 1;
   public virtual bool loseManaOnOwnerChange => true;
   public int level = 1;
   public float levelScalar => (1f + (level - 1) * 0.2f);
 
   public virtual float myHpMax => 30;
-  public float hpMax => myHpMax * levelScalar;
+  public float hpMax => Mathf.Round(myHpMax * levelScalar);
   public bool isDead => hp <= 0;
   public bool isBroken = false;
 
@@ -39,10 +40,10 @@ public class Fragment {
       lines.Add($"Mana			{mana.ToString("N0")}/{manaMax}");
     }
     if (hasInput) {
-      lines.Add($"Inflow 		{inFlowRate.ToString("00.#")} mana/sec");
+      lines.Add($"Inflow 		{inFlowRate.ToString("#0.#")} mana/sec");
     }
     if (hasOutput) {
-      lines.Add($"Outflow 		{outFlowRate.ToString("00.#")} mana/sec");
+      lines.Add($"Outflow 		{outFlowRate.ToString("#0.#")} mana/sec");
     }
 
     if (lines[lines.Count - 1] != "") {

@@ -43,7 +43,7 @@ public struct Projectile {
 [RegisteredFragment]
 public class Pistol : Weapon, IActivatable {
   public override (int, int) damageSpread => (8, 12);
-  public override float inFlowRate => 8;
+  public override float myInFlowRate => 8;
   public override float myHpMax => 15;
   public override float manaMax => 40;
   public override float weight => 0.5f;
@@ -70,7 +70,7 @@ public class Pistol : Weapon, IActivatable {
 [RegisteredFragment]
 public class Shotgun : Weapon, IActivatable {
   public override (int, int) damageSpread => (2, 3);
-  public override float inFlowRate => 8;
+  public override float myInFlowRate => 8;
   public override float myHpMax => 22;
   public override float manaMax => 32;
   static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
@@ -103,7 +103,7 @@ public class Shotgun : Weapon, IActivatable {
 public class Laser : Weapon, IActivatable {
   // 7 dps
   public override (int, int) damageSpread => (15, 15);
-  public override float inFlowRate => 25;
+  public override float myInFlowRate => 25;
   public override float myHpMax => 18;
   public override float manaMax => 25;
   public override bool isHold => true;

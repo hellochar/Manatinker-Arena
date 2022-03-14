@@ -8,7 +8,7 @@ public class Engine : Fragment {
   public override float outFlowRate => 5;
   public override float weight => 1;
   public override float manaMax => 0;
-  public override float inFlowRate => 0;
+  public override float myInFlowRate => 0;
   public override bool hasInput => false;
 
   // not bounded by mana

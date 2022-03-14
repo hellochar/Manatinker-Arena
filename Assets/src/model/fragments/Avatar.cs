@@ -8,7 +8,7 @@ public class Avatar : Fragment {
   public override float outFlowRate => 10;
   public override float weight => 0;
   public override float manaMax => 0;
-  public override float inFlowRate => 0;
+  public override float myInFlowRate => 0;
   public override bool hasInput => false;
 
   public override void assignNodeFlows(float dt) {
