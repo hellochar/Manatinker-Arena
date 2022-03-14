@@ -3,10 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Creature {
-  public float influenceRadius = 2;
+  public float influenceRadius => 1.75f + level * 0.25f;
 
-  public override float encumbranceThreshold => 2;
-  public override float baseSpeed => 10;
+  public int level = 1;
+  public int gold = 0;
+
+  public void LevelUp() {
+    var playerAvatar = (PlayerAvatar)avatar;
+    playerAvatar.LevelUp();
+    level++;
+  }
+
+  public override float encumbranceThreshold => 1 + level;
+  public override float baseSpeed => 8 + level * 2;
 
   public Player(Vector2 start) : base(start) {
   }
@@ -18,6 +27,15 @@ public class Player : Creature {
 }
 
 public class PlayerAvatar : Avatar {
+  public int level = 1;
+  public override float hpMax => 60 + level * 10;
+  public override float outFlowRate => 10 + 2 * level;
   public override string DisplayName => "Player";
   public override string Description => "Create wires to other Fragments to power them up!\n\nProtect yourself at all costs.\n\nYour Fragments only take 25% damage.";
+
+
+  internal void LevelUp() {
+    level++;
+    ChangeHP(hpMax / 2);
+  }
 }

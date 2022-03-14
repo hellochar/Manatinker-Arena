@@ -8,7 +8,9 @@ public class CameraFollowPlayer : MonoBehaviour {
   public float mouseMovement = 2f;
   // public float nearModeFov = 30f;
   // float originalFov;
-  public float nearModeProjectionSize = 4;
+  public float nearModeProjectionSize => Mathf.Min(
+    GameModel.main?.player?.influenceRadius * 1.2f + 1 ?? 4,
+    this.originalProjectionSize);
   float originalProjectionSize;
   public float lerpRate = 4f;
   private new Camera camera;

@@ -14,6 +14,7 @@ public class Enemy : Creature {
   public float cooldown = 0f;
 
   public override void Die() {
+    GameModel.main.player.gold++;
     base.Die();
   }
 

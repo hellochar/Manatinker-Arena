@@ -46,8 +46,14 @@ public class GameRound {
     return (Shield)NewFragmentFrom(spawn);
   }
 
+  public static T randomOf<T>() where T : Fragment {
+    var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<T>();
+    var spawn = frags[Random.Range(0, frags.Count)];
+    return (T)NewFragmentFrom(spawn);
+  }
+
   // scatter random items around
-  public static void PlaceItems(int numWeapons, int numShields) {
+  public static void PlaceItems(int numWeapons, int numShields, int numEngines) {
     var main = GameModel.main;
     for(int i = 0; i < numWeapons; i++) {
       var fragment = randomWeapon();
@@ -64,6 +70,16 @@ public class GameRound {
       fragment.builtinAngle = 0;
       var yOffset = (i - (numShields - 1) / 2f) * 3f;
       var x = 11;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      fragment.builtinOffset = pos;
+      main.AddFragment(fragment);
+    }
+    for(int i = 0; i < numEngines; i++) {
+      var fragment = randomOf<Engine>();
+      fragment.builtinAngle = 0;
+      var yOffset = (i - (numEngines - 1) / 2f) * 3f;
+      var x = 15;
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
@@ -116,7 +132,14 @@ public class GameRound {
 
   internal void GoToPreparing() {
     state = GameRoundState.Preparing;
-    PlaceItems(3, 3);
+    if (roundNumber == 0) {
+      PlaceItems(3, 3, 0);
+    } else {
+      if (roundNumber % 3 == 0) {
+        var numToPlace = roundNumber / 3;
+        PlaceItems(numToPlace, numToPlace, 1);
+      }
+    }
   }
 
   public async void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
