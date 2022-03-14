@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour {
   void Update() {
     letterE.transform.position = GameModel.main.player.worldPos + Vector2.up;
     letterE.transform.eulerAngles = Vector3.zero;
+
+    UpdateAudio();
     if (GameModelController.main.isEditMode) {
       letterE.SetActive(false);
     } else if (GameModel.main.currentRound.state == GameRoundState.Preparing) {
@@ -42,6 +44,27 @@ public class PlayerController : MonoBehaviour {
     var mouseOffset = Input.mousePosition.xy() - s;
     var targetAngle = Vector2.SignedAngle(Vector2.right, mouseOffset);
     player.setRotation(targetAngle);
+  }
+
+  AudioSource aso;
+  float asoFlow = 0;
+  public float asoFlowVolume = 0.02f;
+  void UpdateAudio() {
+    if (aso == null) {
+      aso = GetComponent<AudioSource>();
+    }
+    if (aso != null) {
+      var inOutPercentSum = 0f;
+      var num = 0;
+      foreach(var c in player.Children) {
+        inOutPercentSum += Mathf.Max(c.outputPercent, c.inputPercent);
+        num++;
+      }
+      var overallFlow = inOutPercentSum / num;
+      asoFlow = Mathf.Lerp(asoFlow, overallFlow, 0.05f);
+      aso.volume = asoFlow * asoFlowVolume;
+      aso.pitch = asoFlow;
+    }
   }
 
   // void OnCollisionEnter2D(Collision2D collision) {
