@@ -3043,6 +3043,9 @@ MonoBehaviour:
   - className: Pistol
     prefab: {fileID: 2832894760019680421, guid: 889667485ca391745a2f2dd9e6241c79,
       type: 3}
+  - className: Minigun
+    prefab: {fileID: 7017095106686296936, guid: 1ee31364ea148b54b98371ef37291191,
+      type: 3}
   - className: Engine
     prefab: {fileID: 5535818792714377297, guid: 7fdeee7db506ead46a0ba71e801ec089,
       type: 3}

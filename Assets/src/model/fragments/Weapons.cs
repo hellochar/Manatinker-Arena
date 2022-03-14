@@ -47,14 +47,13 @@ public class Pistol : Weapon, IActivatable {
   public override float myHpMax => 15;
   public override float myManaMax => 40;
   public override float weight => 0.5f;
-  static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
+  static Projectile pistolInfo = new Projectile() { baseSpeed = 20, maxDistance = 100 };
+  public virtual Projectile info => pistolInfo;
 
-  public override void Update(float dt) {
-    base.Update(dt);
-  }
+  public virtual float manaCost => 7;
 
   public bool CanActivateInner() {
-    return Mana > 10;
+    return Mana > manaCost;
   }
 
   public void Activate() {
@@ -66,6 +65,21 @@ public class Pistol : Weapon, IActivatable {
 
   public override string Description => "Click (7 Mana) - fire.\nFast, long ranged bullets.";
 }
+
+[RegisteredFragment]
+public class Minigun : Pistol {
+  public override (int, int) damageSpread => (4, 6);
+  public override float myInFlowRate => 16;
+  public override float myHpMax => 50;
+  public override float myManaMax => 80;
+  public override float weight => 0.5f;
+  public override Projectile info => new Projectile() { baseSpeed = 15, maxDistance = 40 };
+  public override bool isHold => true;
+  public override float manaCost => 5;
+
+  public override string Description => "Click and hold (5 Mana) - fire.";
+}
+
 
 [RegisteredFragment]
 public class Shotgun : Weapon, IActivatable {
