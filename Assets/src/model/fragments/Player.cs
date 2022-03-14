@@ -26,7 +26,7 @@ public class Player : Creature {
 }
 
 public class PlayerAvatar : Avatar {
-  public override float myHpMax => 60 + level * 10;
+  public override float hpMax => 60 + level * 10;
   public override float outFlowRate => 10 + 2 * level;
   public override string DisplayName => "Player " + level;
   public override string Description => "Create wires to other Fragments to power them up!\n\nProtect yourself at all costs.\n\nYour Fragments only take 25% damage.";

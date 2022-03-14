@@ -15,7 +15,8 @@ public class Fragment {
   public float Hp => hp;
   public virtual float manaMax => 100;
   public virtual bool hasOutput => true;
-  public virtual float outFlowRate => 0;
+  public virtual float myOutFlowRate => 0;
+  public virtual float outFlowRate => myOutFlowRate * levelScalar;
   public virtual bool hasInput => true;
   public virtual float myInFlowRate => 0;
   public float inFlowRate => myInFlowRate * levelScalar;
@@ -25,7 +26,7 @@ public class Fragment {
   public float levelScalar => (1f + (level - 1) * 0.2f);
 
   public virtual float myHpMax => 30;
-  public float hpMax => Mathf.Round(myHpMax * levelScalar);
+  public virtual float hpMax => Mathf.Round(myHpMax * levelScalar);
   public bool isDead => hp <= 0;
   public bool isBroken = false;
 

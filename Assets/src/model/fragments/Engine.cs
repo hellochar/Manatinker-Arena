@@ -5,7 +5,7 @@ using UnityEngine;
 [RegisteredFragment]
 public class Engine : Fragment {
   public override float myHpMax => 60;
-  public override float outFlowRate => 5;
+  public override float myOutFlowRate => 5;
   public override float weight => 1;
   public override float manaMax => 0;
   public override float myInFlowRate => 0;

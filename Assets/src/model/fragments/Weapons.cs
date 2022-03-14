@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Weapon : Fragment {
   public override bool hasOutput => false;
-  public override float outFlowRate => 0;
+  public override float myOutFlowRate => 0;
   public Action<Projectile> OnShootProjectile;
 
   public abstract (int, int) damageSpread { get; }
