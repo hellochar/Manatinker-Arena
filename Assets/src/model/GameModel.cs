@@ -82,7 +82,11 @@ public class GameModel {
     var avatar = new PlayerAvatar();
     avatar.owner = player;
 
-    main.AddFragment(player, avatar);//, pistol2, pistol3);
+    var engine = new PainEngine();
+    engine.builtinOffset = new Vector2(1, 0);
+    engine.owner = player;
+
+    main.AddFragment(player, avatar, engine);//, pistol2, pistol3);
 
   }
 

@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Creature {
+  public static event Action<float> OnDealsDamage;
   public float influenceRadius => 1.75f + level * 0.25f;
 
   public int gold = 5;
+
+  public void dealtDamage(float dmg) {
+    OnDealsDamage?.Invoke(dmg);
+  }
 
   public override void LevelUp() {
     var playerAvatar = (PlayerAvatar)avatar;

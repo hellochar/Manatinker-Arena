@@ -326,22 +326,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5314669510394275699}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8964549892060232013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 680559606912736472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cd6c7c8f069444ca9cac09fede94b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb2d: {fileID: 2286667394934995892}
-  fragmentController: {fileID: 0}
-  letterE: {fileID: 8015845023960921894}
-  asoFlowVolume: 0.1
 --- !u!82 &4368801255059765941
 AudioSource:
   m_ObjectHideFlags: 0
@@ -438,6 +422,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8964549892060232013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680559606912736472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66cd6c7c8f069444ca9cac09fede94b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2d: {fileID: 2286667394934995892}
+  fragmentController: {fileID: 0}
+  letterE: {fileID: 8015845023960921894}
+  asoFlowVolume: 0.03
 --- !u!50 &2286667394934995892 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: -2991902927914328889, guid: 08e33ce564cb9de47a7e3320b0cfc6a6,

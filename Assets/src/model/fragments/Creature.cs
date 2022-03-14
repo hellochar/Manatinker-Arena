@@ -99,15 +99,17 @@ public class Creature : Fragment {
   }
 
   public override void Die() {
-    var die = UnityEngine.Object.Instantiate(VFX.Get("enemyDie"), worldPos, Quaternion.identity);
-    die.transform.localScale *= 1.5f;
-    // remove all fragments from your ownership
-    var children = new List<Fragment>(this.children);
-    foreach (var c in children) {
-      // maintain their existing transform
-      c.builtinAngle = c.worldRotation;
-      c.builtinOffset = c.worldPos;
-      c.owner = null;
+    if (controller != null) {
+      var die = UnityEngine.Object.Instantiate(VFX.Get("enemyDie"), worldPos, Quaternion.identity);
+      die.transform.localScale *= 1.5f;
+      // remove all fragments from your ownership
+      var children = new List<Fragment>(this.children);
+      foreach (var c in children) {
+        // maintain their existing transform
+        c.builtinAngle = c.worldRotation;
+        c.builtinOffset = c.worldPos;
+        c.owner = null;
+      }
     }
     base.Die();
   }

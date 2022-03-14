@@ -3061,6 +3061,9 @@ MonoBehaviour:
   - className: Engine
     prefab: {fileID: 5535818792714377297, guid: 7fdeee7db506ead46a0ba71e801ec089,
       type: 3}
+  - className: PainEngine
+    prefab: {fileID: 5535818792714377297, guid: 403d055bd79ed554fbd9bae6b953b1c5,
+      type: 3}
   - className: Battery
     prefab: {fileID: 2800328936572384588, guid: 4ebf25ba37b5e3f4788ebdb8a87563f0,
       type: 3}

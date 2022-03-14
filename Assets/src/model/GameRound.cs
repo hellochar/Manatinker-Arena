@@ -21,8 +21,10 @@ public class GameRound {
   private readonly int spawnsPerTime;
   public int roundNumber;
 
-  public GameRound(int roundNumber, float duration = 62, float timeBetweenSpawns = 14, int spawnsPerTime = 1) {
+  public GameRound(int roundNumber, float duration = 62, int spawnsPerTime = 1) {
     this.roundNumber = roundNumber;
+    int numEnemiesToSpawn = 3 + roundNumber / 2;
+    var timeBetweenSpawns = (duration - 2) / numEnemiesToSpawn;
     this.duration = duration;
     this.spawnsPerTime = spawnsPerTime;
     timeStarted = GameModel.main.time;
@@ -76,7 +78,7 @@ public class GameRound {
       main.AddFragment(fragment);
     }
     for(int i = 0; i < numEngines; i++) {
-      var fragment = randomOf<Engine>();
+      var fragment = randomOf<EngineBase>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numEngines - 1) / 2f) * 3f;
       var x = 15;
@@ -159,7 +161,7 @@ public class GameRound {
       var shield = randomShield();
       shield.owner = enemy;
       main.AddFragment(shield);
-      var angle = (i + 0.5f) * 360f / numShields;
+      var angle = (i + 0.5f) * 360f / numShields + 180;
       shield.builtinOffset = Util.fromDeg(angle);
       shield.builtinAngle = angle;
     }

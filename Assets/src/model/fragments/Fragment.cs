@@ -165,12 +165,12 @@ public class Fragment {
   }
 
 	public void ChangeMana(float diff) {
-    if (mana + diff > manaMax + 0.001) {
-      Debug.LogWarning($"giving {mana} + {diff} = {mana+diff}, max {manaMax}");
+    if (mana + diff > manaMax) {
+      // Debug.LogWarning($"giving {mana} + {diff} = {mana+diff}, max {manaMax}");
       mana = manaMax;
       return;
-    } else if (mana + diff < -0.001) {
-      Debug.LogError($"taking {-diff}, mana {mana}.");
+    } else if (mana + diff < 0) {
+      // Debug.LogError($"taking {-diff}, mana {mana}.");
       mana = 0;
       return;
     }
@@ -178,9 +178,6 @@ public class Fragment {
 	}
 
   public virtual void ChangeHP(float diff) {
-    if (isDead) {
-      return;
-    }
     if (hp + diff > hpMax) {
       diff = hpMax - hp;
     }
@@ -238,6 +235,9 @@ public class Fragment {
       controller.OnHit(p, position);
     }
     // take damage
+    if (p.owner == GameModel.main.player) {
+      GameModel.main.player.dealtDamage(p.damage);
+    }
     ChangeHP(-p.damage);
   }
 
