@@ -194,6 +194,7 @@ internal class InputStateSelected : InputState {
           diff = amplitude;
         }
         if (diff != 0) {
+          UnityEngine.Object.Instantiate(VFX.Get("pickupFragment"), selected.transform.position, Quaternion.identity);
           var newAngle = selected.fragment.builtinAngle + diff;
           if (shouldRotateSnap) {
             newAngle = Util.Snap(newAngle, amplitude);
@@ -304,7 +305,12 @@ internal class InputStateDragged : InputState {
     }
   }
 
+  public override void enter() {
+    // UnityEngine.Object.Instantiate(VFX.Get("pickupFragment"), dragged.transform.position, Quaternion.identity);
+  }
+
   public override void exit() {
+    UnityEngine.Object.Instantiate(VFX.Get("pickupFragment"), dragged.transform.position, Quaternion.identity);
     var player = GameModel.main.player;
     var f = dragged.fragment;
     // we're too far away, remove from owner

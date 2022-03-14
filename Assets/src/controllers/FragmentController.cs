@@ -78,6 +78,7 @@ public class FragmentController : MonoBehaviour {
     rb2d.bodyType = RigidbodyType2D.Dynamic;
     rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
     rb2d.drag = 100;
+    // Instantiate(VFX.Get("pickupFragment"), transform.position, Quaternion.identity);
   }
 
   internal void UpdateOwner(Creature owner) {
