@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum GameRoundState {
@@ -15,12 +16,12 @@ public class GameRound {
   float timeStarted;
 
   public float timeUntilNextSpawn = 1.5f;
-  public float timeBetweenSpawns = 15;
+  public float timeBetweenSpawns = 14;
   public readonly float duration;
   private readonly int spawnsPerTime;
   public int roundNumber;
 
-  public GameRound(int roundNumber, float duration = 62, float timeBetweenSpawns = 15, int spawnsPerTime = 1) {
+  public GameRound(int roundNumber, float duration = 62, float timeBetweenSpawns = 14, int spawnsPerTime = 1) {
     this.roundNumber = roundNumber;
     this.duration = duration;
     this.spawnsPerTime = spawnsPerTime;
@@ -118,7 +119,9 @@ public class GameRound {
     PlaceItems(3, 3);
   }
 
-  public void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
+  public async void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
+    UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
+    await Task.Delay(200);
     var main = GameModel.main;
     var floor = main.floor;
     var enemy = new Enemy(pos, getAi());
