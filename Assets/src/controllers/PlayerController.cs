@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
       fragmentController = GetComponent<FragmentController>();
     }
     Camera.main.GetComponent<CameraFollowPlayer>().Player = this.gameObject;
+    Camera.main.GetComponent<CameraFollowPlayer>().Teleport();
   }
 
   void Update() {

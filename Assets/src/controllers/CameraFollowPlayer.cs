@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +55,10 @@ public class CameraFollowPlayer : MonoBehaviour {
     var newPosition = transform.position.xy();
     newPosition = Vector2.Lerp(newPosition, targetPosition, lerpRate * Time.deltaTime);
     transform.position = newPosition.z(transform.position.z);
+  }
+
+  internal void Teleport() {
+    Camera.main.transform.position = Player.transform.position.xy().z(Camera.main.transform.position.z);
   }
 }
 
