@@ -145,7 +145,7 @@ public class FragmentController : MonoBehaviour {
       if (fragment.owner == null) {
         inputSR.color = unactivatedColor;
       } else {
-        currentInputPercent = Mathf.Lerp(currentInputPercent, (float)fragment.inputPercent * HES, 0.05f);
+        currentInputPercent = Mathf.Lerp(currentInputPercent, (float)fragment.inputPercent * HES * 2, 0.05f);
         inputSR.color = Color.Lerp(Color.black, Color.white, currentInputPercent);
       }
     }
@@ -153,7 +153,7 @@ public class FragmentController : MonoBehaviour {
       if (fragment.owner == null) {
         outputSR.color = unactivatedColor;
       } else {
-        currentOutputPercent = Mathf.Lerp(currentOutputPercent, (float)fragment.outputPercent * HES, 0.05f);
+        currentOutputPercent = Mathf.Lerp(currentOutputPercent, (float)fragment.outputPercent * HES * 2, 0.05f);
         outputSR.color = Color.Lerp(Color.black, Color.white, currentOutputPercent);
       }
     }

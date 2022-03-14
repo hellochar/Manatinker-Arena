@@ -16,6 +16,9 @@ public class WireController : MonoBehaviour {
 
   void Start() {
     StartCoroutine(WireInAnimation());
+    var aso = GetComponent<AudioSource>();
+    // only on real wires
+    aso.enabled = wire.to != null && wire.from != null;
   }
 
   private IEnumerator WireInAnimation() {
