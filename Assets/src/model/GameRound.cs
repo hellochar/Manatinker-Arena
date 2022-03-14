@@ -144,9 +144,8 @@ public class GameRound {
     }
   }
 
-  public async void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
+  public void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
-    await Task.Delay(200);
     var main = GameModel.main;
     var floor = main.floor;
     var enemy = new Enemy(pos, getAi());

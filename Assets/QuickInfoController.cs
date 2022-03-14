@@ -32,7 +32,7 @@ public class QuickInfoController : MonoBehaviour {
         extraText += $"{(outputPercent * 100).ToString("##0")}% →";
 
       }
-      Name.text = $"{extraText}";
+      Name.text = $"{fragment.DisplayName} {extraText}";
     }
   }
 }

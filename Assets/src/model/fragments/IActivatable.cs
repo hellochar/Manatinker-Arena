@@ -5,6 +5,8 @@ public interface IActivatable {
 
 public static class ActivatableExtensions {
   public static bool CanActivate(this IActivatable a) {
-    return a.CanActivateInner() && !GameModelController.main.isEditMode;
+    var fragment = a as Fragment;
+    var extraRestriction = fragment.isPlayerOwned ? !GameModelController.main.isEditMode : true;
+    return a.CanActivateInner() && extraRestriction;
   }
 }
