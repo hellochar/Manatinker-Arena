@@ -13,7 +13,8 @@ public class Fragment {
   public float Mana => mana;
   protected float hp;
   public float Hp => hp;
-  public virtual float manaMax => 100;
+  public virtual float myManaMax => 100;
+  public float manaMax => myManaMax * levelScalar;
   public virtual bool hasOutput => true;
   public virtual float myOutFlowRate => 0;
   public virtual float outFlowRate => myOutFlowRate * levelScalar;

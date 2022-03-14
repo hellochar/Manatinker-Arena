@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Creature : Fragment {
   public override float myHpMax => 1;
-  public override float manaMax => 0;
+  public override float myManaMax => 0;
   public override float weight => 0;
   public override bool hasInput => false;
   public override bool hasOutput => false;

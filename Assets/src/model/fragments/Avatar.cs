@@ -7,7 +7,7 @@ public class Avatar : Fragment {
   public override float myHpMax => 100;
   public override float myOutFlowRate => 10;
   public override float weight => 0;
-  public override float manaMax => 0;
+  public override float myManaMax => 0;
   public override float myInFlowRate => 0;
   public override bool hasInput => false;
 

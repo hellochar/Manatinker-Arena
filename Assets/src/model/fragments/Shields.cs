@@ -5,7 +5,7 @@ public abstract class Shield : Fragment {
   public override bool hasOutput => false;
   public override float myInFlowRate => 0;
   public override float myOutFlowRate => 0;
-  public override float manaMax => 0;
+  public override float myManaMax => 0;
 }
 
 [RegisteredFragment]

@@ -4,5 +4,5 @@ public class Battery : Fragment {
   public override float myOutFlowRate => 10;
   public override float myInFlowRate => 10;
   public override float weight => 0.5f;
-  public override float manaMax => 100;
+  public override float myManaMax => 100;
 }

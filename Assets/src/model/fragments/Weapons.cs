@@ -45,7 +45,7 @@ public class Pistol : Weapon, IActivatable {
   public override (int, int) damageSpread => (8, 12);
   public override float myInFlowRate => 8;
   public override float myHpMax => 15;
-  public override float manaMax => 40;
+  public override float myManaMax => 40;
   public override float weight => 0.5f;
   static Projectile info = new Projectile() { baseSpeed = 20, maxDistance = 100 };
 
@@ -72,7 +72,7 @@ public class Shotgun : Weapon, IActivatable {
   public override (int, int) damageSpread => (2, 3);
   public override float myInFlowRate => 8;
   public override float myHpMax => 22;
-  public override float manaMax => 32;
+  public override float myManaMax => 32;
   static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
 
   public bool CanActivateInner() {
@@ -105,7 +105,7 @@ public class Laser : Weapon, IActivatable {
   public override (int, int) damageSpread => (15, 15);
   public override float myInFlowRate => 25;
   public override float myHpMax => 18;
-  public override float manaMax => 25;
+  public override float myManaMax => 25;
   public override bool isHold => true;
   public float manaDrainWhileActivated => 30;
   public bool needsRecharge = false;
