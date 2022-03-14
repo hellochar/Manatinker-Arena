@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -11,6 +12,26 @@ public class WireController : MonoBehaviour {
     this.wire = w;
     w.controller = this;
     // Update();
+  }
+
+  void Start() {
+    StartCoroutine(WireInAnimation());
+  }
+
+  private IEnumerator WireInAnimation() {
+    float duration = 0.5f;
+    float endThickness = lineRenderer.startWidth;
+    float startThickness = endThickness * 15;
+    var start = Time.time;
+    lineRenderer.startWidth = lineRenderer.endWidth = startThickness;
+    float t;
+    do {
+      t = Mathf.Clamp((Time.time - start) / duration, 0, 1);
+      // lineRenderer.startWidth = lineRenderer.endWidth = Mathf.Lerp(startThickness, endThickness, t);
+      lineRenderer.startWidth = lineRenderer.endWidth = Mathf.Lerp(lineRenderer.startWidth, endThickness, 0.02f);
+      yield return new WaitForEndOfFrame();
+    } while (t < 1);
+    lineRenderer.startWidth = lineRenderer.endWidth = endThickness;
   }
 
   void Update() {
