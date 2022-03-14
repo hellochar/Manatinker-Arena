@@ -1,11 +1,30 @@
 using UnityEngine;
 
 public abstract class Shield : Fragment {
-  public override bool hasInput => false;
+  // public override bool hasInput => false;
   public override bool hasOutput => false;
-  public override float myInFlowRate => 0;
+  public override float myInFlowRate => 10;
+  public override float myManaMax => myHpMax;
   public override float myOutFlowRate => 0;
-  public override float myManaMax => 0;
+
+  public override string Description => "Takes damage from mana first at a 2:1 ratio.";
+
+  public override void ChangeHP(float diff) {
+    // take mana damage first
+    if (diff < 0) {
+      var dmg = -diff;
+      var manaCost = dmg * 2;
+      var manaUsed = Mathf.Min(Mana, manaCost);
+      var dmgTaken = manaUsed / 2;
+      diff += dmgTaken;
+      ChangeMana(-manaUsed);
+      if (diff < 0) {
+        base.ChangeHP(diff);
+      }
+    } else {
+      base.ChangeHP(diff);
+    }
+  }
 }
 
 [RegisteredFragment]
