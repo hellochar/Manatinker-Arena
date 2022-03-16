@@ -20,7 +20,7 @@ public class FragmentController : MonoBehaviour {
 
   private static int globalId = 0;
   public readonly int id = globalId++;
-  public static readonly Color unactivatedColor = new Color32(95, 96, 102, 255);
+  public static readonly Color unactivatedColor = new Color32(12, 13, 14, 255);
   // public static readonly Color unactivatedColor = Color.white;
 
   public virtual void Init(Fragment fragment) {
@@ -141,7 +141,7 @@ public class FragmentController : MonoBehaviour {
       spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent * HES);
       spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
-    if (input != null) {
+    if (input != null && input.activeSelf) {
       if (fragment.owner == null) {
         inputSR.color = unactivatedColor;
       } else {
@@ -149,7 +149,7 @@ public class FragmentController : MonoBehaviour {
         inputSR.color = Color.Lerp(Color.black, Color.white, currentInputPercent);
       }
     }
-    if (output != null) {
+    if (output != null && output.activeSelf) {
       if (fragment.owner == null) {
         outputSR.color = unactivatedColor;
       } else {
