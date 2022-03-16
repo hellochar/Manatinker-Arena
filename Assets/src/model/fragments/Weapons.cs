@@ -133,7 +133,7 @@ public class Shotgun : Weapon, IActivatable {
 [RegisteredFragment]
 public class Laser : Weapon, IActivatable {
   // 7 dps
-  public override (int, int) damageSpread => (30, 30);
+  public override (int, int) damageSpread => (24, 24);
   public override float myInFlowRate => 15;
   public override float myHpMax => 20;
   public override float myManaMax => 25;
@@ -212,5 +212,89 @@ public class Dagger : Weapon, IActivatable {
     UpdateBuiltinOffset();
     Projectile p = new Projectile() { baseSpeed = 0, lifeTime = 0.02f, damage = rollDamage(), ignoreOwner = true };
     OnShootProjectile?.Invoke(p);
+  }
+}
+
+[RegisteredFragment]
+public class Rapier : Weapon, IActivatable {
+  public override bool hasInput => false;
+  public override bool hasOutput => false;
+  public override float weight => 1f;
+  // per second
+  public override (int, int) damageSpread => (30, 30);
+  public bool activated = false;
+  // activated lagged by one frame
+  public bool activeLastFrame = false;
+  public float T = 0;
+  private float originalAngle;
+  public float attackTime = 0.7f;
+  public override bool isHold => true;
+  public static float angleSpread = 21;
+
+  public override void Update(float dt) {
+    activeLastFrame = activated;
+    if (!activated) {
+      TurnOff();
+    } else {
+      KeepGoing(dt);
+      activated = false;
+    }
+    base.Update(dt);
+  }
+
+  void TurnOff() {
+    if (T != 0) {
+      builtinAngle = originalAngle;
+      currentAngleDelta = 0;
+      T = 0;
+    }
+  }
+
+  float currentAngleDelta = 0;
+  void KeepGoing(float dt) {
+    var t = (T % attackTime) / attackTime;
+    // we want the rapier to deal more damage when it's moving fast. Spread the DPS proportionally over the
+    // movement angle
+
+    // if completely active, over one attackTime cycle we start at -angleSpread, move to +angleSpread, then back to -angleSpread.
+    // this is a total of 4angleSpread. Our damage over this time is attackTime * dps.
+    // we now want to distribute proportionally to how much of the 4anglespread we've actually used up in this delta frame
+    var fullCycleAngle = (angleSpread * 4);
+    var fullCycleDamage = damageSpread.Item1 * attackTime;
+
+    var desiredAngleDelta = t < 0.5f ? angleSpread : -angleSpread;
+
+    var nextAngleDelta = Mathf.Lerp(currentAngleDelta, desiredAngleDelta, 30 * dt);
+    var angleMovement = Mathf.Abs(nextAngleDelta - currentAngleDelta);
+    var percentageCycleMoved = angleMovement / fullCycleAngle;
+
+    currentAngleDelta = nextAngleDelta;
+    builtinAngle = originalAngle + currentAngleDelta;
+    T += dt;
+
+    Projectile p = new Projectile() {
+      baseSpeed = 0,
+      lifeTime = 0.02f,
+      damage = percentageCycleMoved * fullCycleDamage,
+      ignoreOwner = true
+    };
+    OnShootProjectile?.Invoke(p);
+  }
+
+  public bool CanActivateInner() {
+    return true;
+  }
+
+  public void Activate() {
+    // we just started
+    if (!activeLastFrame) {
+      ActivateStart();
+    }
+    activated = true;
+  }
+
+  private void ActivateStart() {
+    originalAngle = builtinAngle;
+    T = 0;
   }
 }

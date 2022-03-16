@@ -69,6 +69,17 @@ public class GameRound {
       main.AddFragment(dagger);
     }
 
+    {
+      var rapier = new Rapier();
+      rapier.builtinAngle = 0;
+      var yOffset = 0;
+      var x = 5;
+      var y = main.floor.height / 2 + yOffset + 1;
+      var pos = new Vector2(x, y);
+      rapier.builtinOffset = pos;
+      main.AddFragment(rapier);
+    }
+
     for(int i = 0; i < numWeapons; i++) {
       var fragment = randomWeapon();
       fragment.builtinAngle = 0;

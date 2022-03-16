@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileController : ProjectileControllerBase {
   Rigidbody2D rb2d;
-
+  private SpriteRenderer spriteRenderer;
   [SerializeField]
   [ReadOnly]
   float distanceTravelled = 0;
@@ -13,6 +13,8 @@ public class ProjectileController : ProjectileControllerBase {
   // Start is called before the first frame update
   void Start() {
     rb2d = GetComponent<Rigidbody2D>();
+    spriteRenderer = GetComponent<SpriteRenderer>();
+
     var angle = this.transform.rotation.eulerAngles.z;
     rb2d.velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * projectile.baseSpeed;
     rb2d.SetRotation(angle);
@@ -24,6 +26,11 @@ public class ProjectileController : ProjectileControllerBase {
       var volumeScalar = Mathf.Clamp(Util.MapLinear(projectile.damage, 0, 8, 0.3f, 1), 0, 1);
       aso.volume *= volumeScalar;
     }
+
+    // small projectiles start to fade out
+    var newColor = spriteRenderer.color;
+    newColor.a = projectile.damage < 2 ? projectile.damage / 2 : 1;
+    spriteRenderer.color = newColor;
   }
 
   // Update is called once per frame
