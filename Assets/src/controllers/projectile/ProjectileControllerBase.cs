@@ -23,18 +23,18 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     if (col.gameObject.CompareTag("Projectile")) {
       return false;
     }
-    // Debug.Log("projectile: trigger enter " + col.gameObject);
-    var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
-    if (hitFC == projectile.fragment.controller && projectile.ignoreSelf) {
-      return false;
-    }
-    // we've hit a fragment, process it
-    if (hitFC) {
-      hitFC.fragment.Hit(projectile, pos);
-      return true;
-    }
     var hitWall = col.gameObject.CompareTag("Wall");
     if (hitWall) {
+      return true;
+    }
+    // Debug.Log("projectile: trigger enter " + col.gameObject);
+    var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
+    // we've hit a fragment, process it
+    if (hitFC) {
+      if (projectile.ignoreOwner && hitFC.fragment.owner == projectile.owner) {
+        return false;
+      }
+      hitFC.fragment.Hit(projectile, pos);
       return true;
     }
     return false;

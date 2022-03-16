@@ -39,7 +39,7 @@ public struct Projectile {
   internal bool isRay;
   public Creature owner;
   public Fragment fragment;
-  public bool ignoreSelf;
+  public bool ignoreOwner;
 }
 
 [RegisteredFragment]
@@ -210,7 +210,7 @@ public class Dagger : Weapon, IActivatable {
     originalBuiltin = builtinOffset;
     timeActivatedLeft = attackTime;
     UpdateBuiltinOffset();
-    Projectile p = new Projectile() { baseSpeed = 0, lifeTime = 0.02f, damage = rollDamage(), ignoreSelf = true };
+    Projectile p = new Projectile() { baseSpeed = 0, lifeTime = 0.02f, damage = rollDamage(), ignoreOwner = true };
     OnShootProjectile?.Invoke(p);
   }
 }
