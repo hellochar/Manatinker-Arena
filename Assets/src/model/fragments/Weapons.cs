@@ -131,7 +131,7 @@ public class Shotgun : Weapon, IActivatable {
 [RegisteredFragment]
 public class Laser : Weapon, IActivatable {
   // 7 dps
-  public override (int, int) damageSpread => (18, 18);
+  public override (int, int) damageSpread => (30, 30);
   public override float myInFlowRate => 15;
   public override float myHpMax => 20;
   public override float myManaMax => 25;

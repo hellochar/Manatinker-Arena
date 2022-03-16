@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class Enemy : Creature {
   public EnemyAI ai;
-  public Enemy(Vector2 start) : this(start, EnemyAI.Default) {
-  }
-
   public Enemy(Vector2 start, EnemyAI ai) : base(start) {
     this.ai = ai;
   }
   public override float baseTurnRate => ai.baseTurnRate;
   public override float baseSpeed => ai.baseSpeed;
+  public override float encumbranceThreshold => ai.encumbrance;
 
   public float cooldown = 0f;
 
@@ -68,24 +66,19 @@ public struct EnemyAI {
   public float deltaAngleThreshold;
   public float desiredDistance;
   public float minDistance;
-
-  public static EnemyAI Default = new EnemyAI() {
-    baseTurnRate = 2.5f,
-    baseSpeed = 10f,
-    minActiveDuration = 2,
-    cooldown = 2,
-    deltaAngleThreshold = 15,
-    desiredDistance = 5,
-    minDistance = 8,
-  };
+  public float encumbrance;
 }
 
 public class EnemyAvatar : Avatar {
-  public override float myHpMax => _hpMax;
-  public float _hpMax;
   public override string DisplayName => "Enemy";
+  public float _hpMax;
+  public override float myHpMax => _hpMax;
 
-  public EnemyAvatar(float hpMax = 25) {
+  private float _outFlowRate;
+  public override float outFlowRate => _outFlowRate;
+
+  public EnemyAvatar(float hpMax, float _outFlowRate) {
+    this._outFlowRate = _outFlowRate;
     _hpMax = hpMax;
     hp = hpMax;
   }
@@ -96,7 +89,7 @@ public class EnemyAvatar : Avatar {
       for(int i = 0; i < goldEarned; i++) {
         var t = controller.transform.position + (Random.insideUnitCircle * 0.5f).z();
         var coin = UnityEngine.Object.Instantiate(VFX.Get("coin"), t, Quaternion.identity);
-        coin.GetComponent<CoinController>().setDelay(i + 50);
+        coin.GetComponent<CoinController>().setDelay(i);
       }
       GameModel.main.player.gold += goldEarned;
     }

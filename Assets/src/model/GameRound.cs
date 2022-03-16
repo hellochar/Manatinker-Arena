@@ -158,12 +158,14 @@ public class GameRound {
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
-    var avatar = new EnemyAvatar(25 + roundNumber * 5);
+    var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
+    var avatar = new EnemyAvatar(maxHP, Mathf.RoundToInt(10 + Mathf.Pow(roundNumber, 1.1f) * 1.5f));
     avatar.owner = enemy;
     main.AddFragment(avatar);
 
     for(var i = 0; i < numShields; i++) {
       var shield = randomShield();
+      shield.ChangeMana(shield.manaMax);
       shield.owner = enemy;
       main.AddFragment(shield);
       var angle = (i + 0.5f) * 360f / numShields + 180;
@@ -175,6 +177,7 @@ public class GameRound {
     for (var i = 0; i < numWeapons; i++) {
       var weapon = randomWeapon();
       weapon.owner = enemy;
+      weapon.ChangeMana(weapon.manaMax);
       // 0 1 = 0
       // 0 2 = 
       var y = (i + 0.5f - numWeapons / 2f) * 0.5f;
@@ -188,13 +191,14 @@ public class GameRound {
 
   private EnemyAI getAi() {
     return new EnemyAI() {
-      baseTurnRate = 2.5f * (1 + roundNumber / 10f),
+      baseTurnRate = 2.5f * (1 + roundNumber / 10f * 2.5f),
       baseSpeed = 10f + roundNumber,
-      minActiveDuration = 2,
+      minActiveDuration = 2 + roundNumber * 0.3f,
       cooldown = 2 - roundNumber * 0.1f,
       deltaAngleThreshold = 15,
       desiredDistance = 5,
       minDistance = 8,
+      encumbrance = 2f + 1 * roundNumber,
     };
   }
 }

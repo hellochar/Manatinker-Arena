@@ -28,6 +28,6 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     text.text = $@"
 Gold: {player.gold}
 Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
-Speed: {player.speed} {extraSpeedText}".Trim();
+Speed: {player.speed.ToString("##0.##")} {extraSpeedText}".Trim();
   }
 }
