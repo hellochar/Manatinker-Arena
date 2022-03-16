@@ -57,6 +57,18 @@ public class GameRound {
   // scatter random items around
   public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
+
+    {
+      var dagger = new Dagger();
+      dagger.builtinAngle = 0;
+      var yOffset = 0;
+      var x = 5;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      dagger.builtinOffset = pos;
+      main.AddFragment(dagger);
+    }
+
     for(int i = 0; i < numWeapons; i++) {
       var fragment = randomWeapon();
       fragment.builtinAngle = 0;
@@ -192,7 +204,7 @@ public class GameRound {
   private EnemyAI getAi() {
     return new EnemyAI() {
       baseTurnRate = 2.5f * (1 + roundNumber / 10f * 2.5f),
-      baseSpeed = 10f + roundNumber,
+      baseSpeed = 8f + roundNumber,
       minActiveDuration = 2 + roundNumber * 0.3f,
       cooldown = 2 - roundNumber * 0.1f,
       deltaAngleThreshold = 15,

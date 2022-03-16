@@ -25,6 +25,9 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     }
     // Debug.Log("projectile: trigger enter " + col.gameObject);
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
+    if (hitFC == projectile.fragment.controller && projectile.ignoreSelf) {
+      return false;
+    }
     // we've hit a fragment, process it
     if (hitFC) {
       hitFC.fragment.Hit(projectile, pos);

@@ -3085,6 +3085,8 @@ MonoBehaviour:
   - className: EnemyAvatar
     prefab: {fileID: 6470644292675284001, guid: 0b2ddb7d6c48b52468c85b965b7de656,
       type: 3}
+  - className: Dagger
+    prefab: {fileID: 887219699496372864, guid: 256dc334df6f1cf42b81c2e5191113cb, type: 3}
   fragmentControllers: []
 --- !u!4 &1391943368
 Transform:

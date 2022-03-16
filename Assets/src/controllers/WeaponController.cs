@@ -40,6 +40,9 @@ public class WeaponController : MonoBehaviour {
   }
 
   void HandleShootProjectile(Projectile p) {
+    if (p.fragment == null) {
+      p.fragment = weapon;
+    }
     if (p.owner == null) {
       p.owner = weapon.owner;
     }
