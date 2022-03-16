@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
   }
 
   void Update() {
-    letterE.transform.position = GameModel.main.player.worldPos + Vector2.up;
+    letterE.transform.position = (GameModel.main.player.worldPos + Vector2.up).z(letterE.transform.position.z);
     letterE.transform.eulerAngles = Vector3.zero;
 
     UpdateAudio();

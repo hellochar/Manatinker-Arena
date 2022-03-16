@@ -81,7 +81,7 @@ Shader "Unlit/WhiteToGreyByMana"
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 texColor = SampleSpriteTexture (IN.texcoord);
-				if (length(texColor.rgb - fixed3(1, 1, 1)) < 1) {
+				if (length(texColor.rgb - fixed3(1, 1, 1)) < 0.5) {
 					texColor.rgb = lerp(fixed3(0, 0, 0), texColor.rgb, _Percentage);
 					texColor.rgb *= texColor.a;
 					return texColor;

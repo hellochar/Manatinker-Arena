@@ -3,7 +3,8 @@ Shader "Unlit/ManaCoverShader"
     Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        [PerRendererData] _Percentage ("DrawPercent", Float) = 1.0
+        [PerRendererData] _Percentage ("DrawPercent", Float) = 0.5
+		[PerRendererData] _AlphaScalar ("Alpha Scalar", Float) = 1.0
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 	}
@@ -64,6 +65,7 @@ Shader "Unlit/ManaCoverShader"
 			sampler2D _MainTex;
 			sampler2D _AlphaTex;
             float _Percentage;
+            float _AlphaScalar;
 			float _AlphaSplitEnabled;
 
 			fixed4 SampleSpriteTexture (float2 uv)
@@ -84,14 +86,15 @@ Shader "Unlit/ManaCoverShader"
                 fixed4 c = IN.color;
                 c.rgb *= alpha;
                 c.a = alpha;
-				// HES
-				c *= 2;
 
                 float pctScalar = IN.texcoord.x < _Percentage;
                 c.rgb *= pctScalar;
 				// if we're full, hide us
 				if (_Percentage > 0.999) {
-					c *= 0.1f;
+					// 2 for HES
+					c *= 0.1f * 2;
+				} else {
+					c.rgb *= _AlphaScalar;
 				}
                 return c;
 				// c.rgb *= c.a;

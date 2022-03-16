@@ -21,7 +21,6 @@ public class FragmentController : MonoBehaviour {
   private static int globalId = 0;
   public readonly int id = globalId++;
   public static readonly Color unactivatedColor = new Color32(12, 13, 14, 255);
-  // public static readonly Color unactivatedColor = Color.white;
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -131,15 +130,16 @@ public class FragmentController : MonoBehaviour {
   float currentInputPercent;
   float currentOutputPercent;
   public virtual void Update() {
+    var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
+    currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
     if (manaCover != null) {
       manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
+      manaCover.material.SetFloat("_AlphaScalar", currentFlowPercent * HES);
       manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (spriteRenderer != null) {
-      var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
-      currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
       spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent * HES);
-      spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
+      // spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (input != null && input.activeSelf) {
       if (fragment.owner == null) {
