@@ -17,7 +17,7 @@ public class WeaponController : MonoBehaviour {
       if (a.CanActivate() && weapon.isPlayerOwned && activationCheck) {
         a.Activate();
       }
-      if (weapon.isHold) {
+      if (weapon is Laser) {
         var playSound = activationCheck && a.CanActivate();
         SetAudioActive(playSound);
       }

@@ -107,14 +107,10 @@ public class FragmentController : MonoBehaviour {
     mask.frontSortingOrder = id - 32766;
     mask.backSortingOrder = mask.frontSortingOrder - 1;
 
-    if (input != null) {
-      inputSR = input.GetComponent<SpriteRenderer>();
-      input.SetActive(fragment.hasInput);
-    }
-    if (output != null) {
-      outputSR = output.GetComponent<SpriteRenderer>();
-      output.SetActive(fragment.hasOutput);
-    }
+    inputSR = input.GetComponent<SpriteRenderer>();
+    input.SetActive(fragment.hasInput);
+    outputSR = output.GetComponent<SpriteRenderer>();
+    output.SetActive(fragment.hasOutput);
   }
 
   internal void UpdateOffset(Vector2 offset) {
@@ -141,7 +137,7 @@ public class FragmentController : MonoBehaviour {
       spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent * HES);
       // spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
-    if (input != null && input.activeSelf) {
+    if (fragment.hasInput) {
       if (fragment.owner == null) {
         inputSR.color = unactivatedColor;
       } else {
@@ -149,7 +145,7 @@ public class FragmentController : MonoBehaviour {
         inputSR.color = Color.Lerp(Color.black, Color.white, currentInputPercent);
       }
     }
-    if (output != null && output.activeSelf) {
+    if (fragment.hasOutput) {
       if (fragment.owner == null) {
         outputSR.color = unactivatedColor;
       } else {
