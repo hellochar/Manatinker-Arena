@@ -20,8 +20,7 @@ public class GameModelController : MonoBehaviour {
 
   [ReadOnly]
   public FloorController floor;
-  [SerializeField]
-  public FragmentPrefabMapping[] Mapping;
+  public FragmentDatabase Database;
 
   private Dictionary<System.Type, GameObject> fragmentPrefabs = new Dictionary<Type, GameObject>();
 
@@ -48,9 +47,13 @@ public class GameModelController : MonoBehaviour {
 
   void Awake() {
     main = this;
-    foreach (var entry in Mapping) {
-      var type = Type.GetType(entry.className);
-      fragmentPrefabs.Add(type, entry.prefab);
+    foreach(var prefab in Database.Items) {
+      var type = Type.GetType(prefab.name);
+      if (type == null) {
+        Debug.LogWarning("Skipping " + prefab.name);
+        continue;
+      }
+      fragmentPrefabs.Add(type, prefab);
     }
     GameModel.SetMainToNewGame();
   }

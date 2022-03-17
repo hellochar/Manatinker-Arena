@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a03d735d7b6c5d4e90d8d7567afe3d3, type: 3}
+  m_Name: New Item Test
+  m_EditorClassIdentifier: 
+  Name: Buckler
+  tags:
+  - shield
+  damage: 0
+  prefab: {fileID: 2908724252148680555, guid: 52a186591a9313e4c8ce472d6803750e, type: 3}

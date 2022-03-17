@@ -43,6 +43,28 @@ public class GameRound {
   public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
 
+    // {
+    //   var dagger = new Dagger();
+    //   dagger.builtinAngle = 0;
+    //   var yOffset = 0;
+    //   var x = 4;
+    //   var y = main.floor.height / 2 + yOffset;
+    //   var pos = new Vector2(x, y);
+    //   dagger.builtinOffset = pos;
+    //   main.AddFragment(dagger);
+    // }
+
+    // {
+    //   var rapier = new Rapier();
+    //   rapier.builtinAngle = 0;
+    //   var yOffset = 1;
+    //   var x = 4;
+    //   var y = main.floor.height / 2 + yOffset;
+    //   var pos = new Vector2(x, y);
+    //   rapier.builtinOffset = pos;
+    //   main.AddFragment(rapier);
+    // }
+
     for(int i = 0; i < numWeapons; i++) {
       var fragment = spawnRandom<Weapon>();
       fragment.builtinAngle = 0;
