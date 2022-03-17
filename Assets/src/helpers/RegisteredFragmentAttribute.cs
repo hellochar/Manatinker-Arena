@@ -11,13 +11,17 @@ public class RegisteredFragmentAttribute : Attribute {
 
   public float SpawnWeight { get; }
   private static List<RegisteredFragmentAttribute> cachedTypes;
+  private static Dictionary<System.Type, List<RegisteredFragmentAttribute>> cachedTypeMap = new Dictionary<Type, List<RegisteredFragmentAttribute>>();
 
   public static List<RegisteredFragmentAttribute> GetAllFragmentTypes<T>() where T : Fragment {
     if (cachedTypes == null) {
       cachedTypes = GetRegisteredTypesImpl().ToList();
       UnityEngine.Debug.Log(String.Join(", ", cachedTypes.Select(t => t.type.FullName)));
     }
-    return cachedTypes.Where(attr => attr.type.IsSubclassOf(typeof(T))).ToList();
+    if (!cachedTypeMap.ContainsKey(typeof(T))) {
+      cachedTypeMap[typeof(T)] = cachedTypes.Where(attr => attr.type.IsSubclassOf(typeof(T))).ToList();
+    }
+    return cachedTypeMap[typeof(T)];
   }
 
   private static IEnumerable<RegisteredFragmentAttribute> GetRegisteredTypesImpl() {

@@ -47,7 +47,7 @@ Influence radius increased!
   }
 
   public static GameObject existingText;
-  public static GameObject Inset;
+  public static GameObject EditModeInstructions;
   public static void ShowText(string v) {
     if (existingText != null) {
       Destroy(existingText);
@@ -55,11 +55,11 @@ Influence radius increased!
     if (tempText == null) {
       tempText = Resources.Load<GameObject>("TempText");
     }
-    if (Inset == null) {
-      Inset = GameObject.Find("Inset");
+    if (EditModeInstructions == null) {
+      EditModeInstructions = GameObject.Find("EditModeInstructions");
     }
-    existingText = Instantiate(tempText, Inset.transform);
+    existingText = Instantiate(tempText, EditModeInstructions.transform);
     existingText.GetComponentInChildren<TMPro.TMP_Text>().text = v;
-    Destroy(existingText, v.Length / 20f);
+    Destroy(existingText, v.Length / 25f);
   }
 }

@@ -25,9 +25,10 @@ public class Creature : Fragment {
   public virtual float baseSpeed => 10;
   public virtual float baseTurnRate => 10f;
   public virtual float encumbranceThreshold => 10;
-  // public float encumbranceScalar => Mathf.Min(1, encumbranceThreshold / totalWeight);
-  public float encumbranceScalar => Mathf.Clamp(
-    Util.MapLinear(totalWeight, 0, encumbranceThreshold * 2, 2, 0), 0.01f, 1);
+  public float encumbranceScalar => Mathf.Min(1, encumbranceThreshold / totalWeight);
+  // public float encumbranceScalar => Mathf.Clamp(
+  //   Util.MapLinear(totalWeight, 0, encumbranceThreshold * 2, 2, 0),
+  //   0.1f, 1);
   public float speed => encumbranceScalar * baseSpeed;
   public float turnRate => encumbranceScalar * baseTurnRate;
   public float totalWeight;

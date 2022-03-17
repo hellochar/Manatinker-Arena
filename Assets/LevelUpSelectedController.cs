@@ -34,16 +34,14 @@ public class LevelUpSelectedController : MonoBehaviour {
     } else {
       player.gold -= cost;
       selected.fragment.LevelUp();
-//       LevelUpPlayerController.ShowText($@"
-// {selected.fragment.DisplayName} {player.level}
+      LevelUpPlayerController.ShowText($@"
+{selected.fragment.DisplayName}
 
-// Healed 50%!
-// Max HP +10!
-// Outflow Rate +2!
-// Speed +2!
-// Max weight +1!
-// Influence radius increased!
-// ".Trim());
+Full Heal.
++20% max HP.
++20% max Mana.
++20% Mana inflow and outflow speed.
+".Trim());
     }
   }
 }

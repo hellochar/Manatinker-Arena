@@ -32,23 +32,8 @@ public class GameRound {
 
   private static List<RegisteredFragmentAttribute> allWeapons;
   private static List<RegisteredFragmentAttribute> allShields;
-  public static Weapon randomWeapon() {
-    if (allWeapons == null) {
-      allWeapons = RegisteredFragmentAttribute.GetAllFragmentTypes<Weapon>();
-    }
-    var spawn = allWeapons[Random.Range(0, allWeapons.Count)];
-    return (Weapon)NewFragmentFrom(spawn);
-  }
 
-  public static Shield randomShield() {
-    if (allShields == null) {
-      allShields = RegisteredFragmentAttribute.GetAllFragmentTypes<Shield>();
-    }
-    var spawn = allShields[Random.Range(0, allShields.Count)];
-    return (Shield)NewFragmentFrom(spawn);
-  }
-
-  public static T randomOf<T>() where T : Fragment {
+  public static T spawnRandom<T>() where T : Fragment {
     var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<T>();
     var spawn = frags[Random.Range(0, frags.Count)];
     return (T)NewFragmentFrom(spawn);
@@ -58,30 +43,8 @@ public class GameRound {
   public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
 
-    {
-      var dagger = new Dagger();
-      dagger.builtinAngle = 0;
-      var yOffset = 0;
-      var x = 5;
-      var y = main.floor.height / 2 + yOffset;
-      var pos = new Vector2(x, y);
-      dagger.builtinOffset = pos;
-      main.AddFragment(dagger);
-    }
-
-    {
-      var rapier = new Rapier();
-      rapier.builtinAngle = 0;
-      var yOffset = 0;
-      var x = 5;
-      var y = main.floor.height / 2 + yOffset + 1;
-      var pos = new Vector2(x, y);
-      rapier.builtinOffset = pos;
-      main.AddFragment(rapier);
-    }
-
     for(int i = 0; i < numWeapons; i++) {
-      var fragment = randomWeapon();
+      var fragment = spawnRandom<Weapon>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numWeapons - 1) / 2f) * 1.5f;
       var x = 7;
@@ -91,7 +54,7 @@ public class GameRound {
       main.AddFragment(fragment);
     }
     for(int i = 0; i < numShields; i++) {
-      var fragment = randomShield();
+      var fragment = spawnRandom<Shield>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numShields - 1) / 2f) * 3f;
       var x = 11;
@@ -101,7 +64,7 @@ public class GameRound {
       main.AddFragment(fragment);
     }
     for(int i = 0; i < numEngines; i++) {
-      var fragment = randomOf<EngineBase>();
+      var fragment = spawnRandom<EngineBase>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numEngines - 1) / 2f) * 3f;
       var x = 15;
@@ -134,6 +97,10 @@ public class GameRound {
   }
 
   private void UpdateActive(float dt) {
+    // fastmode
+    if (Input.GetKey(KeyCode.Period)) {
+      dt *= 5;
+    }
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
@@ -177,7 +144,9 @@ public class GameRound {
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
     var main = GameModel.main;
     var floor = main.floor;
-    var enemy = new Enemy(pos, getAi());
+    var weaponType = Random.value < 0.5f ? WeaponType.Guns : Random.value < 0.5 ? WeaponType.Melee : WeaponType.Mixed;
+
+    var enemy = new Enemy(pos, getAi(weaponType));
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
@@ -187,7 +156,7 @@ public class GameRound {
     main.AddFragment(avatar);
 
     for(var i = 0; i < numShields; i++) {
-      var shield = randomShield();
+      var shield = spawnRandom<Shield>();
       shield.ChangeMana(shield.manaMax);
       shield.owner = enemy;
       main.AddFragment(shield);
@@ -198,7 +167,7 @@ public class GameRound {
     }
 
     for (var i = 0; i < numWeapons; i++) {
-      var weapon = randomWeapon();
+      var weapon = weaponType == WeaponType.Guns ? spawnRandom<Gun>() : weaponType == WeaponType.Melee ? spawnRandom<MeleeWeapon>() : spawnRandom<Weapon>();
       weapon.owner = enemy;
       weapon.ChangeMana(weapon.manaMax);
       // 0 1 = 0
@@ -212,16 +181,18 @@ public class GameRound {
     }
   }
 
-  private EnemyAI getAi() {
+  private EnemyAI getAi(WeaponType weaponType) {
     return new EnemyAI() {
       baseTurnRate = 2.5f * (1 + roundNumber / 10f * 2.5f),
       baseSpeed = 8f + roundNumber,
       minActiveDuration = 2 + roundNumber * 0.3f,
       cooldown = 2 - roundNumber * 0.1f,
       deltaAngleThreshold = 15,
-      desiredDistance = 5,
+      desiredDistance = weaponType == WeaponType.Guns ? Random.Range(5, 8) : weaponType == WeaponType.Melee ? 1 : 5,
       minDistance = 8,
       encumbrance = 2f + 1 * roundNumber,
     };
   }
 }
+
+enum WeaponType { Melee, Guns, Mixed };

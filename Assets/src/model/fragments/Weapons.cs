@@ -42,8 +42,11 @@ public struct Projectile {
   public bool ignoreOwner;
 }
 
+public abstract class Gun : Weapon {
+}
+
 [RegisteredFragment]
-public class Pistol : Weapon, IActivatable {
+public class Pistol : Gun, IActivatable {
   public override (int, int) damageSpread => (8, 12);
   public override float myInFlowRate => 8;
   public override float myHpMax => 15;
@@ -99,7 +102,7 @@ public class Minigun : Pistol {
 
 
 [RegisteredFragment]
-public class Shotgun : Weapon, IActivatable {
+public class Shotgun : Gun, IActivatable {
   public override (int, int) damageSpread => (2, 3);
   public override float myInFlowRate => 6;
   public override float myHpMax => 22;
@@ -131,7 +134,7 @@ public class Shotgun : Weapon, IActivatable {
 }
 
 [RegisteredFragment]
-public class Laser : Weapon, IActivatable {
+public class Laser : Gun, IActivatable {
   // 7 dps
   public override (int, int) damageSpread => (24, 24);
   public override float myInFlowRate => 15;
@@ -172,8 +175,10 @@ public class Laser : Weapon, IActivatable {
   }
 }
 
+public abstract class MeleeWeapon : Weapon {}
+
 [RegisteredFragment]
-public class Dagger : Weapon, IActivatable {
+public class Dagger : MeleeWeapon, IActivatable {
   public override bool hasInput => false;
   public override bool hasOutput => false;
   public override float weight => 0.5f;
@@ -216,18 +221,18 @@ public class Dagger : Weapon, IActivatable {
 }
 
 [RegisteredFragment]
-public class Rapier : Weapon, IActivatable {
+public class Rapier : MeleeWeapon, IActivatable {
   public override bool hasInput => false;
   public override bool hasOutput => false;
   public override float weight => 1f;
   // per second
-  public override (int, int) damageSpread => (30, 30);
+  public override (int, int) damageSpread => (26 + level * 3, 26 + level * 3);
   public bool activated = false;
   // activated lagged by one frame
   public bool activeLastFrame = false;
   public float T = 0;
   private float originalAngle;
-  public float attackTime = 0.7f;
+  public float attackTime = 0.5f;
   public override bool isHold => true;
   public static float angleSpread = 21;
 
