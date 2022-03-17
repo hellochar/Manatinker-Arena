@@ -16,4 +16,9 @@ public static class Util {
   public static Vector2 fromDeg(float deg) {
     return new Vector2(Mathf.Cos(deg * Mathf.Deg2Rad), Mathf.Sin(deg * Mathf.Deg2Rad));
   }
+
+  public static int Temporal(float value) {
+    float rand = value % 1;
+    return Random.value < rand ? Mathf.FloorToInt(value) : Mathf.CeilToInt(value);
+  }
 }

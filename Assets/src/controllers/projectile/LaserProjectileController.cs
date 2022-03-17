@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class LaserProjectileController : ProjectileControllerBase {
   public LineRenderer lineRenderer;
-  void Start() {
+  public override void Start() {
+    base.Start();
     CheckRayCast();
   }
 

@@ -11,7 +11,8 @@ public class ProjectileController : ProjectileControllerBase {
 
   Vector2 lastPos;
   // Start is called before the first frame update
-  void Start() {
+  public override void Start() {
+    base.Start();
     rb2d = GetComponent<Rigidbody2D>();
     spriteRenderer = GetComponent<SpriteRenderer>();
 

@@ -173,13 +173,7 @@ public class FragmentController : MonoBehaviour {
   }
 
   internal void OnHit(Projectile p, Vector2 position) {
-    if (p.damage > 1) {
-      var dmgTick = Instantiate(VFX.Get("damageTick"), position, Quaternion.identity);
-    }
-    // if (fragment.isPlayerOwned) {
-    //   dmgTick.GetComponent<AudioSource>().enabled = true;
-    // } else {
-    //   dmgTick.GetComponent<AudioSource>().enabled = false;
-    // }
+    var dmgTick = Instantiate(VFX.Get("damageTick"), position.z(-2), Quaternion.identity);
+    dmgTick.GetComponent<DamageTickController>().Init(p);
   }
 }

@@ -19,6 +19,19 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     timeSpawned = Time.time;
   }
 
+  public virtual void Start() {
+    var count = Util.Temporal(projectile.damage);
+    if (count > 0) {
+      var fx = Instantiate(VFX.Get("projectileStart"), transform.position, transform.rotation);
+      var ps = fx.GetComponent<ParticleSystem>();
+      var emission = ps.emission;
+      var burst0 = emission.GetBurst(0);
+      burst0.count = count;
+      var main = ps.main;
+      emission.SetBurst(0, burst0);
+    }
+  }
+
   public bool ProcessHit(Collider2D col, Vector2 pos) {
     if (col.gameObject.CompareTag("Projectile")) {
       return false;

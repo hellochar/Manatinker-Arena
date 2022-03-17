@@ -182,7 +182,7 @@ public class Dagger : MeleeWeapon, IActivatable {
   public override bool hasInput => false;
   public override bool hasOutput => false;
   public override float weight => 0.5f;
-  public override (int, int) damageSpread => (7, 9);
+  public override (int, int) damageSpread => (7 + level * 1, 9 + level * 2);
   public float timeActivatedLeft = 0;
   public bool isActivated => timeActivatedLeft > 0;
   private Vector2 originalBuiltin;
@@ -269,7 +269,7 @@ public class Rapier : MeleeWeapon, IActivatable {
 
     var desiredAngleDelta = t < 0.5f ? angleSpread : -angleSpread;
 
-    var nextAngleDelta = Mathf.Lerp(currentAngleDelta, desiredAngleDelta, 30 * dt);
+    var nextAngleDelta = Mathf.Lerp(currentAngleDelta, desiredAngleDelta, 60 * dt);
     var angleMovement = Mathf.Abs(nextAngleDelta - currentAngleDelta);
     var percentageCycleMoved = angleMovement / fullCycleAngle;
 
