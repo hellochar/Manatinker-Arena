@@ -85,7 +85,7 @@ public class TurretEngine : EngineBase {
   public override string Description => $"Gain {manaWhileStandingStill} Mana/s while standing still.";
   public float manaWhileStandingStill => 8 + 2 * level;
   public override float myHpMax => 30;
-  public override float myManaMax => 50;
+  public override float myManaMax => 1;
   public override float myOutFlowRate => 10;
   public override float weight => 0.75f;
 

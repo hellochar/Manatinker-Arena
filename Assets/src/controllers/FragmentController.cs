@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FragmentController : MonoBehaviour {
+  // public static Color NO_FLOW_COLOR = new Color32(128, 128, 128, 255);
+  public static Color NO_FLOW_COLOR = new Color32(16, 17, 18, 255);
+  public static Color FULL_FLOW_COLOR = Color.white;
+
   [NonSerialized]
   public Fragment fragment;
   public SpriteRenderer spriteRenderer;
@@ -98,7 +102,7 @@ public class FragmentController : MonoBehaviour {
     if (spriteRenderer != null) {
       spriteRenderer.GetComponent<SpriteMask>().sprite = spriteRenderer.sprite;
     }
-    if (manaCover != null) {
+    if (manaCover != null && manaCover.sprite == null) {
       manaCover.sprite = spriteRenderer.sprite;
     }
     if (output == null) {
@@ -129,31 +133,31 @@ public class FragmentController : MonoBehaviour {
     var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
     currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
     if (manaCover != null) {
-      manaCover.material.SetFloat("_Percentage", fragment.Mana / fragment.manaMax);
-      manaCover.material.SetFloat("_AlphaScalar", currentFlowPercent * HES);
-      manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
+      manaCover.material.SetFloat("_Inflow", currentFlowPercent);
+      manaCover.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
+      // manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (spriteRenderer != null) {
-      spriteRenderer.material.SetFloat("_Percentage", currentFlowPercent * HES);
+      spriteRenderer.material.SetFloat("_Inflow", currentFlowPercent);
+      spriteRenderer.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
       // spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (fragment.hasInput) {
-      if (fragment.owner == null) {
-        inputSR.color = unactivatedColor;
-      } else {
+      // if (fragment.owner == null) {
+      //   inputSR.color = unactivatedColor;
+      // } else {
         currentInputPercent = Mathf.Lerp(currentInputPercent, (float)fragment.inputPercent * HES * 2, 0.05f);
-        inputSR.color = Color.Lerp(Color.black, Color.white, currentInputPercent);
-      }
+        inputSR.color = Color.Lerp(NO_FLOW_COLOR, FULL_FLOW_COLOR, currentInputPercent);
+      // }
     }
     if (fragment.hasOutput) {
-      if (fragment.owner == null) {
-        outputSR.color = unactivatedColor;
-      } else {
+      // if (fragment.owner == null) {
+      //   outputSR.color = unactivatedColor;
+      // } else {
         currentOutputPercent = Mathf.Lerp(currentOutputPercent, (float)fragment.outputPercent * HES * 2, 0.05f);
-        outputSR.color = Color.Lerp(Color.black, Color.white, currentOutputPercent);
-      }
+        outputSR.color = Color.Lerp(NO_FLOW_COLOR, FULL_FLOW_COLOR, currentOutputPercent);
+      // }
     }
-    // sr.color = Color.Lerp(Color.black, Color.white, fragment.Mana / fragment.manaMax);
   }
 
   internal void Removed() {

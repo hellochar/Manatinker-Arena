@@ -15,6 +15,7 @@ public class WireController : MonoBehaviour {
   }
 
   void Start() {
+    lineRenderer.endColor = lineRenderer.startColor = FragmentController.NO_FLOW_COLOR;
     StartCoroutine(WireInAnimation());
     var aso = GetComponent<AudioSource>();
     // only on real wires
@@ -63,9 +64,9 @@ public class WireController : MonoBehaviour {
     splineContainer.Spline[1] = knot1;
 
     float flowRate = wire.lastFlow / Time.deltaTime;
-    float lerpAmount = wire.to == null ? 1 : flowRate * FragmentController.HES;
+    float lerpAmount = wire.to == null ? 1 : flowRate * FragmentController.HES * 2;
 
-    var targetColor = Color.Lerp(Color.black, Color.white, lerpAmount);
+    var targetColor = Color.Lerp(FragmentController.NO_FLOW_COLOR, FragmentController.FULL_FLOW_COLOR, lerpAmount);
     lineRenderer.endColor = lineRenderer.startColor = Color.Lerp(lineRenderer.endColor, targetColor, 0.05f);
   }
 

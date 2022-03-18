@@ -1,4 +1,4 @@
-Shader "Unlit/ManaCoverShader"
+Shader "Unlit/FragmentMaterial"
 {
     Properties
 	{
@@ -8,7 +8,9 @@ Shader "Unlit/ManaCoverShader"
 
         [PerRendererData] _Inflow ("Inflow", Float) = 0.5
         [PerRendererData] _ManaPercentage ("Mana Percentage", Float) = 0.5
-		_MissingColor ("Missing Color", Color) = (0.2, 0.21, 0.23, 1)
+		_LowFlowScalar ("Low Flow Scalar", Float) = 0.1
+		_LowFlowPoint ("Low Flow Point", Float) = 0.1
+		_MaxFlowScalar ("Max Flow Scalar", Float) = 0.1
 	}
 
 	SubShader
@@ -25,6 +27,16 @@ Shader "Unlit/ManaCoverShader"
 		Cull Off
 		Lighting Off
 		ZWrite Off
+		// Removes transparency completely
+		// Blend Off
+
+		// Unity default - premultiplied alpha
+		// Blend One OneMinusSrcAlpha
+
+		// entirely use our texture RGB, disregard destination color
+		// Blend One Zero
+		
+		// traditional alpha
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
@@ -64,13 +76,17 @@ Shader "Unlit/ManaCoverShader"
 				return OUT;
 			}
 
+			// Unity parameters
 			sampler2D _MainTex;
 			sampler2D _AlphaTex;
 			float _AlphaSplitEnabled;
 
             float _Inflow;
-            float _ManaPercentage;
-			fixed4 _MissingColor;
+			float _ManaPercentage;
+
+			float _LowFlowScalar;
+			float _LowFlowPoint;
+			float _MaxFlowScalar;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -86,27 +102,35 @@ Shader "Unlit/ManaCoverShader"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 texColor = SampleSpriteTexture (IN.texcoord);
-				fixed4 tint = IN.color;
+				fixed4 texColor = SampleSpriteTexture (IN.texcoord) * IN.color;
 
-				// this is just the normal sprite color
-                // fixed4 output = texColor * tint;
-                fixed4 output = tint * texColor.a;
+				return texColor;
 
-				if (_ManaPercentage > 0.999 || _ManaPercentage < 0.001) {
-					return fixed4(0, 0, 0, 0);
-				}
-
-				if (IN.texcoord.x < _ManaPercentage) {
-					// draw bright filled in here
-					float intensity = lerp(0.5f, 2, smoothstep(0, 1, _Inflow * _Inflow));
-					output.rgb = output.rgb * intensity;
+				float colorScalar;
+				// if we're near max mana, just do a straight smoothstep without the ramp
+				if (_ManaPercentage > 0.999) {
+					colorScalar = lerp(1, _MaxFlowScalar, smoothstep(0, 1, _Inflow));
 				} else {
-					output *= _MissingColor;
-					// output.rgb = lerp(output.rgb, _MissingColor.rgb, intensity);
-					// output.a = lerp(output.a, _MissingColor.a, intensity);
+					// go down then up
+					if (_Inflow < _LowFlowPoint) {
+						float downRampT = smoothstep(0, 1, _Inflow / _LowFlowPoint);
+						colorScalar = lerp(1, _LowFlowScalar, downRampT * downRampT);
+					} else {
+						float rampSize = 1 - _LowFlowPoint;
+						float upRampT = smoothstep(0, 1, (_Inflow - _LowFlowPoint) / rampSize);
+						colorScalar = lerp(_LowFlowScalar, _MaxFlowScalar, upRampT * upRampT);
+					}
 				}
-				return output;
+				texColor.rgb *= colorScalar;
+				// if (length(texColor.rgb - fixed3(1, 1, 1)) < 0.5) {
+				// 	texColor.rgb = lerp(fixed3(0.5, 0.5, 0.5), texColor.rgb, _Percentage);
+				// 	texColor.rgb *= texColor.a;
+				// } else {
+				// 	texColor.rgb *= texColor.a;
+				// 	texColor *= _Color;
+				// }
+				// texColor.rgb *= 1 + _Percentage * 3;
+				return texColor;
 			}
 		ENDCG
 		}

@@ -27,7 +27,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - PixelSnap: 0
+    - _AlphaScalar: 1
+    - _CurrentFlowPercent: 1
+    - _Inflow: 0.5
+    - _ManaPercentage: 0.5
+    - _Percentage: 0.5
     m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ManaColor: {r: 1, g: 0.7429157, b: 0.37199998, a: 1}
+    - _MissingColor: {r: 0.1999999, g: 0.20999986, b: 0.2299999, a: 0.9490196}
   m_BuildTextureStacks: []
