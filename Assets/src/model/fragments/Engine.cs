@@ -11,9 +11,9 @@ public class EngineBase : Fragment {
 [RegisteredFragment]
 public class Engine : EngineBase {
   public override float myManaMax => 0;
-  public override float myHpMax => 60;
-  public override float myOutFlowRate => 5;
-  public override float weight => 1;
+  public override float myHpMax => 50;
+  public override float myOutFlowRate => 6;
+  public override float weight => 0.5f;
   public override string Description => "Mana generator.";
 
   // not bounded by mana
@@ -33,7 +33,7 @@ public class Engine : EngineBase {
 [RegisteredFragment]
 public class PainEngine : EngineBase {
   public override float myManaMax => 10;
-  public override float myHpMax => 10;
+  public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
   public override float weight => 0.5f;
   public override string Description => "Convert 33% of damage you deal into Mana on this Engine.";
@@ -57,7 +57,7 @@ public class PainEngine : EngineBase {
 [RegisteredFragment]
 public class CalmEngine : EngineBase {
   public override float myManaMax => 50;
-  public override float myHpMax => 10;
+  public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
   public override float weight => 0.5f;
   public override string Description => "Convert 50% of damage you take into Mana on this Engine.";
@@ -83,8 +83,8 @@ public class TurretEngine : EngineBase {
   private Vector2 lastWorldPos;
 
   public override string Description => $"Gain {manaWhileStandingStill} Mana/s while standing still.";
-  public float manaWhileStandingStill => 8 + 2 * level;
-  public override float myHpMax => 30;
+  public float manaWhileStandingStill => 9 + 3 * level;
+  public override float myHpMax => 60;
   public override float myManaMax => 1;
   public override float myOutFlowRate => 10;
   public override float weight => 0.75f;

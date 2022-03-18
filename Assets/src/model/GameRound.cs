@@ -44,7 +44,7 @@ public class GameRound {
     var main = GameModel.main;
 
     // {
-    //   var dagger = new Dagger();
+    //   var dagger = new Spike();
     //   dagger.builtinAngle = 0;
     //   var yOffset = 0;
     //   var x = 4;

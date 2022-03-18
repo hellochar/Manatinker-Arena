@@ -121,7 +121,7 @@ Shader "Unlit/FragmentMaterial"
 						colorScalar = lerp(_LowFlowScalar, _MaxFlowScalar, upRampT * upRampT);
 					}
 				}
-				texColor.rgb *= colorScalar;
+				texColor *= colorScalar;
 				// if (length(texColor.rgb - fixed3(1, 1, 1)) < 0.5) {
 				// 	texColor.rgb = lerp(fixed3(0.5, 0.5, 0.5), texColor.rgb, _Percentage);
 				// 	texColor.rgb *= texColor.a;

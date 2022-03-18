@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class LaserProjectileController : ProjectileControllerBase {
   public LineRenderer lineRenderer;
+
+  public override void Init(Projectile p) {
+    base.Init(p);
+    if (p.lifeTime > 0) {
+      Destroy(gameObject, p.lifeTime);
+    }
+  }
+
   public override void Start() {
     base.Start();
     CheckRayCast();
@@ -9,7 +17,9 @@ public class LaserProjectileController : ProjectileControllerBase {
 
   // destroy after one tick
   void Update() {
-    Destroy(gameObject);
+    if (projectile.lifeTime == 0) {
+      Destroy(gameObject);
+    }
   }
 
   void CheckRayCast() {

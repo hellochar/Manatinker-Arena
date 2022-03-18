@@ -93,7 +93,7 @@ Shader "Unlit/ManaCoverShader"
                 // fixed4 output = texColor * tint;
                 fixed4 output = tint * texColor.a;
 
-				if (_ManaPercentage > 0.999 || _ManaPercentage < 0.001) {
+				if (_ManaPercentage > 0.999) {
 					return fixed4(0, 0, 0, 0);
 				}
 

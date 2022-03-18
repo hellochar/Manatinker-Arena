@@ -231,6 +231,10 @@ public class Fragment {
 	}
 
   public void Hit(Projectile p, Vector2 position) {
+    // enemies only deal 25% damage
+    if (p.owner is Enemy) {
+      p.damage /= 4;
+    }
     if (controller != null) {
       controller.OnHit(p, position);
     }

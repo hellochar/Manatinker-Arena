@@ -10,11 +10,7 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
   public float timeSpawned = 0;
   public float elapsed => Time.time - timeSpawned;
 
-  public void Init(Projectile p) {
-    // enemies only deal 25% damage
-    if (p.owner is Enemy) {
-      p.damage /= 4;
-    }
+  public virtual void Init(Projectile p) {
     this.projectile = p;
     timeSpawned = Time.time;
   }

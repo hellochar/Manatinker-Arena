@@ -135,7 +135,7 @@ public class FragmentController : MonoBehaviour {
     if (manaCover != null) {
       manaCover.material.SetFloat("_Inflow", currentFlowPercent);
       manaCover.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
-      // manaCover.color = fragment.owner == null ? unactivatedColor : Color.white;
+      manaCover.color = fragment.owner == null ? Color.clear : Color.white;
     }
     if (spriteRenderer != null) {
       spriteRenderer.material.SetFloat("_Inflow", currentFlowPercent);

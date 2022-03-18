@@ -8,7 +8,7 @@ public class DamageTickController : MonoBehaviour {
   public AudioSource aso;
 
   public void Init(Projectile p) {
-    var scale = Mathf.Sqrt(p.damage) * 10;
+    var scale = Mathf.Pow(p.damage, 1 / 4f) * 10;
     transform.localScale = new Vector3(scale, scale, 1);
     if (p.owner is Enemy) {
       sr.color = new Color32(255, 67, 67, 255);
