@@ -77,3 +77,40 @@ public class CalmEngine : EngineBase {
     }
   }
 }
+
+[RegisteredFragment]
+public class TurretEngine : EngineBase {
+  private Vector2 lastWorldPos;
+
+  public override string Description => $"Gain {manaWhileStandingStill} Mana/s while standing still.";
+  public float manaWhileStandingStill => 8 + 2 * level;
+  public override float myHpMax => 30;
+  public override float myManaMax => 50;
+  public override float myOutFlowRate => 10;
+  public override float weight => 0.75f;
+
+  int numFramesStill = 0;
+  
+  public override void Update(float dt) {
+    base.Update(dt);
+    if (owner == null) {
+      return;
+    }
+
+    var position = owner.worldPos;
+    var diff = lastWorldPos - position;
+
+    if (diff.sqrMagnitude < 0.0000001f * dt) {
+      numFramesStill++;
+    } else {
+      numFramesStill = 0;
+    }
+
+    // account for physics frames being different than logic
+    if (numFramesStill >= 5) {
+      ChangeMana(dt * manaWhileStandingStill);
+    }
+
+    this.lastWorldPos = position;   
+  }
+}
