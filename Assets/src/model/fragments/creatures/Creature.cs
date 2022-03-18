@@ -29,9 +29,10 @@ public class Creature : Fragment {
   // public float encumbranceScalar => Mathf.Clamp(
   //   Util.MapLinear(totalWeight, 0, encumbranceThreshold * 2, 2, 0),
   //   0.1f, 1);
-  public float speed => encumbranceScalar * baseSpeed;
+  public float speed => encumbranceScalar * (baseSpeed);
   public float turnRate => encumbranceScalar * baseTurnRate;
   public float totalWeight;
+  // public float totalSpeedProvided;
   public Avatar avatar;
 
   public event Action<Fragment> OnGetFragment;
@@ -40,10 +41,13 @@ public class Creature : Fragment {
   public Creature(Vector2 startPosition) {
     this.startPosition = startPosition;
     recomputeTotalMass();
+    // recomputeTotalSpeedProvided();
   }
 
   public override void Update(float dt) {
     recomputeTotalMass();
+    // recomputeTotalSpeedProvided();
+    // Debug.Log(totalSpeedProvided);
     // do not reparent
   }
 
@@ -67,7 +71,19 @@ public class Creature : Fragment {
     foreach (var c in children) {
       totalWeight += c.weight;
     }
+    if (totalWeight < 0) {
+      totalWeight = 0;
+    }
   }
+
+  // void recomputeTotalSpeedProvided() {
+  //   totalSpeedProvided = 0f;
+  //   foreach (var c in children) {
+  //     if (c is Transport t) {
+  //       totalSpeedProvided += t.speedProvided;
+  //     }
+  //   }
+  // }
 
   public override void ChangeHP(float diff) {
     throw new System.Exception("Creature itself should not change HP!");
@@ -85,11 +101,12 @@ public class Creature : Fragment {
 
   public void setRotation(float targetAngle) {
     if (rb2d != null) {
+      var dt = GameModel.main.dt;
       var currentAngle = rb2d.rotation;
       // e.g. 10%
-      var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, turnRate * Time.deltaTime);
+      var newAngle = Mathf.LerpAngle(currentAngle, targetAngle, turnRate * dt);
       // 5 degrees
-      newAngle = Mathf.MoveTowardsAngle(newAngle, targetAngle, (turnRate / 2) * Time.deltaTime);
+      newAngle = Mathf.MoveTowardsAngle(newAngle, targetAngle, (turnRate / 2) * dt);
       rb2d.SetRotation(newAngle);
     }
   }

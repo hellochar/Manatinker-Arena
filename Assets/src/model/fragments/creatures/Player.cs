@@ -6,6 +6,8 @@ public class Player : Creature {
   public static event Action<float> OnDealsDamage;
   public static event Action<float> OnTakesDamage;
   public float influenceRadius => 1.75f + level * 0.25f;
+  public override float baseSpeed => (8 + 2 * level);
+  public override float encumbranceThreshold => 1 + level;
 
   public int gold = 5;
 
@@ -22,9 +24,6 @@ public class Player : Creature {
     playerAvatar.LevelUp();
     level++;
   }
-
-  public override float encumbranceThreshold => 1 + level;
-  public override float baseSpeed => 8 + level * 2;
 
   public Player(Vector2 start) : base(start) {
   }

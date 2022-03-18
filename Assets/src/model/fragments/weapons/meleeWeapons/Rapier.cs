@@ -101,7 +101,7 @@ public class Rapier : MeleeWeapon, IActivatable {
     // if (!activated) {
     //   return Mana > startManaRequired;
     // }
-    var info = new FrameInfo(this, Time.deltaTime);
+    var info = new FrameInfo(this, GameModel.main.dt);
     return Mana > info.manaRequired;
   }
 

@@ -104,6 +104,7 @@ public class FragmentController : MonoBehaviour {
     }
     if (manaCover != null && manaCover.sprite == null) {
       manaCover.sprite = spriteRenderer.sprite;
+      manaCover.enabled = fragment.manaMax > 0;
     }
     if (output == null) {
       output = transform.Find("Output")?.gameObject;
@@ -132,7 +133,7 @@ public class FragmentController : MonoBehaviour {
   public virtual void Update() {
     var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
     currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
-    if (manaCover != null) {
+    if (manaCover != null && manaCover.enabled) {
       manaCover.material.SetFloat("_Inflow", currentFlowPercent);
       manaCover.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
       manaCover.color = fragment.owner == null ? Color.clear : Color.white;

@@ -10,6 +10,7 @@ public class GameModel {
   public bool playerHasWon = false;
   // in seconds
   public float time = 0;
+  public float dt = 0;
   public GameRound currentRound;
 
   internal void GoNextRound() {
@@ -86,6 +87,7 @@ public class GameModel {
   }
 
   public void simulate(float dt) {
+    this.dt = dt;
     if (currentRound != null) {
       currentRound.Update(dt);
     }

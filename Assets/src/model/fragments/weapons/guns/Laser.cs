@@ -28,7 +28,7 @@ public class Laser : Gun, IActivatable {
   }
 
   public void Activate() {
-    var wantedMana = Time.deltaTime * manaDrainWhileActivated;
+    var wantedMana = GameModel.main.dt * manaDrainWhileActivated;
     var actualMana = Mathf.Min(Mana, wantedMana);
     var powerScale = actualMana / wantedMana;
     if (actualMana < wantedMana) {
@@ -37,7 +37,7 @@ public class Laser : Gun, IActivatable {
     ChangeMana(-actualMana);
     // shoot a ray
     Projectile p = info;
-    p.damage = rollDamage() * Time.deltaTime * powerScale;
+    p.damage = rollDamage() * GameModel.main.dt * powerScale;
     OnShootProjectile?.Invoke(p);
   }
 }

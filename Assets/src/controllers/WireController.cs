@@ -63,7 +63,7 @@ public class WireController : MonoBehaviour {
     knot1.TangentIn = new Unity.Mathematics.float3(-Mathf.Cos(inRotation), -Mathf.Sin(inRotation), 0) * 0.5f;
     splineContainer.Spline[1] = knot1;
 
-    float flowRate = wire.lastFlow / Time.deltaTime;
+    float flowRate = wire.lastFlow / GameModel.main.dt;
     float lerpAmount = wire.to == null ? 1 : flowRate * FragmentController.HES * 2;
 
     var targetColor = Color.Lerp(FragmentController.NO_FLOW_COLOR, FragmentController.FULL_FLOW_COLOR, lerpAmount);

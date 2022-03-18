@@ -28,6 +28,7 @@ public class Fragment {
 
   public virtual float myHpMax => 30;
   public virtual float hpMax => Mathf.Round(myHpMax * levelScalar);
+
   public bool isDead => hp <= 0;
   public bool isBroken = false;
 
@@ -127,8 +128,7 @@ public class Fragment {
     hp = hpMax;
   }
 
-  public virtual void Update(float dt) {
-  }
+  public virtual void Update(float dt) {}
 
   public void connect(Fragment other) {
     if (isConnected(other) || !this.hasOutput || !other.hasInput) {
@@ -252,8 +252,8 @@ public class Fragment {
     return Vector2.Distance(worldPos, c.worldPos);
   }
 
-  public float outputPercent => outFlowRate == 0 ? 0 : (outgoingTotal / Time.deltaTime) / outFlowRate;
-  public float inputPercent => inFlowRate == 0 ? 0 : (incomingTotal / Time.deltaTime) / inFlowRate;
+  public float outputPercent => outFlowRate == 0 ? 0 : (outgoingTotal / GameModel.main.dt) / outFlowRate;
+  public float inputPercent => inFlowRate == 0 ? 0 : (incomingTotal / GameModel.main.dt) / inFlowRate;
 }
 
 public class Wire {

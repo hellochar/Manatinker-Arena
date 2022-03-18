@@ -44,6 +44,12 @@ public class GameRound {
     var main = GameModel.main;
 
     // {
+    //   var fragment = spawnRandom<Transport>();
+    //   fragment.builtinOffset = new Vector2(2, main.floor.height / 2 - 1);
+    //   main.AddFragment(fragment);
+    // }
+
+    // {
     //   var dagger = new Spike();
     //   dagger.builtinAngle = 0;
     //   var yOffset = 0;
@@ -166,7 +172,7 @@ public class GameRound {
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
     var main = GameModel.main;
     var floor = main.floor;
-    var weaponType = Random.value < 0.5f ? WeaponType.Guns : Random.value < 0.5 ? WeaponType.Melee : WeaponType.Mixed;
+    var weaponType = Random.value < 0.8f ? WeaponType.Guns : Random.value < 0.5 ? WeaponType.Melee : WeaponType.Mixed;
 
     var enemy = new Enemy(pos, getAi(weaponType));
     enemy.builtinAngle = 180;

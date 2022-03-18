@@ -36,6 +36,10 @@ public class Circuit {
     foreach(var f in fragments) {
       f.exchange();
     }
+
+    // foreach(var f in fragments) {
+    //   f.PostExchangeUpdate(dt);
+    // }
 	}
 
 	internal void print() {
