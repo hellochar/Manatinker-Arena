@@ -40,11 +40,13 @@ public class GameRound {
   }
 
   // scatter random items around
-  public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
+  public void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
 
+    if (roundNumber % 3 == 0)
     {
       var fragment = spawnRandom<Transport>();
+      // var fragment = new Jet();
       fragment.builtinOffset = new Vector2(2, main.floor.height / 2 - 1);
       main.AddFragment(fragment);
     }

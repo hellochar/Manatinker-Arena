@@ -42,11 +42,11 @@ public interface ISpeedModifier {
 [RegisteredFragment]
 public class JumpPad : Transport, IActivatable {
   public override bool hasOutput => false;
-  public override float weight => 1f;
+  public override float weight => 0.5f;
   public override float myInFlowRate => 5;
   public override float myManaMax => 10;
   public override float myHpMax => 30;
-  public override string Description => $"R (10 Mana) - Jump 5 units in the direction you're facing over 1 second.";
+  public override string Description => $"Spacebar (10 Mana) - Jump 5 units in the direction you're facing over 1 second.";
   float timeElapsed = -1;
   bool active => timeElapsed >= 0;
   // public float deltaSpeed => active ? speedFn(timeElapsed) : 0;
@@ -68,7 +68,7 @@ public class JumpPad : Transport, IActivatable {
       timeElapsed += dt;
       var delta = speedFn(timeElapsed + dt) - speedFn(timeElapsed);
       delta *= unitsToMove;
-      owner.controller.transform.position += (Util.fromDeg(owner.controller.transform.eulerAngles.z) * delta).z(0);
+      owner.forceMovement(Util.fromDeg(owner.worldRotation) * delta);
     }
     // reset
     if (timeElapsed >= 1) {
@@ -81,6 +81,42 @@ public class JumpPad : Transport, IActivatable {
   }
 
   bool IActivatable.PlayerInputCheck() {
-    return Input.GetKeyDown(KeyCode.R);
+    return Input.GetKeyDown(KeyCode.Space);
+  }
+}
+
+[RegisteredFragment]
+public class Jet : Transport, IActivatable {
+  public override bool hasOutput => false;
+  public override float weight => 0.5f;
+  public override float myInFlowRate => 5;
+  public override float myManaMax => 10;
+  public override float myHpMax => 30;
+  public float manaUpkeep => 10 + level;
+  public override string Description => $"Spacebar (hold, {manaUpkeep} mana/sec) - push yourself {power} units/sec in the direction the Jets are facing.";
+  public float power => 2 + level * 0.5f;
+
+  public bool isActivated = false;
+
+  bool IActivatable.isHold => true;
+  public void Activate() {
+    isActivated = true;
+    ChangeMana(-manaUpkeep * GameModel.main.dt);
+    if (owner != null) {
+      owner.forceMovement(Util.fromDeg(worldRotation) * 2 * GameModel.main.dt);
+    }
+  }
+
+  public override void Update(float dt) {
+    base.Update(dt);
+    isActivated = false;
+  }
+
+  public bool CanActivateInner() {
+    return Mana > manaUpkeep * GameModel.main.dt;
+  }
+
+  bool IActivatable.PlayerInputCheck() {
+    return Input.GetKey(KeyCode.Space);
   }
 }

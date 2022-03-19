@@ -60,7 +60,7 @@ public class CalmEngine : EngineBase {
   public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
   public override float weight => 0.5f;
-  public override string Description => "Convert 50% of damage you take into Mana on this Engine.";
+  public override string Description => "Convert 100% of damage you take into Mana on this Engine.";
 
   public CalmEngine() {
     Player.OnTakesDamage += HandleTakesDamage;
@@ -73,7 +73,7 @@ public class CalmEngine : EngineBase {
 
   private void HandleTakesDamage(float amount) {
     if (isPlayerOwned) {
-      ChangeMana(amount * 0.5f);
+      ChangeMana(amount * 1.0f);
     }
   }
 }
@@ -109,6 +109,43 @@ public class TurretEngine : EngineBase {
     // account for physics frames being different than logic
     if (numFramesStill >= 5) {
       ChangeMana(dt * manaWhileStandingStill);
+    }
+
+    this.lastWorldPos = position;   
+  }
+}
+
+[RegisteredFragment]
+public class FlitterEngine : EngineBase {
+  private Vector2 lastWorldPos;
+
+  public override string Description => $"Gain {manaWhileMoving} Mana/s while this engine is moving (rotation counts).";
+  public float manaWhileMoving => 5 + 1 * level;
+  public override float myHpMax => 10;
+  public override float myManaMax => 1;
+  public override float myOutFlowRate => 10;
+  public override float weight => 0.25f;
+
+  int numFramesStill = 0;
+  
+  public override void Update(float dt) {
+    base.Update(dt);
+    if (owner == null) {
+      return;
+    }
+
+    var position = worldPos;
+    var diff = lastWorldPos - position;
+
+    if (diff.sqrMagnitude < 0.0000001f * dt) {
+      numFramesStill++;
+    } else {
+      numFramesStill = 0;
+    }
+
+    // account for physics frames being different than logic
+    if (numFramesStill < 4) {
+      ChangeMana(dt * manaWhileMoving);
     }
 
     this.lastWorldPos = position;   

@@ -69,6 +69,7 @@ public class Fragment {
     return info;
   }
 
+  public virtual int costToUpgrade => level + 1;
   public virtual void LevelUp() {
     level++;
     ChangeHP(hpMax - hp);

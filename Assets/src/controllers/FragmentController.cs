@@ -93,6 +93,9 @@ public class FragmentController : MonoBehaviour {
   private SpriteRenderer inputSR;
   private SpriteRenderer outputSR;
   void Start() {
+    if (aso == null) {
+      aso = GetComponent<AudioSource>();
+    }
     if (spriteRenderer == null) {
       spriteRenderer = transform.Find("Sprite")?.GetComponent<SpriteRenderer>();
     }
@@ -157,8 +160,31 @@ public class FragmentController : MonoBehaviour {
         a.Activate();
         OnActivated?.Invoke();
       }
+      if (a.isHold) {
+        var playSound = ((IActivatable)a).PlayerInputCheck() && a.CanActivate();
+        SetAudioActive(playSound);
+      }
+    }
+    if (fragment is Spike spike) {
+      var playSound = ((IActivatable)spike).PlayerInputCheck() && spike.CanActivate() && spike.owner != null;
+      if (playSound) {
+        aso?.Play();
+      }
     }
   }
+
+  AudioSource aso;
+  public void SetAudioActive(bool active) {
+    if (aso == null) {
+      return;
+    }
+    if (active && !aso.isPlaying) {
+      aso.Play();
+    } else if (!active && aso.isPlaying) {
+      aso.Pause();
+    }
+  }
+
 
   internal void Removed() {
     var explode = Instantiate(VFX.Get("componentExplode"), transform.position, transform.rotation);

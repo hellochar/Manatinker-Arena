@@ -14,7 +14,7 @@ public class LevelUpSelectedController : MonoBehaviour {
   }
 
   Player player => GameModel.main.player;
-  int cost => 1 + selected.fragment.level;
+  int cost => selected.fragment.costToUpgrade;
 
   public FragmentController selected => GameModelController.main.editModeController.inputState.selected;
 

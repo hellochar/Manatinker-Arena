@@ -5,6 +5,7 @@ public class Pistol : Gun, IActivatable {
   public override float myHpMax => 15;
   public override float myManaMax => 30;
   public override float weight => 0.5f;
+  public override int costToUpgrade => level;
   static Projectile pistolInfo = new Projectile() { baseSpeed = 20, maxDistance = 100 };
   public virtual Projectile info => pistolInfo;
 

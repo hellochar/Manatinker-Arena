@@ -81,6 +81,10 @@ public class Creature : Fragment {
     }
   }
 
+  internal void forceMovement(Vector2 vector) {
+    controller.transform.position += vector.z(0);
+  }
+
   // void recomputeTotalSpeedProvided() {
   //   totalSpeedProvided = 0f;
   //   foreach (var c in children) {
