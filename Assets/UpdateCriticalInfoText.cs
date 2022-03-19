@@ -26,7 +26,7 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     var extraSpeedText = speedPercent < 1 ? $"({(speedPercent * 100).ToString("##0")}%)" : "";
 
     text.text = $@"
-Gold: {player.gold}
+<sprite=0> {player.gold}
 Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
 Speed: {player.speed.ToString("##0.##")} {extraSpeedText}".Trim();
   }

@@ -21,7 +21,7 @@ public class LevelUpSelectedController : MonoBehaviour {
   void Update() {
     if (selected != null) {
       button.enabled = player.gold >= cost;
-      text.text = $"Z - Heal & Level Up {selected.fragment.GetType().Name} to {selected.fragment.level + 1} ({cost} gold)";
+      text.text = $"Z - Heal & Level Up {selected.fragment.GetType().Name} to {selected.fragment.level + 1} <sprite=0> {cost}";
       if (Input.GetKeyDown(KeyCode.Z)) {
           TryLevelUp();
       }

@@ -20,7 +20,7 @@ public class LevelUpPlayerController : MonoBehaviour {
   // Update is called once per frame
   void Update() {
     // button.enabled = player.gold >= cost;
-    text.text = $"G - Heal & Level Player to {player.level + 1} ({cost} gold)";
+    text.text = $"G - Heal & Level Player to {player.level + 1} <sprite=0> {cost}";
     if (Input.GetKeyDown(KeyCode.G)) {
       TryLevelUp();
     }
