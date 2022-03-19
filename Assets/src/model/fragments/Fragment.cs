@@ -39,6 +39,7 @@ public class Fragment {
   public string GetInfo() {
     List<String> lines = new List<string>();
     PopulateInfoStrings(lines);
+    lines.Add("\n");
     lines.Add(Description);
 
     var info = String.Join("\n", lines).Trim();

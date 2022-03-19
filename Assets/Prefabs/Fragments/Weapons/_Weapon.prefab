@@ -234,6 +234,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8853789878479199055, guid: 2c2e91c1b1d0a2f4eb10996854832140,
     type: 3}
   spawnPoint: {fileID: 3155899012154803869}
+  ShootSound: {fileID: 0}
 --- !u!4 &2820953576096154947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 525610104338259602, guid: 1e59fcb8e698c244aacb132a761060af,
