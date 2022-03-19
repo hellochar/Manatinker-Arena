@@ -94,6 +94,13 @@ public class GameRound {
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
       main.AddFragment(fragment);
+      // spawn another one
+      if (fragment is Pistol) {
+        fragment.builtinOffset += new Vector2(0, 0.125f);
+        var f2 = new Pistol();
+        f2.builtinOffset = fragment.builtinOffset + new Vector2(0, 0.25f);
+        main.AddFragment(f2);
+      }
     }
     for(int i = 0; i < numShields; i++) {
       var fragment = spawnRandom<Shield>();

@@ -1,5 +1,5 @@
 [RegisteredFragment]
-public class Minigun : Pistol, IActivatable {
+public class Minigun : BasicGun, IActivatable {
   public override (int, int) damageSpread => (3, 5);
   public override float myInFlowRate => 16;
   public override float myHpMax => 50;
@@ -9,7 +9,7 @@ public class Minigun : Pistol, IActivatable {
   bool IActivatable.isHold => true;
   public override float manaCost => 5;
   private float cooldown = 0;
-  public float rateOfFire => 3 + level;
+  public virtual float rateOfFire => 3 + level;
 
   public override void Update(float dt) {
     cooldown -= dt;
@@ -25,5 +25,18 @@ public class Minigun : Pistol, IActivatable {
     base.Activate();
   }
 
-  public override string Description => $"Click and hold - fire {rateOfFire} bullets per second ({manaCost} per bullet).";
+  public override string DescriptionInner => $"Hold to fire {rateOfFire} bullets per second.";
+}
+
+[RegisteredFragment]
+public class Piddler : Minigun {
+  public override Projectile info => new Projectile() { sizeScalar = 1, baseSpeed = 12, maxDistance = 5, angleSpread = 20 };
+  public override (int, int) damageSpread => (4, 5);
+  public override float manaCost => 2;
+  public override float myInFlowRate => 20;
+  public override float myManaMax => 8;
+  public override float weight => 3;
+  public override float rateOfFire => 20;
+
+  public override string DescriptionInner => "Short ranged and inaccurate.";
 }

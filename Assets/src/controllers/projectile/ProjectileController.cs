@@ -32,7 +32,7 @@ public class ProjectileController : ProjectileControllerBase {
     var newColor = spriteRenderer.color;
     newColor.a = projectile.damage < 2 ? projectile.damage / 2 : 1;
     spriteRenderer.color = newColor;
-    spriteRenderer.material.SetFloat("_Intensity", 1.0f + Mathf.Sqrt(projectile.damage / 5));
+    spriteRenderer.material.SetFloat("_Intensity", 1.5f + Mathf.Sqrt(projectile.damage / 5));
 
     // lower damage = smaller projectile
     var scalar = projectile.sizeScalar > 0 ? projectile.sizeScalar : 1;
