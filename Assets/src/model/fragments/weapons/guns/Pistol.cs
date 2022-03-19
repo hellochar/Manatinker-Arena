@@ -24,3 +24,12 @@ public class Pistol : Gun, IActivatable {
 
   public override string Description => "Click (5 Mana) - fire.\nFast, long ranged bullets.";
 }
+
+[RegisteredFragment]
+public class Blobber : Pistol {
+  static Projectile myProjectile = new Projectile() { sizeScalar = 5, baseSpeed = 5, maxDistance = 20 };
+  public override Projectile info => myProjectile;
+  public override (int, int) damageSpread => (20, 20);
+  public override float manaCost => 13;
+  public override float myInFlowRate => 13;
+}

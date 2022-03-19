@@ -32,9 +32,15 @@ public class ProjectileController : ProjectileControllerBase {
     var newColor = spriteRenderer.color;
     newColor.a = projectile.damage < 2 ? projectile.damage / 2 : 1;
     spriteRenderer.color = newColor;
+    spriteRenderer.material.SetFloat("_Intensity", 1.0f + Mathf.Sqrt(projectile.damage / 5));
 
     // lower damage = smaller projectile
-    transform.localScale *= Mathf.Sqrt(projectile.damage / 2);
+    var scalar = projectile.sizeScalar > 0 ? projectile.sizeScalar : 1;
+    var ls = transform.localScale;
+    ls.x *= scalar;
+    ls.y *= scalar;
+    transform.localScale = ls;
+
   }
 
   // Update is called once per frame

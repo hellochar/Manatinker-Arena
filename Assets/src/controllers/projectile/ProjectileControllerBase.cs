@@ -43,6 +43,10 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
       if (projectile.ignoreOwner && hitFC.fragment.owner == projectile.owner) {
         return false;
       }
+      // no self hitting
+      if (hitFC.fragment == projectile.creator) {
+        return false;
+      }
       hitFC.fragment.Hit(projectile, pos);
       return true;
     }

@@ -27,6 +27,7 @@ public abstract class Weapon : Fragment {
 }
 
 public struct Projectile {
+  public float sizeScalar;
   public float baseSpeed;
   public float maxDistance;
   public float lifeTime;
@@ -35,6 +36,6 @@ public struct Projectile {
   public float angleSpread;
   internal bool isRay;
   public Creature owner;
-  public Fragment fragment;
+  public Fragment creator;
   public bool ignoreOwner;
 }

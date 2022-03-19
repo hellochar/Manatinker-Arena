@@ -20,8 +20,8 @@ public class WeaponController : MonoBehaviour {
       ShootSound.pitch = Util.MapLinear(intensity * intensity, 0, 1, 0.2f, 1.5f);
       ShootSound.Play();
     }
-    if (p.fragment == null) {
-      p.fragment = weapon;
+    if (p.creator == null) {
+      p.creator = weapon;
     }
     if (p.owner == null) {
       p.owner = weapon.owner;

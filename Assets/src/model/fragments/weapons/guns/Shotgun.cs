@@ -7,7 +7,7 @@ public class Shotgun : Gun, IActivatable {
   public override float myInFlowRate => 8;
   public override float myHpMax => 22;
   public override float myManaMax => 32;
-  static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
+  static Projectile info = new Projectile() { sizeScalar = 0.5f, baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
 
   public bool CanActivateInner() {
     return Mana > 16;
