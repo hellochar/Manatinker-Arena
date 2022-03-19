@@ -7,7 +7,7 @@ public class Player : Creature {
   public static event Action<float> OnTakesDamage;
   public float influenceRadius => 1.75f + level * 0.25f;
   public override float baseSpeed => (8 + 2 * level);
-  public override float encumbranceThreshold => 1 + level;
+  public override float encumbranceThreshold => 4 + level * 4;
 
   public int gold = 5;
 

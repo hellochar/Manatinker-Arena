@@ -4,7 +4,7 @@ public class Minigun : Pistol, IActivatable {
   public override float myInFlowRate => 16;
   public override float myHpMax => 50;
   public override float myManaMax => 80;
-  public override float weight => 1.5f;
+  public override float weight => 6f;
   public override Projectile info => new Projectile() { baseSpeed = 15, maxDistance = 40 };
   bool IActivatable.isHold => true;
   public override float manaCost => 5;

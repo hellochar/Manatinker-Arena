@@ -24,7 +24,7 @@ public class Creature : Fragment {
   public List<Fragment> Children => children;
   public virtual float baseSpeed => 10;
   public virtual float baseTurnRate => 10f;
-  public virtual float encumbranceThreshold => 10;
+  public virtual float encumbranceThreshold => 40;
   public float encumbranceScalar => Mathf.Min(1, encumbranceThreshold / totalWeight);
   // public float encumbranceScalar => Mathf.Clamp(
   //   Util.MapLinear(totalWeight, 0, encumbranceThreshold * 2, 2, 0),

@@ -21,7 +21,7 @@ public class Fragment {
   public virtual bool hasInput => true;
   public virtual float myInFlowRate => 0;
   public float inFlowRate => myInFlowRate * levelScalar;
-  public virtual float weight => 1;
+  public virtual float weight => 4;
   public virtual bool loseManaOnOwnerChange => true;
   public int level = 1;
   public float levelScalar => (1f + (level - 1) * 0.2f);

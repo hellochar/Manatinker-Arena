@@ -156,6 +156,19 @@ public class GameModelController : MonoBehaviour {
 
   void Update() {
     GameModel.main.simulate(Time.deltaTime);
+
+    #if UNITY_EDITOR
+    if (Input.GetKeyDown(KeyCode.L)) {
+      var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<Fragment>();
+      for(var i = 0; i < frags.Count; i++) {
+        var f = GameRound.NewFragmentFrom(frags[i]);
+        var x = i % 5 * 2;
+        var y = (i / 5 - 2.5f) * 2;
+        f.builtinOffset = new Vector2(5 + x, y + GameModel.main.floor.height / 2);
+        GameModel.main.AddFragment(f);
+      }
+    }
+    #endif
   }
 
   public void PlayerDied() {

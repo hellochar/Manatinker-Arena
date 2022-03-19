@@ -469,7 +469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5640713012917274182}
   - component: {fileID: 3088791710634091617}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: clickCapture
   m_TagString: Untagged
   m_Icon: {fileID: 0}

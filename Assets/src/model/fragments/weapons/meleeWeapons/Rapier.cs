@@ -6,7 +6,7 @@ public class Rapier : MeleeWeapon, IActivatable {
   public override bool hasOutput => false;
   public override float myInFlowRate => 13;
   public override float myManaMax => 30;
-  public override float weight => 0.75f;
+  public override float weight => 3f;
   // per second
   public override (int, int) damageSpread => (26 + level * 3, 26 + level * 3);
   public bool activated = false;

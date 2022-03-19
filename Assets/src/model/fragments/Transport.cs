@@ -7,11 +7,11 @@ public abstract class Transport : Fragment {
 [RegisteredFragment]
 public class Hoverpad : Transport {
   public override bool hasOutput => false;
-  public override float weight => Mana / manaMax < 0.5f ? 1 : -2;
+  public override float weight => Mana / manaMax < 0.5f ? 4 : -8;
   public override float myInFlowRate => 4;
   public override float myManaMax => 4;
   public override float myHpMax => 30;
-  public override string Description => $"Weight is -2 while above 50% Mana. Loses 2 mana/sec.";
+  public override string Description => $"Weight is -8 while above 50% Mana. Loses 2 mana/sec.";
 
   // drain 1 mana per second
   public float manaSinkRate => 2;
@@ -42,7 +42,7 @@ public interface ISpeedModifier {
 [RegisteredFragment]
 public class JumpPad : Transport, IActivatable {
   public override bool hasOutput => false;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override float myInFlowRate => 5;
   public override float myManaMax => 10;
   public override float myHpMax => 30;
@@ -88,7 +88,7 @@ public class JumpPad : Transport, IActivatable {
 [RegisteredFragment]
 public class Jet : Transport, IActivatable {
   public override bool hasOutput => false;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override float myInFlowRate => 5;
   public override float myManaMax => 10;
   public override float myHpMax => 30;

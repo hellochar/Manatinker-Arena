@@ -13,7 +13,7 @@ public class Engine : EngineBase {
   public override float myManaMax => 0;
   public override float myHpMax => 50;
   public override float myOutFlowRate => 6;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override string Description => "Mana generator.";
 
   // not bounded by mana
@@ -35,7 +35,7 @@ public class PainEngine : EngineBase {
   public override float myManaMax => 10;
   public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override string Description => "Convert 33% of damage you deal into Mana on this Engine.";
 
   public PainEngine() {
@@ -59,7 +59,7 @@ public class CalmEngine : EngineBase {
   public override float myManaMax => 50;
   public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override string Description => "Convert 100% of damage you take into Mana on this Engine.";
 
   public CalmEngine() {
@@ -87,7 +87,7 @@ public class TurretEngine : EngineBase {
   public override float myHpMax => 60;
   public override float myManaMax => 1;
   public override float myOutFlowRate => 10;
-  public override float weight => 0.75f;
+  public override float weight => 3;
 
   int numFramesStill = 0;
   
@@ -124,7 +124,7 @@ public class FlitterEngine : EngineBase {
   public override float myHpMax => 10;
   public override float myManaMax => 1;
   public override float myOutFlowRate => 10;
-  public override float weight => 0.25f;
+  public override float weight => 1;
 
   int numFramesStill = 0;
 

@@ -30,9 +30,6 @@ public class GameRound {
     timeStarted = GameModel.main.time;
   }
 
-  private static List<RegisteredFragmentAttribute> allWeapons;
-  private static List<RegisteredFragmentAttribute> allShields;
-
   public static T spawnRandom<T>() where T : Fragment {
     var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<T>();
     var spawn = frags[Random.Range(0, frags.Count)];
@@ -111,9 +108,9 @@ public class GameRound {
     }
   }
 
-  private static Fragment NewFragmentFrom(RegisteredFragmentAttribute info) {
-    var typeToScatter = info.type;
-    var noArgConstructor = typeToScatter.GetConstructor(new System.Type[0]);
+  public static Fragment NewFragmentFrom(RegisteredFragmentAttribute info) {
+    var type = info.type;
+    var noArgConstructor = type.GetConstructor(new System.Type[0]);
     var newFragment = (Fragment)noArgConstructor.Invoke(new object[0]);
     return newFragment;
   }

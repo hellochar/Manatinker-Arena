@@ -6,7 +6,7 @@ public class Dagger : MeleeWeapon, IActivatable {
   public override float myInFlowRate => 8;
   public override float myManaMax => 6;
   public float manaCost => 6;
-  public override float weight => 0.5f;
+  public override float weight => 2f;
   public override (int, int) damageSpread => (7 + level * 1, 9 + level * 2);
   public float timeActivatedLeft = 0;
   public bool isActivated => timeActivatedLeft > 0;
