@@ -3,7 +3,6 @@ using UnityEngine;
 
 [RegisteredFragment]
 public class Rapier : MeleeWeapon, IActivatable {
-  public override bool hasOutput => false;
   public override float myInFlowRate => 13;
   public override float myManaMax => 30;
   public override float weight => 3f;
@@ -14,10 +13,11 @@ public class Rapier : MeleeWeapon, IActivatable {
   public bool activeLastFrame = false;
   public float T = 0;
   private float originalAngle;
-  public float attackTime = 0.5f;
   public bool isHold => true;
-  public static float angleSpread = 21;
-  public float manaPerCycle = 10;
+  public virtual float attackTime => 0.5f;
+  public virtual float angleSpread => 21;
+  public virtual float manaPerCycle => 10;
+  public virtual float lerpRate => 60;
   public float startManaRequired => manaPerCycle / 2;
   public event Action OnSwing;
 
@@ -43,6 +43,7 @@ public class Rapier : MeleeWeapon, IActivatable {
 
   float currentAngleDelta = 0;
   private float lastDesiredAngleDelta = 0;
+
   void KeepGoing(float dt) {
     FrameInfo info = new FrameInfo(this, dt);
     ChangeMana(-info.manaRequired);
@@ -82,12 +83,12 @@ public class Rapier : MeleeWeapon, IActivatable {
       // if completely active, over one attackTime cycle we start at -angleSpread, move to +angleSpread, then back to -angleSpread.
       // this is a total of 4angleSpread. Our damage over this time is attackTime * dps.
       // we now want to distribute proportionally to how much of the 4anglespread we've actually used up in this delta frame
-      fullCycleAngle = (angleSpread * 4);
+      fullCycleAngle = (r.angleSpread * 4);
       fullCycleDamage = r.damageSpread.Item1 * r.attackTime;
 
-      desiredAngleDelta = t < 0.5f ? angleSpread : -angleSpread;
+      desiredAngleDelta = t < 0.5f ? r.angleSpread : -r.angleSpread;
 
-      nextAngleDelta = Mathf.Lerp(r.currentAngleDelta, desiredAngleDelta, 60 * dt);
+      nextAngleDelta = Mathf.Lerp(r.currentAngleDelta, desiredAngleDelta, r.lerpRate * dt);
       angleMovement = Mathf.Abs(nextAngleDelta - r.currentAngleDelta);
       percentageCycleMoved = angleMovement / fullCycleAngle;
 
@@ -117,4 +118,17 @@ public class Rapier : MeleeWeapon, IActivatable {
     originalAngle = builtinAngle;
     T = 0;
   }
+}
+
+[RegisteredFragment]
+public class Axe : Rapier {
+  public override float myInFlowRate => 10;
+  public override float myHpMax => 80;
+  public override float myManaMax => 50;
+  public override float weight => 8;
+  public override float attackTime => 1.5f;
+  public override float angleSpread => 61;
+  public override float manaPerCycle => 30;
+  public override float lerpRate => 10;
+  public override (int, int) damageSpread => (36 + level * 4, 47 + level * 5);
 }

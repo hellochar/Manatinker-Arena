@@ -5,6 +5,7 @@ public class WeaponController : MonoBehaviour {
   public Weapon weapon => (Weapon)fc.fragment;
   public GameObject projectilePrefab;
   public Transform spawnPoint;
+  public Transform[] extraSpawns;
   public AudioSource ShootSound;
 
   void Start() {
@@ -26,6 +27,15 @@ public class WeaponController : MonoBehaviour {
     if (p.owner == null) {
       p.owner = weapon.owner;
     }
+
+    spawn(p, spawnPoint);
+    if (extraSpawns != null) {
+      foreach(var otherPoint in extraSpawns)
+      spawn(p, otherPoint);
+    }
+  }
+
+  void spawn(Projectile p, Transform spawnPoint) {
     var rotation = spawnPoint.rotation;
     if (p.angleSpread != 0) {
       rotation = rotation * Quaternion.Euler(0, 0, Random.Range(-p.angleSpread / 2, p.angleSpread / 2));
