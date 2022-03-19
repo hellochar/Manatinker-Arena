@@ -12,3 +12,9 @@ public static class MyVector3Extensions {
         return new Vector3(v.x, v.y, z);
     }
 }
+
+public static class StringExtensions
+{
+    public static string AddColor(this string text, Color col) => $"<color={ColorHexFromUnityColor(col)}>{text}</color>";
+    public static string ColorHexFromUnityColor(this Color unityColor) => $"#{ColorUtility.ToHtmlStringRGBA(unityColor)}";
+}

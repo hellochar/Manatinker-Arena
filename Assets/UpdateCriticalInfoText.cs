@@ -9,6 +9,8 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     text = GetComponent<TMPro.TMP_Text>();
   }
 
+  public Gradient gradient;
+
   // Update is called once per frame
   void Update() {
     var player = GameModel.main.player;
@@ -25,9 +27,19 @@ public class UpdateCriticalInfoText : MonoBehaviour {
 
     var extraSpeedText = speedPercent < 1 ? $"({(speedPercent * 100).ToString("##0")}%)" : "";
 
+    var overloadedT = Mathf.Clamp((overloadedAmount - 1) / 3, 0, 1);
+    var encumbranceColor = gradient.Evaluate(overloadedT);
+
+    var weightText = $@"
+Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
+    ".Trim().AddColor(encumbranceColor);
+
+var speedText = $"Speed: {player.speed.ToString("##0.##")} {extraSpeedText}".AddColor(encumbranceColor);
+
     text.text = $@"
 <sprite=0> {player.gold}
-Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
-Speed: {player.speed.ToString("##0.##")} {extraSpeedText}".Trim();
+{weightText}
+{speedText}
+".Trim();
   }
 }
