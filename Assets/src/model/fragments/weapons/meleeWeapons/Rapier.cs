@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RegisteredFragment]
@@ -20,6 +21,13 @@ public class Rapier : MeleeWeapon, IActivatable {
   public virtual float lerpRate => 60;
   public float startManaRequired => manaPerCycle / 2;
   public event Action OnSwing;
+
+  protected override void PopulateInfoStrings(List<string> lines) {
+    base.PopulateInfoStrings(lines);
+    lines.Add($"Swing Duration	{attackTime} sec");
+  }
+
+  public override string Description => $"Click-and-hold ({manaPerCycle} mana/cycle) - swing ({angleSpread} degree spread).";
 
   public override void Update(float dt) {
     activeLastFrame = activated;
@@ -122,13 +130,60 @@ public class Rapier : MeleeWeapon, IActivatable {
 
 [RegisteredFragment]
 public class Axe : Rapier {
-  public override float myInFlowRate => 10;
+  public override float myInFlowRate => 20;
   public override float myHpMax => 80;
-  public override float myManaMax => 50;
+  public override float myManaMax => 80;
   public override float weight => 8;
   public override float attackTime => 1.5f;
   public override float angleSpread => 61;
-  public override float manaPerCycle => 30;
+  public override float manaPerCycle => 40;
   public override float lerpRate => 10;
   public override (int, int) damageSpread => (36 + level * 4, 47 + level * 5);
+}
+
+[RegisteredFragment]
+public class Sawblade : MeleeWeapon, IActivatable {
+  public override (int, int) damageSpread => (31 + level * 3, 31 + level * 3);
+  bool IActivatable.isHold => true;
+
+  bool isActivated = false;
+  public float manaPerSecond => 25;
+  public override float myHpMax => 45;
+  public override float weight => 5;
+  public override float myInFlowRate => 18;
+  public override float myManaMax => 60;
+
+  // protected override void PopulateInfoStrings(List<string> lines) {
+  //   base.PopulateInfoStrings(lines);
+  //   lines.Add($"Swing Duration	{attackTime} sec");
+  // }
+
+  protected override string dmgString => $"{damageSpread.Item1} dmg/sec";
+
+  public override string Description => $"Click-and-hold ({manaPerSecond} mana/sec) - twist attack.\n\nWarning - can damage yourself!";
+
+  public override void Update(float dt) {
+    base.Update(dt);
+    if (isActivated) {
+      ChangeMana(-manaPerSecond * dt);
+      // two rotations a second
+      builtinAngle += 720 * dt;
+      var p = new Projectile() {
+        baseSpeed = 0,
+        lifeTime = 0.02f,
+        // we have 5 spawn points, but it's unlikely we'll hit everything
+        damage = rollDamage() * dt / 2,
+      };
+      OnShootProjectile?.Invoke(p);
+    }
+    isActivated = false;
+  }
+
+  public void Activate() {
+    isActivated = true;
+  }
+
+  public bool CanActivateInner() {
+    return Mana > manaPerSecond * GameModel.main.dt;
+  }
 }

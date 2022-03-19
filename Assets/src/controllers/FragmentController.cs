@@ -164,7 +164,7 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
       }
       if (a.isHold) {
         var playSound = ((IActivatable)a).PlayerInputCheck() && a.CanActivate();
-        SetAudioActive(playSound);
+        UpdateHoldAudio(playSound);
       }
     }
     if (fragment is Spike spike) {
@@ -176,7 +176,7 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
   }
 
   AudioSource aso;
-  public void SetAudioActive(bool active) {
+  public void UpdateHoldAudio(bool active) {
     if (aso == null) {
       return;
     }
@@ -185,6 +185,7 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
     } else if (!active && aso.isPlaying) {
       aso.Pause();
     }
+    aso.pitch = Mathf.Lerp(aso.pitch, active ? 1 : 0, 20 * Time.deltaTime);
   }
 
 
