@@ -8,7 +8,7 @@ Shader "Unlit/ManaCoverShader"
 
         [PerRendererData] _Inflow ("Inflow", Float) = 0.5
         [PerRendererData] _ManaPercentage ("Mana Percentage", Float) = 0.5
-		_MissingColor ("Missing Color", Color) = (0.2, 0.21, 0.23, 1)
+		_MissingColor ("Missing Color", Color) = (0.2, 0.21, 0.23, 0)
 	}
 
 	SubShader
@@ -102,7 +102,8 @@ Shader "Unlit/ManaCoverShader"
 					float intensity = lerp(0.5f, 2, smoothstep(0, 1, _Inflow * _Inflow));
 					output.rgb = output.rgb * intensity;
 				} else {
-					output *= _MissingColor;
+					return fixed4(0, 0, 0, 0);
+					// output *= _MissingColor;
 					// output.rgb = lerp(output.rgb, _MissingColor.rgb, intensity);
 					// output.a = lerp(output.a, _MissingColor.a, intensity);
 				}

@@ -102,35 +102,23 @@ Shader "Unlit/FragmentMaterial"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 texColor = SampleSpriteTexture (IN.texcoord) * IN.color;
+				fixed4 sampleColor = SampleSpriteTexture (IN.texcoord);
+				fixed4 output = sampleColor;
 
-				return texColor;
-
-				float colorScalar;
-				// if we're near max mana, just do a straight smoothstep without the ramp
-				if (_ManaPercentage > 0.999) {
-					colorScalar = lerp(1, _MaxFlowScalar, smoothstep(0, 1, _Inflow));
-				} else {
-					// go down then up
-					if (_Inflow < _LowFlowPoint) {
-						float downRampT = smoothstep(0, 1, _Inflow / _LowFlowPoint);
-						colorScalar = lerp(1, _LowFlowScalar, downRampT * downRampT);
-					} else {
-						float rampSize = 1 - _LowFlowPoint;
-						float upRampT = smoothstep(0, 1, (_Inflow - _LowFlowPoint) / rampSize);
-						colorScalar = lerp(_LowFlowScalar, _MaxFlowScalar, upRampT * upRampT);
+				if (IN.texcoord.x < _ManaPercentage) {
+					// draw bright filled in here
+					// float intensityMax = lerp(1, 2, smoothstep(0, 1, _Inflow));
+					float intensityMax = 2; //  lerp(1, 2, smoothstep(0, 1, _Inflow));
+					float divider = lerp(0.03, 0.1, smoothstep(0, 1, _Inflow));
+					// float intensityMax = 2;
+					float xDist = (_ManaPercentage - IN.texcoord.x) / divider;
+					float nearEdgeScalar = clamp(1 / xDist, 0.2, intensityMax);
+					if (_ManaPercentage > 0.999) {
+						nearEdgeScalar += 0.33;
 					}
+					output.rgb += IN.color * nearEdgeScalar;
 				}
-				texColor *= colorScalar;
-				// if (length(texColor.rgb - fixed3(1, 1, 1)) < 0.5) {
-				// 	texColor.rgb = lerp(fixed3(0.5, 0.5, 0.5), texColor.rgb, _Percentage);
-				// 	texColor.rgb *= texColor.a;
-				// } else {
-				// 	texColor.rgb *= texColor.a;
-				// 	texColor *= _Color;
-				// }
-				// texColor.rgb *= 1 + _Percentage * 3;
-				return texColor;
+				return output;
 			}
 		ENDCG
 		}

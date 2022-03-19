@@ -37,5 +37,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ManaColor: {r: 1, g: 0.7429157, b: 0.37199998, a: 1}
-    - _MissingColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MissingColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

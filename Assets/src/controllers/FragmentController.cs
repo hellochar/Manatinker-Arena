@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FragmentController : MonoBehaviour {
-  // public static Color NO_FLOW_COLOR = new Color32(128, 128, 128, 255);
-  public static Color NO_FLOW_COLOR = new Color32(16, 17, 18, 255);
+  public static Color NO_FLOW_COLOR = new Color32(158, 110, 33, 255);
+  // public static Color NO_FLOW_COLOR = new Color32(16, 17, 18, 255);
   public static Color FULL_FLOW_COLOR = Color.white;
 
   [NonSerialized]
   public Fragment fragment;
   public SpriteRenderer spriteRenderer;
-  public SpriteRenderer manaCover;
   public SpriteMask mask;
   public GameObject input;
   public GameObject output;
@@ -24,7 +23,6 @@ public class FragmentController : MonoBehaviour {
 
   private static int globalId = 0;
   public readonly int id = globalId++;
-  public static readonly Color unactivatedColor = new Color32(12, 13, 14, 255);
 
   public virtual void Init(Fragment fragment) {
     this.fragment = fragment;
@@ -102,10 +100,6 @@ public class FragmentController : MonoBehaviour {
     if (spriteRenderer != null) {
       spriteRenderer.GetComponent<SpriteMask>().sprite = spriteRenderer.sprite;
     }
-    if (manaCover != null && manaCover.sprite == null) {
-      manaCover.sprite = spriteRenderer.sprite;
-      manaCover.enabled = fragment.manaMax > 0;
-    }
     if (output == null) {
       output = transform.Find("Output")?.gameObject;
     }
@@ -133,14 +127,9 @@ public class FragmentController : MonoBehaviour {
   public virtual void Update() {
     var flowPercent = Mathf.Max(fragment.outputPercent, fragment.inputPercent);
     currentFlowPercent = Mathf.Lerp(currentFlowPercent, flowPercent, 0.05f);
-    if (manaCover != null && manaCover.enabled) {
-      manaCover.material.SetFloat("_Inflow", currentFlowPercent);
-      manaCover.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
-      manaCover.color = fragment.owner == null ? Color.clear : Color.white;
-    }
     if (spriteRenderer != null) {
       spriteRenderer.material.SetFloat("_Inflow", currentFlowPercent);
-      spriteRenderer.material.SetFloat("_ManaPercentage", fragment.Mana / fragment.manaMax);
+      spriteRenderer.material.SetFloat("_ManaPercentage", fragment.ManaPercent);
       // spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (fragment.hasInput) {
@@ -158,6 +147,17 @@ public class FragmentController : MonoBehaviour {
         currentOutputPercent = Mathf.Lerp(currentOutputPercent, (float)fragment.outputPercent * HES * 2, 0.05f);
         outputSR.color = Color.Lerp(NO_FLOW_COLOR, FULL_FLOW_COLOR, currentOutputPercent);
       // }
+    }
+    UpdateInput();
+  }
+
+  public event Action OnActivated;
+  void UpdateInput() {
+    if (fragment is IActivatable a) {
+      if (a.CanActivate() && fragment.isPlayerOwned && a.PlayerInputCheck()) {
+        a.Activate();
+        OnActivated?.Invoke();
+      }
     }
   }
 

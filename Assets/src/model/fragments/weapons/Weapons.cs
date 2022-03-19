@@ -7,7 +7,6 @@ public abstract class Weapon : Fragment {
   public Action<Projectile> OnShootProjectile;
 
   public abstract (int, int) damageSpread { get; }
-  public virtual bool isHold => false;
 
   protected Weapon() : base() {
   }

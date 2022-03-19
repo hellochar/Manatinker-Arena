@@ -13,7 +13,7 @@ public class Dagger : MeleeWeapon, IActivatable {
   private Vector2 originalBuiltin;
   public float attackDistance = 0.4f;
   public float attackTime = 0.33f;
-  public override bool isHold => true;
+  public bool isHold => true;
 
   public override string Description => $"Click ({manaCost} mana) - attack.\nDaggers do not have collision.";
 

@@ -14,7 +14,7 @@ public class Shotgun : Gun, IActivatable {
   }
 
   public void Activate() {
-    var numBullets = Mathf.Max(Mathf.Floor(Mana / 2), 8f);
+    var numBullets = Mathf.Min(Mathf.Floor(Mana / 2), 8f);
     var manaUsed = numBullets * 2f;
     ChangeMana(-manaUsed);
     IEnumerator ActivateAsync() {

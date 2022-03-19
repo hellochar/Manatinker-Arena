@@ -71,6 +71,21 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
         type: 3}
+      propertyPath: m_Color.b
+      value: 0.6392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8078432
+      objectReference: {fileID: 0}
+    - target: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.79215693
+      objectReference: {fileID: 0}
+    - target: {fileID: 929435363090133365, guid: 1e59fcb8e698c244aacb132a761060af,
+        type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -209,11 +224,6 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[11].y
       value: 0.375
       objectReference: {fileID: 0}
-    - target: {fileID: 1959762766203104642, guid: 1e59fcb8e698c244aacb132a761060af,
-        type: 3}
-      propertyPath: manaCover
-      value: 
-      objectReference: {fileID: 4080159778668200266}
     - target: {fileID: 2145200279502194030, guid: 1e59fcb8e698c244aacb132a761060af,
         type: 3}
       propertyPath: m_IsActive
@@ -273,9 +283,3 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e59fcb8e698c244aacb132a761060af, type: 3}
---- !u!212 &4080159778668200266 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5325409710869402135, guid: 1e59fcb8e698c244aacb132a761060af,
-    type: 3}
-  m_PrefabInstance: {fileID: 8176289907171627869}
-  m_PrefabAsset: {fileID: 0}

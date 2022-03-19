@@ -1,12 +1,12 @@
 [RegisteredFragment]
-public class Minigun : Pistol {
-  public override (int, int) damageSpread => (4, 6);
+public class Minigun : Pistol, IActivatable {
+  public override (int, int) damageSpread => (3, 5);
   public override float myInFlowRate => 16;
   public override float myHpMax => 50;
   public override float myManaMax => 80;
   public override float weight => 1.5f;
   public override Projectile info => new Projectile() { baseSpeed = 15, maxDistance = 40 };
-  public override bool isHold => true;
+  bool IActivatable.isHold => true;
   public override float manaCost => 5;
   private float cooldown = 0;
 

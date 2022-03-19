@@ -18,7 +18,7 @@ public class GameRound {
   public float timeUntilNextSpawn = 1.5f;
   public float timeBetweenSpawns = 14;
   public readonly float duration;
-  private readonly int spawnsPerTime;
+  private int spawnsPerTime;
   public int roundNumber;
 
   public GameRound(int roundNumber, float duration = 62, int spawnsPerTime = 1) {
@@ -43,11 +43,11 @@ public class GameRound {
   public static void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
 
-    // {
-    //   var fragment = spawnRandom<Transport>();
-    //   fragment.builtinOffset = new Vector2(2, main.floor.height / 2 - 1);
-    //   main.AddFragment(fragment);
-    // }
+    {
+      var fragment = spawnRandom<Transport>();
+      fragment.builtinOffset = new Vector2(2, main.floor.height / 2 - 1);
+      main.AddFragment(fragment);
+    }
 
     // {
     //   var dagger = new Spike();
@@ -132,9 +132,20 @@ public class GameRound {
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
+      var enemyPower = Util.Temporal(0.2f + roundNumber * 0.8f);
+
+      if (timeUntilNextSpawn > remaining) {
+        // last spawn!
+        // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
+        if (Random.value < 0.5f) {
+          enemyPower *= 2;
+        } else {
+          spawnsPerTime = 2;
+        }
+      }
       for(int i = 0; i < spawnsPerTime; i++) {
-        var numWeapons = Random.Range(1, roundNumber + 1);
-        var numShields = roundNumber - numWeapons;
+        var numWeapons = Random.Range(1, enemyPower + 1);
+        var numShields = enemyPower - numWeapons;
 
         // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
         // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
@@ -179,7 +190,8 @@ public class GameRound {
     main.AddFragment(enemy);
 
     var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
-    var avatar = new EnemyAvatar(maxHP, Mathf.RoundToInt(10 + Mathf.Pow(roundNumber, 1.1f) * 1.5f));
+    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 1.4f);
+    var avatar = new EnemyAvatar(maxHP, outflow);
     avatar.owner = enemy;
     main.AddFragment(avatar);
 
@@ -211,10 +223,10 @@ public class GameRound {
 
   private EnemyAI getAi(WeaponType weaponType) {
     return new EnemyAI() {
-      baseTurnRate = 2.5f * (1 + roundNumber / 10f * 2.5f),
-      baseSpeed = 8f + roundNumber,
+      baseTurnRate = 1.5f * (1 + roundNumber / 10f * 2f),
+      baseSpeed = 7f + roundNumber,
       minActiveDuration = 2 + roundNumber * 0.3f,
-      cooldown = 2 - roundNumber * 0.1f,
+      cooldown = 2.5f - roundNumber * 0.1f,
       deltaAngleThreshold = 15,
       desiredDistance = weaponType == WeaponType.Guns ? Random.Range(5, 8) : weaponType == WeaponType.Melee ? 1 : 5,
       minDistance = 8,

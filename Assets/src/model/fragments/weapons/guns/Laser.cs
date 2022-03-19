@@ -7,7 +7,6 @@ public class Laser : Gun, IActivatable {
   public override float myInFlowRate => 15;
   public override float myHpMax => 20;
   public override float myManaMax => 25;
-  public override bool isHold => true;
   public float manaDrainWhileActivated => 30;
   public bool needsRecharge = false;
 
@@ -23,6 +22,7 @@ public class Laser : Gun, IActivatable {
     }
   }
 
+  public bool isHold => true;
   public bool CanActivateInner() {
     return !needsRecharge && owner != null;
   }

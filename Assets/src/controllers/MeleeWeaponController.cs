@@ -2,25 +2,11 @@ using UnityEngine;
 
 public class MeleeWeaponController : MonoBehaviour {
   private FragmentController fc;
-  public Dagger dagger => (Dagger)fc.fragment;
+  public MeleeWeapon weapon => (MeleeWeapon)fc.fragment;
   public GameObject projectilePrefab;
 
   void Start() {
     fc = GetComponent<FragmentController>();
-  }
-
-  void Update() {
-    if (dagger is IActivatable a) {
-      var activationCheck = dagger.isHold ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
-      if (a.CanActivate() && dagger.isPlayerOwned && activationCheck) {
-        a.Activate();
-        // HandleShootProjectile()
-      }
-      // if (weapon.isHold) {
-      //   var playSound = activationCheck && a.CanActivate();
-      //   SetAudioActive(playSound);
-      // }
-    }
   }
 
   // void HandleShootProjectile(Projectile p) {

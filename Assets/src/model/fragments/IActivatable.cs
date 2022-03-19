@@ -1,6 +1,14 @@
+using System;
+using UnityEngine;
+
 public interface IActivatable {
+  public virtual bool PlayerInputCheck() {
+    return isHold ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+  }
+
   bool CanActivateInner();
   void Activate();
+  virtual bool isHold => false;
 }
 
 public static class ActivatableExtensions {

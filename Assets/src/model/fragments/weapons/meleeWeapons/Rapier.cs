@@ -15,9 +15,9 @@ public class Rapier : MeleeWeapon, IActivatable {
   public float T = 0;
   private float originalAngle;
   public float attackTime = 0.5f;
-  public override bool isHold => true;
+  public bool isHold => true;
   public static float angleSpread = 21;
-  public float manaPerCycle = 16;
+  public float manaPerCycle = 10;
   public float startManaRequired => manaPerCycle / 2;
   public event Action OnSwing;
 

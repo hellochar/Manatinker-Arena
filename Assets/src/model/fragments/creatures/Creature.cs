@@ -29,9 +29,10 @@ public class Creature : Fragment {
   // public float encumbranceScalar => Mathf.Clamp(
   //   Util.MapLinear(totalWeight, 0, encumbranceThreshold * 2, 2, 0),
   //   0.1f, 1);
-  public float speed => encumbranceScalar * (baseSpeed);
+  public float speed => encumbranceScalar * (baseSpeed + speedModifier);
   public float turnRate => encumbranceScalar * baseTurnRate;
   public float totalWeight;
+  public float speedModifier;
   // public float totalSpeedProvided;
   public Avatar avatar;
 
@@ -40,12 +41,12 @@ public class Creature : Fragment {
 
   public Creature(Vector2 startPosition) {
     this.startPosition = startPosition;
-    recomputeTotalMass();
+    recomputeCachedValues();
     // recomputeTotalSpeedProvided();
   }
 
   public override void Update(float dt) {
-    recomputeTotalMass();
+    recomputeCachedValues();
     // recomputeTotalSpeedProvided();
     // Debug.Log(totalSpeedProvided);
     // do not reparent
@@ -66,10 +67,14 @@ public class Creature : Fragment {
     OnLoseFragment?.Invoke(c);
   }
 
-  void recomputeTotalMass() {
+  void recomputeCachedValues() {
     totalWeight = 0f;
+    speedModifier = 0;
     foreach (var c in children) {
       totalWeight += c.weight;
+      if (c is ISpeedModifier m) {
+        speedModifier += m.deltaSpeed;
+      }
     }
     if (totalWeight < 0) {
       totalWeight = 0;

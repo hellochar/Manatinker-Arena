@@ -30,10 +30,10 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _Inflow: 0.5
-    - _LowFlowPoint: 0.1
-    - _LowFlowScalar: 0.1
+    - _LowFlowPoint: 0.05
+    - _LowFlowScalar: 1
     - _ManaPercentage: 0.5
-    - _MaxFlowScalar: 30
+    - _MaxFlowScalar: 2
     - _Percentage: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
