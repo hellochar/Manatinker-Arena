@@ -103,7 +103,7 @@ Shader "Unlit/FragmentMaterial"
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 sampleColor = SampleSpriteTexture (IN.texcoord);
-				fixed4 output = sampleColor;
+				fixed4 output = sampleColor * 1.03f + fixed4(0.02, 0.02, 0.02, 0);
 
 				if (IN.texcoord.x < _ManaPercentage) {
 					// draw bright filled in here

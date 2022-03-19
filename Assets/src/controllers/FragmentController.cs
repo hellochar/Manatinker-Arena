@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FragmentController : MonoBehaviour {
-  public static Color NO_FLOW_COLOR = new Color32(158, 110, 33, 255);
-  // public static Color NO_FLOW_COLOR = new Color32(16, 17, 18, 255);
+  public static Color NO_FLOW_COLOR = new Color32(129, 150, 165, 255);
   public static Color FULL_FLOW_COLOR = Color.white;
 
   [NonSerialized]

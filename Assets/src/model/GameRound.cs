@@ -49,16 +49,16 @@ public class GameRound {
       main.AddFragment(fragment);
     }
 
-    // {
-    //   var dagger = new Spike();
-    //   dagger.builtinAngle = 0;
-    //   var yOffset = 0;
-    //   var x = 4;
-    //   var y = main.floor.height / 2 + yOffset;
-    //   var pos = new Vector2(x, y);
-    //   dagger.builtinOffset = pos;
-    //   main.AddFragment(dagger);
-    // }
+    {
+      var dagger = new Spike();
+      dagger.builtinAngle = 0;
+      var yOffset = 0;
+      var x = 4;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      dagger.builtinOffset = pos;
+      main.AddFragment(dagger);
+    }
 
     // {
     //   var rapier = new Rapier();
