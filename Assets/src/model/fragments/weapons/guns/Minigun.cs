@@ -9,6 +9,7 @@ public class Minigun : Pistol, IActivatable {
   bool IActivatable.isHold => true;
   public override float manaCost => 5;
   private float cooldown = 0;
+  public float rateOfFire => 3 + level;
 
   public override void Update(float dt) {
     cooldown -= dt;
@@ -20,9 +21,9 @@ public class Minigun : Pistol, IActivatable {
   }
 
   public override void Activate() {
-    cooldown = 0.25f;
+    cooldown = 1 / rateOfFire;
     base.Activate();
   }
 
-  public override string Description => "Click and hold (5 Mana) - fire.";
+  public override string Description => $"Click and hold - fire {rateOfFire} bullets per second ({manaCost} per bullet).";
 }

@@ -46,7 +46,7 @@ public class JumpPad : Transport, IActivatable {
   public override float myInFlowRate => 5;
   public override float myManaMax => 10;
   public override float myHpMax => 30;
-  public override string Description => $"Spacebar (10 Mana) - Jump 5 units in the direction you're facing over 1 second.";
+  public override string Description => $"Space (10 Mana) - Jump 5 units in the direction you're facing over 1 second.";
   float timeElapsed = -1;
   bool active => timeElapsed >= 0;
   // public float deltaSpeed => active ? speedFn(timeElapsed) : 0;
@@ -93,7 +93,7 @@ public class Jet : Transport, IActivatable {
   public override float myManaMax => 10;
   public override float myHpMax => 30;
   public float manaUpkeep => 10 + level;
-  public override string Description => $"Spacebar (hold, {manaUpkeep} mana/sec) - push yourself {power} units/sec in the direction the Jets are facing.";
+  public override string Description => $"Space (hold, {manaUpkeep} mana/sec) - push yourself {power} units/sec in the direction the Jets are facing.";
   public float power => 2 + level * 0.5f;
 
   public bool isActivated = false;

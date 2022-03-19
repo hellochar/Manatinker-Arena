@@ -38,31 +38,7 @@ public class Fragment {
 
   public string GetInfo() {
     List<String> lines = new List<string>();
-    lines.Add($"HP			{hp.ToString("N0")}/{hpMax}");
-    lines.Add($"Weight 		{weight} kg");
-
-    lines.Add("");
-
-    if (manaMax > 0) {
-      lines.Add($"Mana			{mana.ToString("N0")}/{manaMax}");
-    }
-    if (hasInput) {
-      lines.Add($"Inflow 		{inFlowRate.ToString("#0.#")} mana/sec");
-    }
-    if (hasOutput) {
-      lines.Add($"Outflow 		{outFlowRate.ToString("#0.#")} mana/sec");
-    }
-
-    if (lines[lines.Count - 1] != "") {
-      lines.Add("");
-    }
-
     PopulateInfoStrings(lines);
-
-    if (lines[lines.Count - 1] != "") {
-      lines.Add("");
-    }
-
     lines.Add(Description);
 
     var info = String.Join("\n", lines).Trim();
@@ -126,6 +102,8 @@ public class Fragment {
   public float worldRotation => controller.transform.eulerAngles.z;
 
   public virtual string DisplayName => GetType().Name + " " + level;
+
+  public virtual float Intensity => 1;
 
   public Fragment() {
     outt = new Node("out" + name);

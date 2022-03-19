@@ -21,7 +21,7 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     // e.g. 3 / 1 => 3 - 1 = 200% slower
     float overloadedAmount = totalWeight / encumbrance;
 
-    var overweightText = overloadedAmount > 1 ? $"({Mathf.RoundToInt((overloadedAmount - 1) * 100)}% overweight)" : "";
+    var overweightText = overloadedAmount > 1 ? $"({Mathf.RoundToInt(overloadedAmount * 100)}%)" : "";
 
     var speedPercent = speed / player.baseSpeed;
 
@@ -31,15 +31,13 @@ public class UpdateCriticalInfoText : MonoBehaviour {
     var encumbranceColor = gradient.Evaluate(overloadedT);
 
     var weightText = $@"
-Weight: {totalWeight}kg / {encumbrance}kg {overweightText}
+{totalWeight} of {encumbrance}kg {overweightText}
     ".Trim().AddColor(encumbranceColor);
 
-var speedText = $"Speed: {player.speed.ToString("##0.##")} {extraSpeedText}".AddColor(encumbranceColor);
+var speedText = $"Speed {player.speed.ToString("##0.##")} {extraSpeedText}".AddColor(encumbranceColor).Trim();
 
     text.text = $@"
-<sprite=0> {player.gold}
-{weightText}
-{speedText}
+<sprite=0> {player.gold} • {weightText} • {speedText}
 ".Trim();
   }
 }

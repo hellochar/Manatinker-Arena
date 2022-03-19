@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class FloorController : MonoBehaviour {
+public class FloorController : MonoBehaviour, IPointerClickHandler {
   public GameObject wallTilePrefab;
   public GameObject floorTilePrefab;
   [NonSerialized]
@@ -30,5 +31,9 @@ public class FloorController : MonoBehaviour {
         tiles[x, y]?.Init(floor.tiles[x, y]);
       }
     }
+  }
+
+  public void OnPointerClick(PointerEventData eventData) {
+    EditModeInputController.instance.clickGround();
   }
 }

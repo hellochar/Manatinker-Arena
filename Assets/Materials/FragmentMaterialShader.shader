@@ -8,6 +8,7 @@ Shader "Unlit/FragmentMaterial"
 
         [PerRendererData] _Inflow ("Inflow", Float) = 0.5
         [PerRendererData] _ManaPercentage ("Mana Percentage", Float) = 0.5
+        [PerRendererData] _Intensity ("Intensity", Float) = 1
 		_LowFlowScalar ("Low Flow Scalar", Float) = 0.1
 		_LowFlowPoint ("Low Flow Point", Float) = 0.1
 		_MaxFlowScalar ("Max Flow Scalar", Float) = 0.1
@@ -83,6 +84,7 @@ Shader "Unlit/FragmentMaterial"
 
             float _Inflow;
 			float _ManaPercentage;
+			float _Intensity;
 
 			float _LowFlowScalar;
 			float _LowFlowPoint;
@@ -102,8 +104,15 @@ Shader "Unlit/FragmentMaterial"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 sampleColor = SampleSpriteTexture (IN.texcoord);
-				fixed4 output = sampleColor * 1.03f + fixed4(0.02, 0.02, 0.02, 0);
+				fixed4 s = SampleSpriteTexture (IN.texcoord);
+				float brightness = (0.299*s.r + 0.587*s.g + 0.114*s.b);
+				float brightnessDiff = brightness - 0.5;
+
+				fixed4 output = s * 1.50f + fixed4(0.01, 0.02, 0.03, 0);
+
+				output *= 1.0 + brightnessDiff * 0.5;
+				output *= _Intensity;
+
 
 				if (IN.texcoord.x < _ManaPercentage) {
 					// draw bright filled in here

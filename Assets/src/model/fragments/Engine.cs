@@ -127,6 +127,8 @@ public class FlitterEngine : EngineBase {
   public override float weight => 0.25f;
 
   int numFramesStill = 0;
+
+  float movingAmount;
   
   public override void Update(float dt) {
     base.Update(dt);
@@ -144,10 +146,24 @@ public class FlitterEngine : EngineBase {
     }
 
     // account for physics frames being different than logic
-    if (numFramesStill < 4) {
-      ChangeMana(dt * manaWhileMoving);
+    if (numFramesStill > 2) {
+      movingAmount = Mathf.Lerp(movingAmount, 0, 10f * dt);
+      movingAmount = Mathf.MoveTowards(movingAmount, 0, 10f * dt);
+    } else {
+      movingAmount = Mathf.Lerp(movingAmount, 1, 10f * dt);
+      movingAmount = Mathf.MoveTowards(movingAmount, 1, 10f * dt);
     }
+
+    var manaDiff = (movingAmount - 0.5f) * 2 * dt * manaWhileMoving;
+    ChangeMana(manaDiff);
+    // if (numFramesStill < 4) {
+    //   ChangeMana(dt * manaWhileMoving);
+    // } else {
+    //   ChangeMana(-dt * manaWhileMoving);
+    // }
 
     this.lastWorldPos = position;   
   }
+
+  public override float Intensity => 1 + movingAmount * 0.1f;
 }

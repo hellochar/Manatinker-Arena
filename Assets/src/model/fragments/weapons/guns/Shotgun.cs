@@ -4,7 +4,7 @@ using UnityEngine;
 [RegisteredFragment]
 public class Shotgun : Gun, IActivatable {
   public override (int, int) damageSpread => (2, 3);
-  public override float myInFlowRate => 6;
+  public override float myInFlowRate => 8;
   public override float myHpMax => 22;
   public override float myManaMax => 32;
   static Projectile info = new Projectile() { baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };

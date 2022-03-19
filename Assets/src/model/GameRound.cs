@@ -43,12 +43,17 @@ public class GameRound {
   public void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
     var main = GameModel.main;
 
+    List<Fragment> utilities = new List<Fragment>();
+
     if (roundNumber % 3 == 0)
     {
-      var fragment = spawnRandom<Transport>();
-      // var fragment = new Jet();
-      fragment.builtinOffset = new Vector2(2, main.floor.height / 2 - 1);
-      main.AddFragment(fragment);
+      utilities.Add(spawnRandom<Transport>());
+    }
+    for(int i = 0; i < numEngines; i++) {
+      utilities.Add(spawnRandom<EngineBase>());
+    }
+    for (int i = 0; i < numBattery; i++) {
+      utilities.Add(new Battery());
     }
 
     // {
@@ -73,6 +78,16 @@ public class GameRound {
     //   main.AddFragment(rapier);
     // }
 
+    for(int i = 0; i < utilities.Count; i++) {
+      var fragment = utilities[i];
+      var yOffset = (i - (utilities.Count - 1) / 2f) * 1.5f;
+      var x = 3;
+      var y = main.floor.height / 2 + yOffset;
+      var pos = new Vector2(x, y);
+      fragment.builtinOffset = pos;
+      main.AddFragment(fragment);
+    }
+
     for(int i = 0; i < numWeapons; i++) {
       var fragment = spawnRandom<Weapon>();
       fragment.builtinAngle = 0;
@@ -87,26 +102,11 @@ public class GameRound {
       var fragment = spawnRandom<Shield>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numShields - 1) / 2f) * 3f;
-      var x = 11;
+      var x = 11 - Mathf.Abs(yOffset * 0.33f);
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
+      fragment.builtinAngle = yOffset * 15;
       fragment.builtinOffset = pos;
-      main.AddFragment(fragment);
-    }
-    for(int i = 0; i < numEngines; i++) {
-      var fragment = spawnRandom<EngineBase>();
-      fragment.builtinAngle = 0;
-      var yOffset = (i - (numEngines - 1) / 2f) * 3f;
-      var x = 15;
-      var y = main.floor.height / 2 + yOffset;
-      var pos = new Vector2(x, y);
-      fragment.builtinOffset = pos;
-      main.AddFragment(fragment);
-    }
-
-    if (numBattery > 0) {
-      var fragment = new Battery();
-      fragment.builtinOffset = new Vector2(15, main.floor.height / 2 - 1);
       main.AddFragment(fragment);
     }
   }

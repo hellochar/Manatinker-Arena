@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class FragmentController : MonoBehaviour {
+public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
   public static Color NO_FLOW_COLOR = new Color32(129, 150, 165, 255);
   public static Color FULL_FLOW_COLOR = Color.white;
 
@@ -132,6 +133,7 @@ public class FragmentController : MonoBehaviour {
     if (spriteRenderer != null) {
       spriteRenderer.material.SetFloat("_Inflow", currentFlowPercent);
       spriteRenderer.material.SetFloat("_ManaPercentage", fragment.ManaPercent);
+      spriteRenderer.material.SetFloat("_Intensity", fragment.Intensity);
       // spriteRenderer.color = fragment.owner == null ? unactivatedColor : Color.white;
     }
     if (fragment.hasInput) {
@@ -201,5 +203,13 @@ public class FragmentController : MonoBehaviour {
   internal void OnHit(Projectile p, Vector2 position) {
     var dmgTick = Instantiate(VFX.Get("damageTick"), position.z(-2), Quaternion.identity);
     dmgTick.GetComponent<DamageTickController>().Init(p);
+  }
+
+  public void OnPointerDown(PointerEventData eventData) {
+    EditModeInputController.instance.mouseDownOnFragment(this);
+  }
+
+  public void OnPointerUp(PointerEventData eventData) {
+    EditModeInputController.instance.mouseUpOnFragment(this);
   }
 }

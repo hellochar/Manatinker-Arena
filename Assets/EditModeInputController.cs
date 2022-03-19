@@ -15,20 +15,20 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   private Vector3[] positions = new Vector3[63];
-  void Start() {
-  }
 
   public void Reset() {
     Transition(InputState.Default);
   }
 
   public void clickGround() {
-    inputState.clickGround();
+    if (enabled) {
+      inputState.clickGround();
+    }
   }
 
   void Update() {
     UpdateHovered();
-    UpdateMouse();
+    // UpdateMouse();
     if (Input.GetKeyDown(KeyCode.Escape)) {
       clickGround();
     }
@@ -36,24 +36,26 @@ public class EditModeInputController : MonoBehaviour {
     UpdateSelected(inputState.selected);
   }
 
-  void UpdateMouse() {
-    if (Input.GetMouseButtonDown(0)) {
-      var fc = hovered?.GetComponent<FragmentController>();
-      if (fc != null) {
-        mouseDownOnFragment(fc);
-      } else {
-        clickGround();
-      }
-    } else if (Input.GetMouseButtonUp(0)) {
-      var fc = hovered?.GetComponent<FragmentController>();
-      if (fc != null) {
-        mouseUpOnFragment(fc);
-      }
-    }
-  }
+  // void UpdateMouse() {
+  //   if (Input.GetMouseButtonDown(0)) {
+  //     var fc = hovered?.GetComponent<FragmentController>();
+  //     if (fc != null) {
+  //       mouseDownOnFragment(fc);
+  //     } else {
+  //       clickGround();
+  //     }
+  //   } else if (Input.GetMouseButtonUp(0)) {
+  //     var fc = hovered?.GetComponent<FragmentController>();
+  //     if (fc != null) {
+  //       mouseUpOnFragment(fc);
+  //     }
+  //   }
+  // }
 
   public FragmentController hovered = null;
   private void UpdateHovered() {
+    // Debug.Log(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject());
+    // Debug.Log(UnityEngine.EventSystems.EventSystem.current.currentInputModule.);
     Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
     RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
     hovered = hit.collider?.GetComponentInParent<FragmentController>();
@@ -91,11 +93,15 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   public void mouseDownOnFragment(FragmentController fc) {
-    inputState.mouseDownOnFragment(fc);
+    if (enabled) {
+      inputState.mouseDownOnFragment(fc);
+    }
   }
 
   public void mouseUpOnFragment(FragmentController fc) {
-    inputState.mouseUpOnFragment(fc);
+    if (enabled) {
+      inputState.mouseUpOnFragment(fc);
+    }
   }
 }
 
