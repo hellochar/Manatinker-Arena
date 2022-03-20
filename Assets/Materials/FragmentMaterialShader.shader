@@ -108,10 +108,12 @@ Shader "Unlit/FragmentMaterial"
 				float brightness = (0.299*s.r + 0.587*s.g + 0.114*s.b);
 				float brightnessDiff = brightness - 0.5;
 
-				fixed4 output = s * 1.50f + fixed4(0.01, 0.02, 0.03, 0);
+				fixed4 output = s + fixed4(0.01, 0.02, 0.03, 0);
+				// just make it all brighter
+				output.rgb *= 1.5f;
 
-				output *= 1.0 + brightnessDiff * 0.5;
-				output *= _Intensity;
+				output.rgb *= 1.0 + brightnessDiff * 0.5;
+				output.rgb *= _Intensity;
 
 
 				if (IN.texcoord.x < _ManaPercentage) {
@@ -125,7 +127,11 @@ Shader "Unlit/FragmentMaterial"
 					if (_ManaPercentage > 0.999) {
 						nearEdgeScalar += 0.33;
 					}
-					output.rgb += IN.color * nearEdgeScalar;
+					output.rgb += IN.color.rgb * nearEdgeScalar;
+					if (output.a > 0.0001) {
+						output.a += 0.5;
+						// output.a += IN.color.a * nearEdgeScalar;
+					}
 				}
 				return output;
 			}

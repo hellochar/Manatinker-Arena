@@ -8,11 +8,17 @@ public abstract class Shield : Fragment {
   public override float myManaMax => myHpMax / 2;
   public override float myOutFlowRate => 0;
   public virtual float absorptionPercent => 0.5f;
-  public virtual float manaToDamageRatio => 3;
+  public virtual float baseManaToDamageRatio => 3;
+  public float ratioScalar => 1f - (level - 1) * 0.1f / ((level - 1) * 0.1f + 1);
+  public virtual float manaToDamageRatio => baseManaToDamageRatio * ratioScalar;
 
   public override string Description => $"Redirects {Mathf.RoundToInt(absorptionPercent * 100)}% of damage to Mana ({manaToDamageRatio} Mana : 1 damage).";
 
   public override void ChangeHP(float diff) {
+    if (!hasInput) {
+      base.ChangeHP(diff);
+      return;
+    }
     // take mana damage first
     if (diff < 0) {
       var dmgToSoak = -diff * absorptionPercent;
@@ -56,19 +62,73 @@ public class Crenel : Shield {
 }
 
 [RegisteredFragment]
-public class DotMatrix : Shield {
-  public override float myHpMax => 10;
-  public override float myManaMax => 60;
-  public override float weight => 1f;
-  public override float absorptionPercent => 1;
-  public DotMatrix() {
-  }
-}
-
-[RegisteredFragment]
 public class PlowShield : Shield {
   public override float myHpMax => 90;
   public override float weight => 6f;
   public PlowShield() {
   }
+}
+
+[RegisteredFragment]
+public class DotMatrix : Shield {
+  public override float myHpMax => 60;
+  public override float myManaMax => 60;
+  public override float weight => 1f;
+  public DotMatrix() {
+  }
+}
+
+[RegisteredFragment]
+public class DefenseRing : Shield {
+  public override float myHpMax => 5;
+  public override float myManaMax => 30;
+  public override float myInFlowRate => 10;
+  public override float weight => 2f;
+  public override float absorptionPercent => 1;
+  public override float baseManaToDamageRatio => 4;
+
+  public override string Description => base.Description + "\n\nHas no collision.";
+}
+
+[RegisteredFragment]
+public class DefenseBar : DefenseRing {
+  public override float myHpMax => 5;
+  public override float myManaMax => 30;
+  public override float myInFlowRate => 10;
+  public override float weight => 2f;
+  public override float absorptionPercent => 1;
+  public override float baseManaToDamageRatio => 4;
+}
+
+[RegisteredFragment]
+public class DefenseGrid : DefenseRing {
+  public override float myHpMax => 10;
+  public override float myManaMax => 120;
+  public override float myInFlowRate => 20;
+  public override float weight => 2f;
+  public override float absorptionPercent => 1;
+  public override float baseManaToDamageRatio => 4;
+}
+
+[RegisteredFragment]
+public class PDS : DefenseRing {
+  public override float myHpMax => 5;
+  public override float myManaMax => 20;
+  public override float myInFlowRate => 10;
+  public override float weight => 1f;
+  public override float absorptionPercent => 1;
+  public override float baseManaToDamageRatio => 4;
+}
+
+
+[RegisteredFragment]
+public class Platemail : Shield {
+  public override bool hasInput => false;
+  public override float myHpMax => 250;
+  public override float myManaMax => 0;
+  public override float myInFlowRate => 0;
+  public override float weight => 12f;
+  public override float absorptionPercent => 0;
+  public override float baseManaToDamageRatio => 10;
+  public override string Description => $"Just a blocker.";
 }
