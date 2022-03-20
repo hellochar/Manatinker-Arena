@@ -167,3 +167,40 @@ public class FlitterEngine : EngineBase {
 
   public override float Intensity => 1 + movingAmount * 0.1f;
 }
+
+[RegisteredFragment]
+public class HijackEngine : EngineBase {
+  public override string Description => $"Steal {manaStealRate} Mana/s from any enemy Fragments this Engine touches.";
+  public float manaStealRate => 10 + 4 * level;
+  public override float myHpMax => 50;
+  public override float myManaMax => 50;
+  public override float myOutFlowRate => 20;
+  public override float weight => 2;
+  float lastStolenRate;
+  
+  public override void Update(float dt) {
+    base.Update(dt);
+    lastStolenRate = 0;
+    if (owner is Player p) {
+      for (var i = 0; i < p.numContacts; i++) {
+        var contact = p.contacts[i];
+
+        // it deals with us
+        var myFc = contact.otherCollider.GetComponentInParent<FragmentController>();
+        if (myFc != null && myFc.fragment == this) {
+          var otherFc = contact.collider.GetComponentInParent<FragmentController>();
+          if (otherFc != null) {
+            var otherFragment = otherFc.fragment;
+            var room = manaMax - Mana;
+            var manaToSteal = Mathf.Min(manaStealRate * dt, otherFragment.Mana, room);
+            otherFc.fragment.ChangeMana(-manaToSteal);
+            ChangeMana(manaToSteal);
+            lastStolenRate += manaToSteal / dt;
+          }
+        }
+      }
+    }
+  }
+
+  public override float Intensity => 0.8f + (lastStolenRate / manaStealRate) * 0.4f;
+}

@@ -31,6 +31,9 @@ public class Creature : Fragment {
   //   0.1f, 1);
   public float speed => encumbranceScalar * (baseSpeed + speedModifier);
   public float turnRate => encumbranceScalar * baseTurnRate;
+
+  public Rigidbody2D rigidbody => controller.GetComponent<CreatureController>().rb2d;
+
   public float totalWeight;
   public float speedModifier;
   // public float totalSpeedProvided;

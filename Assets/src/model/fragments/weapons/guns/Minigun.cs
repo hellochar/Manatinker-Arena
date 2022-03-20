@@ -9,7 +9,7 @@ public class Minigun : BasicGun, IActivatable {
   bool IActivatable.isHold => true;
   public override float manaCost => 5;
   private float cooldown = 0;
-  public virtual float rateOfFire => 3 + level;
+  public virtual float rateOfFire => 4 + level;
 
   public override void Update(float dt) {
     cooldown -= dt;
@@ -30,13 +30,13 @@ public class Minigun : BasicGun, IActivatable {
 
 [RegisteredFragment]
 public class Piddler : Minigun {
-  public override Projectile info => new Projectile() { sizeScalar = 1, baseSpeed = 12, maxDistance = 5, angleSpread = 20 };
-  public override (int, int) damageSpread => (4, 5);
-  public override float manaCost => 2;
+  public override Projectile info => new Projectile() { sizeScalar = 1, baseSpeed = 12, lifeTime = 0.4f, angleSpread = 20 };
+  public override (int, int) damageSpread => (3, 4);
+  public override float manaCost => 3;
   public override float myInFlowRate => 20;
-  public override float myManaMax => 8;
+  public override float myManaMax => 9;
   public override float weight => 3;
-  public override float rateOfFire => 20;
+  public override float rateOfFire => 15;
 
   public override string DescriptionInner => "Short ranged and inaccurate.";
 }
