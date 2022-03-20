@@ -37,5 +37,5 @@ public struct Projectile {
   internal bool isRay;
   public Creature owner;
   public Fragment creator;
-  public bool ignoreOwner;
+  public bool noFriendlyFire;
 }

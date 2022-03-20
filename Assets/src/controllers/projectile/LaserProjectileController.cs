@@ -27,10 +27,15 @@ public class LaserProjectileController : ProjectileControllerBase {
 
     var rotation = Util.fromDeg(transform.eulerAngles.z);
     var endpoint = transform.position.xy() + rotation * projectile.maxDistance;
-    var hit = Physics2D.Linecast(transform.position.xy(), endpoint); //, LayerMask.GetMask("UI"));
-    if (hit.collider != null) {
-      ProcessHit(hit.collider, hit.point);
-      endpoint = hit.point;
+    var hits = Physics2D.LinecastAll(transform.position.xy(), endpoint); //, LayerMask.GetMask("UI"));
+    foreach(var hit in hits) {
+      if (hit.collider != null) {
+        var processed = ProcessHit(hit.collider, hit.point);
+        if (processed) {
+          endpoint = hit.point;
+          break;
+        }
+      }
     }
     lineRenderer.SetPosition(1, endpoint);
   }

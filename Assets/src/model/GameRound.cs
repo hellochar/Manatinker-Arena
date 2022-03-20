@@ -31,9 +31,13 @@ public class GameRound {
   }
 
   public static T spawnRandom<T>() where T : Fragment {
-    var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<T>();
+    return (T)NewFragmentFrom(randomFragmentOfType(typeof(T)));
+  }
+
+  public static RegisteredFragmentAttribute randomFragmentOfType(System.Type type) {
+    var frags = RegisteredFragmentAttribute.GetAllFragmentTypes(type);
     var spawn = frags[Random.Range(0, frags.Count)];
-    return (T)NewFragmentFrom(spawn);
+    return spawn;
   }
 
   // scatter random items around
@@ -150,14 +154,16 @@ public class GameRound {
         }
       }
       for(int i = 0; i < spawnsPerTime; i++) {
-        var numWeapons = Random.Range(1, enemyPower + 1);
+        var numWeapons = Random.Range(Mathf.CeilToInt(enemyPower / 2), enemyPower + 1);
         var numShields = enemyPower - numWeapons;
+        // shrink enemies; tighter enemies look cooler and are more focused
+        var influence = Mathf.Sqrt(enemyPower) * 0.75f;
 
         // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
         // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
         var floor = GameModel.main.floor;
         var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
-        spawnEnemy(numWeapons, numShields, pos);
+        spawnEnemy(numWeapons, numShields, influence, pos);
       }
     }
     if ((dt + elapsed) > duration) {
@@ -185,60 +191,102 @@ public class GameRound {
     }
   }
 
-  public void spawnEnemy(int numWeapons, int numShields, Vector2 pos) {
+  public void spawnEnemy(int numWeapons, int numShields, float influence, Vector2 pos) {
+    bool isSymmetrical = Random.value < 0.9f;
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
     var main = GameModel.main;
     var floor = main.floor;
-    var weaponType = Random.value < 0.8f ? WeaponType.Guns : Random.value < 0.5 ? WeaponType.Melee : WeaponType.Mixed;
+    var weaponType = Random.value < 0.8f ? typeof(Gun) : Random.value < 0.5 ? typeof(MeleeWeapon) : typeof(Weapon);
 
-    var enemy = new Enemy(pos, getAi(weaponType));
+    bool isCircular = true;
+    bool isAntiDirected = Random.value < 0.2f;
+
+    var enemy = new Enemy(pos, getAi(weaponType, isCircular ? 180 : isAntiDirected ? 45 : 15));
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
     var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
-    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 1.4f);
+    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 2f);
     var avatar = new EnemyAvatar(maxHP, outflow);
     avatar.owner = enemy;
     main.AddFragment(avatar);
 
+    var shieldType = Random.value < 0.5f ? typeof(MassyShield) : Random.value < 0.5f ? typeof(EnergyShield) : typeof(Shield);
+    List<RegisteredFragmentAttribute> shieldsTypeList = GetRandomTypeList(shieldType, numShields, true);
     for(var i = 0; i < numShields; i++) {
-      var shield = spawnRandom<Shield>();
+      var shield = NewFragmentFrom(shieldsTypeList[i]);
       shield.ChangeMana(shield.manaMax);
       shield.owner = enemy;
       main.AddFragment(shield);
       var angle = (i + 0.5f) * 360f / numShields + 180;
-      shield.builtinOffset = Util.fromDeg(angle);
+      shield.builtinOffset = Util.fromDeg(angle) * influence / 2;
       shield.builtinAngle = angle;
       avatar.connect(shield);
     }
 
+    List<RegisteredFragmentAttribute> weaponsTypeList = GetRandomTypeList(weaponType, numWeapons, true);
+
+    bool bIsDirected = Random.value < 0.5f;
+
     for (var i = 0; i < numWeapons; i++) {
-      var weapon = weaponType == WeaponType.Guns ? spawnRandom<Gun>() : weaponType == WeaponType.Melee ? spawnRandom<MeleeWeapon>() : spawnRandom<Weapon>();
+      var weapon = NewFragmentFrom(weaponsTypeList[i]);
       weapon.owner = enemy;
       weapon.ChangeMana(weapon.manaMax);
-      // 0 1 = 0
-      // 0 2 = 
-      var y = (i + 0.5f - numWeapons / 2f) * 0.5f;
-      // put weapons outside shield
-      var builtinX = numShields > 0 ? 2 : 1;
-      weapon.builtinOffset = new Vector2(builtinX, y);
+
+      if (isCircular) {
+        var angle = (i + 0.5f) * 360f / numWeapons + 180;
+        weapon.builtinOffset = Util.fromDeg(angle) * influence;
+        weapon.builtinAngle = angle;
+      } else {
+        // scale with influence, divided by numWeapons
+        var spread = Mathf.Max(0.5f, 0.5f * influence / numWeapons);
+        var y = (i + 0.5f - numWeapons / 2f) * spread;
+        // put weapons outside shield
+        var builtinX = numShields > 0 ? influence : influence / 2;
+        weapon.builtinOffset = new Vector2(builtinX, y);
+        // angle them 
+        if (bIsDirected || isAntiDirected) {
+          var target = new Vector2(enemy.ai.desiredDistance, 0);
+          var angle = -Vector2.SignedAngle((target - weapon.builtinOffset).normalized, Vector2.right);
+          weapon.builtinAngle = angle;
+          if (isAntiDirected) {
+            weapon.builtinAngle *= -1;
+          }
+        }
+      }
+
       avatar.connect(weapon);
       main.AddFragment(weapon);
     }
   }
 
-  private EnemyAI getAi(WeaponType weaponType) {
+  List<RegisteredFragmentAttribute> GetRandomTypeList(System.Type type, int num, bool isSymmetrical) {
+    List<RegisteredFragmentAttribute> list = new List<RegisteredFragmentAttribute>();
+    for (int i = 0; i < num; i++) {
+      if (!isSymmetrical) {
+        list.Add(randomFragmentOfType(type));
+      } else {
+        var oppositeIndex = num - 1 - i;
+        if (oppositeIndex < list.Count) {
+          list.Add(list[oppositeIndex]);
+        } else {
+          list.Add(randomFragmentOfType(type));
+        }
+      }
+    }
+    return list;
+  }
+
+  private EnemyAI getAi(System.Type type, float angleThreshold = 15) {
     return new EnemyAI() {
       baseTurnRate = 1.5f * (1 + roundNumber / 10f * 2f),
       baseSpeed = 7f + roundNumber,
       minActiveDuration = 2 + roundNumber * 0.3f,
       cooldown = 2.5f - roundNumber * 0.1f,
-      deltaAngleThreshold = 15,
-      desiredDistance = weaponType == WeaponType.Guns ? Random.Range(5, 8) : weaponType == WeaponType.Melee ? 1 : 5,
+      deltaAngleThreshold = angleThreshold,
+      desiredDistance = type == typeof(Gun) ? Random.Range(4, 10) : type == typeof(MeleeWeapon) ? 1 : 5,
       minDistance = 8,
       encumbrance = 2f + 1 * roundNumber,
     };
   }
 }
-
-enum WeaponType { Melee, Guns, Mixed };

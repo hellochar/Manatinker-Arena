@@ -212,7 +212,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.1875, y: 0.9375}
+    oldSize: {x: 0.1875, y: 1.25}
     newSize: {x: 0.28125, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -222,8 +222,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0.06443085, y: -0.023368217}
       - {x: 0.05271375, y: -0.0331589}
-      - {x: -0.09375, y: -0.46875}
-      - {x: 0.09375, y: -0.46875}
+      - {x: -0.1387591, y: -0.63258326}
+      - {x: 0.099151105, y: -0.63258326}
       - {x: 0.09667927, y: -0.032156058}
   m_UseDelaunayMesh: 0
 --- !u!60 &6394680258574657025
@@ -243,7 +243,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.1875, y: 0.9375}
+    oldSize: {x: 0.1875, y: 1.25}
     newSize: {x: 0.28125, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -251,7 +251,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.09375, y: 0.46875}
-      - {x: 0.102511376, y: 0.4715473}
-      - {x: 0.09667927, y: 0.055590272}
+    - - {x: 0.042003915, y: 0.08896766}
+      - {x: -0.13875917, y: 0.62718207}
+      - {x: 0.098910645, y: 0.63538057}
+      - {x: 0.10388073, y: 0.082595736}
   m_UseDelaunayMesh: 0

@@ -159,7 +159,7 @@ public class GameModelController : MonoBehaviour {
 
     #if UNITY_EDITOR
     if (Input.GetKeyDown(KeyCode.L)) {
-      var frags = RegisteredFragmentAttribute.GetAllFragmentTypes<Fragment>();
+      var frags = RegisteredFragmentAttribute.GetAllFragmentTypes(typeof(Fragment));
       for(var i = 0; i < frags.Count; i++) {
         var f = GameRound.NewFragmentFrom(frags[i]);
         var x = i % 5 * 2;
@@ -167,6 +167,9 @@ public class GameModelController : MonoBehaviour {
         f.builtinOffset = new Vector2(5 + x, y + GameModel.main.floor.height / 2);
         GameModel.main.AddFragment(f);
       }
+    }
+    if (Input.GetKeyDown(KeyCode.P)) {
+      GameModel.main.currentRound.spawnEnemy(3, 3, 1.5f, new Vector2(5, 5));
     }
     #endif
   }

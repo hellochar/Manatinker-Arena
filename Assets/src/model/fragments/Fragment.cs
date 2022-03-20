@@ -105,6 +105,7 @@ public class Fragment {
   public virtual string DisplayName => GetType().Name + " " + level;
 
   public virtual float Intensity => 1;
+  public virtual bool hitByFriendlyFire => true;
 
   public Fragment() {
     outt = new Node("out" + name);

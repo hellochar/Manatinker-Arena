@@ -40,7 +40,9 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
     var hitFC = col.gameObject.GetComponentInParent<FragmentController>();
     // we've hit a fragment, process it
     if (hitFC) {
-      if (projectile.ignoreOwner && hitFC.fragment.owner == projectile.owner) {
+      // no friendly fire
+      var isFriendlyFire = hitFC.fragment.owner == projectile.owner;
+      if (isFriendlyFire && (projectile.noFriendlyFire || !hitFC.fragment.hitByFriendlyFire)) {
         return false;
       }
       // no self hitting

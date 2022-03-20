@@ -13,15 +13,15 @@ public class RegisteredFragmentAttribute : Attribute {
   private static List<RegisteredFragmentAttribute> cachedTypes;
   private static Dictionary<System.Type, List<RegisteredFragmentAttribute>> cachedTypeMap = new Dictionary<Type, List<RegisteredFragmentAttribute>>();
 
-  public static List<RegisteredFragmentAttribute> GetAllFragmentTypes<T>() where T : Fragment {
+  public static List<RegisteredFragmentAttribute> GetAllFragmentTypes(System.Type type) {
     if (cachedTypes == null) {
       cachedTypes = GetRegisteredTypesImpl().ToList();
       UnityEngine.Debug.Log(String.Join(", ", cachedTypes.Select(t => t.type.FullName)));
     }
-    if (!cachedTypeMap.ContainsKey(typeof(T))) {
-      cachedTypeMap[typeof(T)] = cachedTypes.Where(attr => attr.type.IsSubclassOf(typeof(T))).ToList();
+    if (!cachedTypeMap.ContainsKey(type)) {
+      cachedTypeMap[type] = cachedTypes.Where(attr => attr.type.IsSubclassOf(type)).ToList();
     }
-    return cachedTypeMap[typeof(T)];
+    return cachedTypeMap[type];
   }
 
   private static IEnumerable<RegisteredFragmentAttribute> GetRegisteredTypesImpl() {

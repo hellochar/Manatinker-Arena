@@ -22,9 +22,12 @@ public class Dagger : MeleeWeapon, IActivatable {
     lines.Add($"Return Time	{attackTime} sec");
   }
 
-  public override string Description => $"Click ({manaCost} mana) - attack.\n\nDaggers do not have collision.";
+  public override string Description => $"Click ({manaCost} mana) - attack.\n\nDaggers do not have collision nor friendly fire.";
 
   public override void Update(float dt) {
+    if (owner == null) {
+      timeActivatedLeft = 0;
+    }
     if (timeActivatedLeft > 0) {
       timeActivatedLeft -= dt;
       if (timeActivatedLeft < 0) {
@@ -50,7 +53,7 @@ public class Dagger : MeleeWeapon, IActivatable {
     originalBuiltin = builtinOffset;
     timeActivatedLeft = attackTime;
     UpdateBuiltinOffset();
-    Projectile p = new Projectile() { baseSpeed = 0, lifeTime = 0.02f, damage = rollDamage(), ignoreOwner = true };
+    Projectile p = new Projectile() { baseSpeed = 0, lifeTime = 0.02f, damage = rollDamage(), noFriendlyFire = true };
     OnShootProjectile?.Invoke(p);
   }
 }

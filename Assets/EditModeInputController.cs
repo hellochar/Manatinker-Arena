@@ -21,7 +21,7 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   public void clickGround() {
-    if (enabled) {
+    if (GameModelController.main.isEditMode) {
       inputState.clickGround();
     }
   }
@@ -93,13 +93,13 @@ public class EditModeInputController : MonoBehaviour {
   }
 
   public void mouseDownOnFragment(FragmentController fc) {
-    if (enabled) {
+    if (GameModelController.main.isEditMode) {
       inputState.mouseDownOnFragment(fc);
     }
   }
 
   public void mouseUpOnFragment(FragmentController fc) {
-    if (enabled) {
+    if (GameModelController.main.isEditMode) {
       inputState.mouseUpOnFragment(fc);
     }
   }

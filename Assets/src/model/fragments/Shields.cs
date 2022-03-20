@@ -34,8 +34,10 @@ public abstract class Shield : Fragment {
   }
 }
 
+public class MassyShield : Shield {}
+
 [RegisteredFragment]
-public class Buckler : Shield {
+public class Buckler : MassyShield {
   public override float myHpMax => 30;
   public override float myManaMax => 30;
   public override float weight => 2f;
@@ -45,7 +47,7 @@ public class Buckler : Shield {
 }
 
 [RegisteredFragment]
-public class TowerShield : Shield {
+public class TowerShield : MassyShield {
   public override float myInFlowRate => 3;
   public override float myHpMax => 120;
   public override float weight => 10f;
@@ -54,7 +56,7 @@ public class TowerShield : Shield {
 }
 
 [RegisteredFragment]
-public class Crenel : Shield {
+public class Crenel : MassyShield {
   public override float myHpMax => 70;
   public override float weight => 2f;
   public Crenel() {
@@ -62,7 +64,7 @@ public class Crenel : Shield {
 }
 
 [RegisteredFragment]
-public class PlowShield : Shield {
+public class PlowShield : MassyShield {
   public override float myHpMax => 90;
   public override float weight => 6f;
   public PlowShield() {
@@ -70,7 +72,7 @@ public class PlowShield : Shield {
 }
 
 [RegisteredFragment]
-public class DotMatrix : Shield {
+public class DotMatrix : MassyShield {
   public override float myHpMax => 60;
   public override float myManaMax => 60;
   public override float weight => 1f;
@@ -78,46 +80,46 @@ public class DotMatrix : Shield {
   }
 }
 
-[RegisteredFragment]
-public class DefenseRing : Shield {
-  public override float myHpMax => 5;
-  public override float myManaMax => 30;
-  public override float myInFlowRate => 10;
-  public override float weight => 2f;
+public class EnergyShield : Shield {
+  public override string Description => base.Description + "\n\nHas no collision.\n\nNot hit by friendly fire.";
+  public override bool hitByFriendlyFire => false;
   public override float absorptionPercent => 1;
-  public override float baseManaToDamageRatio => 4;
-
-  public override string Description => base.Description + "\n\nHas no collision.";
+  public override float baseManaToDamageRatio => 3;
 }
 
 [RegisteredFragment]
-public class DefenseBar : DefenseRing {
-  public override float myHpMax => 5;
-  public override float myManaMax => 30;
-  public override float myInFlowRate => 10;
-  public override float weight => 2f;
-  public override float absorptionPercent => 1;
-  public override float baseManaToDamageRatio => 4;
-}
-
-[RegisteredFragment]
-public class DefenseGrid : DefenseRing {
+public class DefenseRing : EnergyShield {
   public override float myHpMax => 10;
-  public override float myManaMax => 120;
-  public override float myInFlowRate => 20;
+  public override float myManaMax => 30;
+  public override float myInFlowRate => 8;
   public override float weight => 2f;
-  public override float absorptionPercent => 1;
+}
+
+[RegisteredFragment]
+public class DefenseBar : EnergyShield {
+  public override float myHpMax => 10;
+  public override float myManaMax => 30;
+  public override float myInFlowRate => 8;
+  public override float weight => 2f;
+}
+
+[RegisteredFragment]
+public class DefenseGrid : EnergyShield {
+  public override float myHpMax => 20;
+  public override float myManaMax => 200;
+  public override float myInFlowRate => 20;
+  public override float weight => 3f;
   public override float baseManaToDamageRatio => 4;
 }
 
 [RegisteredFragment]
-public class PDS : DefenseRing {
+public class PDS : EnergyShield {
   public override float myHpMax => 5;
-  public override float myManaMax => 20;
+  public override float myManaMax => 30;
   public override float myInFlowRate => 10;
   public override float weight => 1f;
   public override float absorptionPercent => 1;
-  public override float baseManaToDamageRatio => 4;
+  public override float baseManaToDamageRatio => 3;
 }
 
 

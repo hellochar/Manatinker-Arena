@@ -8,7 +8,7 @@ public class Rapier : MeleeWeapon, IActivatable {
   public override float myManaMax => 30;
   public override float weight => 3f;
   // per second
-  public override (int, int) damageSpread => (26 + level * 3, 26 + level * 3);
+  public override (int, int) damageSpread => (22 + level * 3, 22 + level * 3);
   public bool activated = false;
   // activated lagged by one frame
   public bool activeLastFrame = false;
@@ -17,7 +17,7 @@ public class Rapier : MeleeWeapon, IActivatable {
   public bool isHold => true;
   public virtual float attackTime => 0.5f;
   public virtual float angleSpread => 21;
-  public virtual float manaPerCycle => 10;
+  public virtual float manaPerCycle => 10 + level;
   public virtual float lerpRate => 60;
   public float startManaRequired => manaPerCycle / 2;
   public event Action OnSwing;
@@ -27,7 +27,7 @@ public class Rapier : MeleeWeapon, IActivatable {
     lines.Add($"Swing Duration	{attackTime} sec");
   }
 
-  public override string Description => $"Click-and-hold ({manaPerCycle} mana/cycle) - swing ({angleSpread} degree spread).";
+  public override string Description => $"Click-and-hold ({manaPerCycle} mana/cycle) - swing ({angleSpread} degree spread).\n\nNo friendly fire.";
 
   public override void Update(float dt) {
     activeLastFrame = activated;
@@ -69,7 +69,7 @@ public class Rapier : MeleeWeapon, IActivatable {
       baseSpeed = 0,
       lifeTime = 0.02f,
       damage = info.percentageCycleMoved * info.fullCycleDamage,
-      ignoreOwner = true
+      noFriendlyFire = true
     };
     OnShootProjectile?.Invoke(p);
   }
@@ -136,7 +136,7 @@ public class Axe : Rapier {
   public override float weight => 8;
   public override float attackTime => 1.5f;
   public override float angleSpread => 61;
-  public override float manaPerCycle => 40;
+  public override float manaPerCycle => 30;
   public override float lerpRate => 10;
   public override (int, int) damageSpread => (36 + level * 4, 47 + level * 5);
 }
