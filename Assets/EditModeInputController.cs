@@ -34,6 +34,9 @@ public class EditModeInputController : MonoBehaviour {
       clickGround();
     }
     inputState.update();
+    if (inputState.selected != null && inputState.selected.fragment.isDead) {
+      Reset();
+    }
     UpdateSelected(inputState.selected);
   }
 

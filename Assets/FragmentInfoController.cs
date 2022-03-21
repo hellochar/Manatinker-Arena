@@ -29,7 +29,7 @@ public class FragmentInfoController : MonoBehaviour {
       outport.SetActive(fragment.hasOutput);
       inset.SetActive(true);
       toggle.SetIsOnWithoutNotify(fragment.pinInSidebar);
-      fragmentIcon.sprite = fragment.controller.spriteRenderer.sprite;
+      fragmentIcon.sprite = fragment.controller?.spriteRenderer?.sprite;
       fragmentName.text = fragment.DisplayName;
       fragmentInfo.text = fragment.GetInfo();
 

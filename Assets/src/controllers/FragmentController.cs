@@ -119,7 +119,7 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
   }
 
   internal void UpdateOffset(Vector2 offset) {
-    var z = fragment is Creature ? -1 : fragment is DefenseGrid ? 0.1f : 0;
+    var z = fragment is Creature ? -1 : fragment is EnergyShield ? 0.1f : 0;
     transform.localPosition = offset.z(z);
   }
 

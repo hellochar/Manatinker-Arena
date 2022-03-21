@@ -64,6 +64,7 @@ public class Enemy : Creature {
       < myAngleThreshold;
     var isDistanceCloseEnough = distanceOffset < myMinDistance;
 
+    activatedHistory.Clear();
     if (isAngleCloseEnough && isDistanceCloseEnough) {
       foreach(var f in Children) {
         // fire weapons
@@ -71,7 +72,7 @@ public class Enemy : Creature {
           if (p.CanActivate()) {
             lastActivatedTime = GameModel.main.time;
             p.Activate();
-            activatedHistory.Add(p, true);
+            activatedHistory[p] = true;
             // active for at least 2 seconds
             if (cooldown < -ai.minActiveDuration) {
               // then pause for 2 seconds
@@ -82,7 +83,7 @@ public class Enemy : Creature {
               randomPos = Vector2.zero;
             }
           } else {
-            activatedHistory.Add(p, false);
+            activatedHistory[p] = false;
           }
         }
       }

@@ -124,6 +124,12 @@ public class GameRound {
       fragment.builtinAngle = yOffset * 15;
       fragment.builtinOffset = pos;
       main.AddFragment(fragment);
+      if (fragment is PDS) {
+        fragment.builtinOffset += new Vector2(0, 0.125f);
+        var f2 = new PDS();
+        f2.builtinOffset = fragment.builtinOffset + new Vector2(0, 0.25f);
+        main.AddFragment(f2);
+      }
     }
   }
 
@@ -171,12 +177,19 @@ public class GameRound {
     if (isLastSpawn) {
       // last spawn!
       // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
-      if (Random.value < 0.5f) {
+      // last round!
+      if (roundNumber % 10 == 0) {
         isStronger = true;
-        enemyPow *= 2;
-      } else {
+        enemyPow *= 1.5f;
         spawnsPerTime = 3;
-        enemyPow *= 0.8f;
+      } else {
+        if (Random.value < 0.5f) {
+          isStronger = true;
+          enemyPow *= 2;
+        } else {
+          spawnsPerTime = 3;
+          enemyPow *= 0.8f;
+        }
       }
     }
 

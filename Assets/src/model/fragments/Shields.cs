@@ -119,11 +119,12 @@ public class DefenseGrid : EnergyShield {
 [RegisteredFragment]
 public class PDS : EnergyShield {
   public override float myHpMax => 5;
-  public override float myManaMax => 30;
+  public override float myManaMax => 25;
   public override float myInFlowRate => 10;
   public override float weight => 1f;
   public override float absorptionPercent => 1;
   public override float baseManaToDamageRatio => 3;
+  public override int costToUpgrade => base.costToUpgrade - 1;
 }
 
 
