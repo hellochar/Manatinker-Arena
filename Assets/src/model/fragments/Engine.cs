@@ -191,11 +191,13 @@ public class HijackEngine : EngineBase {
           var otherFc = contact.collider.GetComponentInParent<FragmentController>();
           if (otherFc != null) {
             var otherFragment = otherFc.fragment;
-            var room = manaMax - Mana;
-            var manaToSteal = Mathf.Min(manaStealRate * dt, otherFragment.Mana, room);
-            otherFc.fragment.ChangeMana(-manaToSteal);
-            ChangeMana(manaToSteal);
-            lastStolenRate += manaToSteal / dt;
+            if (otherFragment.owner != owner) {
+              var room = manaMax - Mana;
+              var manaToSteal = Mathf.Min(manaStealRate * dt, otherFragment.Mana, room);
+              otherFc.fragment.ChangeMana(-manaToSteal);
+              ChangeMana(manaToSteal);
+              lastStolenRate += manaToSteal / dt;
+            }
           }
         }
       }

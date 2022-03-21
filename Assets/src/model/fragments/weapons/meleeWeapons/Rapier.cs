@@ -114,7 +114,7 @@ public class Rapier : MeleeWeapon, IActivatable {
     //   return Mana > startManaRequired;
     // }
     var info = new FrameInfo(this, GameModel.main.dt);
-    return Mana > info.manaRequired;
+    return Mana >= info.manaRequired;
   }
 
   public void Activate() {
@@ -187,6 +187,6 @@ public class Sawblade : MeleeWeapon, IActivatable {
   }
 
   public bool CanActivateInner() {
-    return Mana > manaPerSecond * GameModel.main.dt;
+    return Mana >= manaPerSecond * GameModel.main.dt;
   }
 }

@@ -1,8 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public abstract class Transport : Fragment {
-}
+public abstract class Transport : Utility {}
 
 [RegisteredFragment]
 public class Hoverpad : Transport {
@@ -113,7 +112,7 @@ public class Jet : Transport, IActivatable {
   }
 
   public bool CanActivateInner() {
-    return Mana > manaUpkeep * GameModel.main.dt;
+    return Mana >= manaUpkeep * GameModel.main.dt;
   }
 
   bool IActivatable.PlayerInputCheck() {

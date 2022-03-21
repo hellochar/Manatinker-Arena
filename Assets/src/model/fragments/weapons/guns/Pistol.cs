@@ -4,7 +4,7 @@ public abstract class BasicGun : Gun, IActivatable {
   public abstract string DescriptionInner { get; }
   public abstract Projectile info { get; }
   public virtual bool CanActivateInner() {
-    return Mana > manaCost;
+    return Mana >= manaCost;
   }
 
   public virtual void Activate() {

@@ -21,11 +21,11 @@ public class GameRound {
   private int spawnsPerTime;
   public int roundNumber;
 
-  public GameRound(int roundNumber, float duration = 62, int spawnsPerTime = 1) {
+  public GameRound(int roundNumber, int spawnsPerTime = 1) {
     this.roundNumber = roundNumber;
     int numEnemiesToSpawn = 3 + roundNumber / 2;
+    duration = 42 + roundNumber * 3;
     var timeBetweenSpawns = (duration - 2) / numEnemiesToSpawn;
-    this.duration = duration;
     this.spawnsPerTime = spawnsPerTime;
     timeStarted = GameModel.main.time;
   }
@@ -41,20 +41,20 @@ public class GameRound {
   }
 
   // scatter random items around
-  public void PlaceItems(int numWeapons, int numShields, int numEngines, int numBattery) {
+  public void PlaceItems(int numWeapons, int numShields) {
     var main = GameModel.main;
 
     List<Fragment> utilities = new List<Fragment>();
 
-    if (roundNumber % 3 == 0)
-    {
-      utilities.Add(spawnRandom<Transport>());
-    }
-    for(int i = 0; i < numEngines; i++) {
+    if (roundNumber == 0) {
       utilities.Add(spawnRandom<EngineBase>());
     }
-    for (int i = 0; i < numBattery; i++) {
-      utilities.Add(new Battery());
+
+    if (roundNumber % 3 == 0) {
+      // at least 1
+      for (int i = 0; i < Mathf.Max(1, roundNumber / 3); i++) {
+        utilities.Add(spawnRandom<Utility>());
+      }
     }
 
     // {
@@ -82,7 +82,7 @@ public class GameRound {
     for(int i = 0; i < utilities.Count; i++) {
       var fragment = utilities[i];
       var yOffset = (i - (utilities.Count - 1) / 2f) * 1.5f;
-      var x = 3;
+      var x = main.floor.width / 2 - 4;
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
@@ -93,7 +93,7 @@ public class GameRound {
       var fragment = spawnRandom<Weapon>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numWeapons - 1) / 2f) * 1.5f;
-      var x = 7;
+      var x = main.floor.width / 2;
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinOffset = pos;
@@ -110,7 +110,7 @@ public class GameRound {
       var fragment = spawnRandom<Shield>();
       fragment.builtinAngle = 0;
       var yOffset = (i - (numShields - 1) / 2f) * 3f;
-      var x = 11 - Mathf.Abs(yOffset * 0.33f);
+      var x = main.floor.width / 2 + 4 - Mathf.Abs(yOffset * 0.33f);
       var y = main.floor.height / 2 + yOffset;
       var pos = new Vector2(x, y);
       fragment.builtinAngle = yOffset * 15;
@@ -142,22 +142,27 @@ public class GameRound {
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
-      var enemyNumFragments = Util.Temporal(Mathf.Pow(roundNumber, 0.65f));
-      if (enemyNumFragments < 1) {
-        enemyNumFragments = 1;
-      }
+      float fragmentPow = roundNumber;
 
+      bool isStronger = false;
       if (timeUntilNextSpawn > remaining) {
         // last spawn!
         // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
         if (Random.value < 0.5f) {
-          enemyNumFragments *= 2;
+          isStronger = true;
+          fragmentPow *= 2;
         } else {
-          spawnsPerTime = 2;
+          spawnsPerTime = 3;
+          fragmentPow *= 0.8f;
         }
       }
+
+      var enemyNumFragments = Util.Temporal(Mathf.Pow(fragmentPow, 0.65f));
+      if (enemyNumFragments < 1) {
+        enemyNumFragments = 1;
+      }
       for(int i = 0; i < spawnsPerTime; i++) {
-        var numWeapons = Random.Range(Mathf.CeilToInt(enemyNumFragments / 2), enemyNumFragments + 1);
+        var numWeapons = Random.Range(Mathf.CeilToInt(enemyNumFragments / 2f), enemyNumFragments + 1);
         var numShields = enemyNumFragments - numWeapons;
         // shrink enemies; tighter enemies look cooler and are more focused
         var influence = Mathf.Sqrt(enemyNumFragments) * 0.75f;
@@ -166,7 +171,7 @@ public class GameRound {
         // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
         var floor = GameModel.main.floor;
         var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
-        var powerScalar = spawnsPerTime > 1 ? 1.5f : 1;
+        var powerScalar = isStronger ? 1.5f : 1;
         spawnEnemy(numWeapons, numShields, influence, pos, powerScalar);
       }
     }
@@ -186,24 +191,24 @@ public class GameRound {
   internal void GoToPreparing() {
     state = GameRoundState.Preparing;
     if (roundNumber == 0) {
-      PlaceItems(3, 3, 1, 1);
+      PlaceItems(3, 3);
     } else {
       if (roundNumber % 3 == 0) {
         var numToPlace = roundNumber / 3;
-        PlaceItems(numToPlace, numToPlace, 1, 1);
+        PlaceItems(numToPlace, numToPlace);
       }
     }
   }
 
   public void spawnEnemy(int numWeapons, int numShields, float influence, Vector2 pos, float powerScalar = 1) {
-    bool isSymmetrical = Random.value < 0.5f;
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
     var main = GameModel.main;
     var floor = main.floor;
-    var weaponType = Random.value < 0.8f ? typeof(Gun) : Random.value < 0.5 ? typeof(MeleeWeapon) : typeof(Weapon);
 
-    bool isCircular = true;
+    bool isSymmetrical = Random.value < 0.5f;
+    bool isCircular = numWeapons > 5 ? Random.value < 0.1 : false;
     bool isAntiDirected = Random.value < 0.2f;
+    var weaponType = Random.value < 0.8f ? typeof(Gun) : Random.value < 0.5 ? typeof(MeleeWeapon) : typeof(Weapon);
 
     var enemy = new Enemy(pos, getAi(weaponType, isCircular ? 180 : isAntiDirected ? 45 : 15));
     enemy.builtinAngle = 180;
@@ -235,10 +240,14 @@ public class GameRound {
     for (var i = 0; i < numWeapons; i++) {
       var weapon = NewFragmentFrom(weaponsTypeList[i]);
       weapon.owner = enemy;
-      weapon.ChangeMana(weapon.manaMax);
+      weapon.ChangeMana(weapon.manaMax / 2);
 
       if (isCircular) {
-        var angle = (i + 0.5f) * 360f / numWeapons + 180;
+        // numWeapons 1 - angle is 180 + 180 = 360
+        // numWeapons 2 - angle is 90, 270 = 90, 270 (rotation = 90)
+        // numweapons 3 - angle is 60, 180, 270 + 180, rotation = 
+        // we use integer division here
+        var angle = (float)(i - numWeapons / 2) / numWeapons * 360f;
         weapon.builtinOffset = Util.fromDeg(angle) * influence;
         weapon.builtinAngle = angle;
       } else {

@@ -10,7 +10,7 @@ public class Shotgun : Gun, IActivatable {
   static Projectile info = new Projectile() { sizeScalar = 0.5f, baseSpeed = 9, lifeTime = 1.5f, angleSpread = 45 };
 
   public bool CanActivateInner() {
-    return Mana > 16;
+    return Mana >= 16;
   }
 
   public void Activate() {

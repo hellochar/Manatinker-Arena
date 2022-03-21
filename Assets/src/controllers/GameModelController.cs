@@ -169,7 +169,7 @@ public class GameModelController : MonoBehaviour {
       }
     }
     if (Input.GetKeyDown(KeyCode.P)) {
-      GameModel.main.currentRound.spawnEnemy(3, 3, 1.5f, new Vector2(5, 5));
+      GameModel.main.currentRound.spawnEnemy(7, 7, 1.5f, new Vector2(5, 5));
     }
     #endif
   }

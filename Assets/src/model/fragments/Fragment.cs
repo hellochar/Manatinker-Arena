@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class Utility : Fragment {}
+
 [Serializable]
 public class Fragment {
   public Node outt, inn;
