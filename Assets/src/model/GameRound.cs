@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -25,7 +26,9 @@ public class GameRound {
     this.roundNumber = roundNumber;
     int numEnemiesToSpawn = 3 + roundNumber / 2;
     duration = 42 + roundNumber * 3;
-    var timeBetweenSpawns = (duration - 2) / numEnemiesToSpawn;
+    // duration + 1 will force the last spawn to not naturally happen
+    // so that the stronger end-of-round spawn happens
+    var timeBetweenSpawns = (duration + 1) / numEnemiesToSpawn;
     this.spawnsPerTime = spawnsPerTime;
     timeStarted = GameModel.main.time;
   }
@@ -136,48 +139,58 @@ public class GameRound {
 
   private void UpdateActive(float dt) {
     // fastmode
+    #if UNITY_EDITOR
     if (Input.GetKey(KeyCode.Period)) {
       dt *= 5;
     }
+    #endif
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
-      float fragmentPow = roundNumber;
-
-      bool isStronger = false;
-      if (timeUntilNextSpawn > remaining) {
-        // last spawn!
-        // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
-        if (Random.value < 0.5f) {
-          isStronger = true;
-          fragmentPow *= 2;
-        } else {
-          spawnsPerTime = 3;
-          fragmentPow *= 0.8f;
-        }
-      }
-
-      var enemyNumFragments = Util.Temporal(Mathf.Pow(fragmentPow, 0.65f));
-      if (enemyNumFragments < 1) {
-        enemyNumFragments = 1;
-      }
-      for(int i = 0; i < spawnsPerTime; i++) {
-        var numWeapons = Random.Range(Mathf.CeilToInt(enemyNumFragments / 2f), enemyNumFragments + 1);
-        var numShields = enemyNumFragments - numWeapons;
-        // shrink enemies; tighter enemies look cooler and are more focused
-        var influence = Mathf.Sqrt(enemyNumFragments) * 0.75f;
-
-        // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
-        // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
-        var floor = GameModel.main.floor;
-        var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
-        var powerScalar = isStronger ? 1.5f : 1;
-        spawnEnemy(numWeapons, numShields, influence, pos, powerScalar);
-      }
+      roundSpawn();
     }
     if ((dt + elapsed) > duration) {
+      // do one last spawn!
+      if (state == GameRoundState.Active) {
+        roundSpawn(true);
+      }
       state = GameRoundState.WaitingForClear;
       UpdateWaitingForArenaCleared();
+    }
+  }
+
+  private void roundSpawn(bool isLastSpawn = false) {
+    float fragmentPow = roundNumber;
+
+    bool isStronger = false;
+    if (isLastSpawn) {
+      // last spawn!
+      // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
+      if (Random.value < 0.5f) {
+        isStronger = true;
+        fragmentPow *= 2;
+      } else {
+        spawnsPerTime = 3;
+        fragmentPow *= 0.8f;
+      }
+    }
+
+    var enemyNumFragments = Util.Temporal(Mathf.Pow(fragmentPow, 0.65f));
+    if (enemyNumFragments < 1) {
+      enemyNumFragments = 1;
+    }
+    for (int i = 0; i < spawnsPerTime; i++) {
+      var numWeapons = Random.Range(Mathf.CeilToInt(enemyNumFragments / 2f), enemyNumFragments + 1);
+      var numShields = enemyNumFragments - numWeapons;
+      // shrink enemies; tighter enemies look cooler and are more focused
+      var influence = 0.5f + Mathf.Sqrt(enemyNumFragments) * 0.75f;
+
+      // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
+      // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
+      var floor = GameModel.main.floor;
+      var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
+      var powerScalar = isStronger ? 1.5f : 1;
+      spawnEnemy(numWeapons, numShields, influence, pos, powerScalar);
     }
   }
 
@@ -210,7 +223,7 @@ public class GameRound {
     bool isAntiDirected = Random.value < 0.2f;
     var weaponType = Random.value < 0.8f ? typeof(Gun) : Random.value < 0.5 ? typeof(MeleeWeapon) : typeof(Weapon);
 
-    var enemy = new Enemy(pos, getAi(weaponType, isCircular ? 180 : isAntiDirected ? 45 : 15));
+    var enemy = new Enemy(pos, getAi(weaponType, isCircular ? 180 : isAntiDirected ? 45 : 15, influence));
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
@@ -237,6 +250,7 @@ public class GameRound {
 
     bool bIsDirected = Random.value < 0.5f;
 
+    var hasBlobber = weaponsTypeList.Any(attr => attr.type == typeof(Blobber));
     for (var i = 0; i < numWeapons; i++) {
       var weapon = NewFragmentFrom(weaponsTypeList[i]);
       weapon.owner = enemy;
@@ -253,9 +267,20 @@ public class GameRound {
       } else {
         // scale with influence, divided by numWeapons
         var spread = Mathf.Max(0.5f, 0.5f * influence / numWeapons);
+        if (hasBlobber) {
+          spread *= 2;
+        }
+        if (weapon is Sawblade) {
+          spread = Mathf.Max(2, spread);
+        }
         var y = (i + 0.5f - numWeapons / 2f) * spread;
+
         // put weapons outside shield
         var builtinX = numShields > 0 ? influence : influence / 2;
+
+        if (weapon is Sawblade) {
+          builtinX = Mathf.Max(2, builtinX);
+        }
         weapon.builtinOffset = new Vector2(builtinX, y);
         // angle them 
         if (bIsDirected || isAntiDirected) {
@@ -264,6 +289,10 @@ public class GameRound {
           weapon.builtinAngle = angle;
           if (isAntiDirected) {
             weapon.builtinAngle *= -1;
+          }
+          // fix weird issues where they're facing away from the player
+          if (Mathf.Abs(weapon.builtinAngle) > 90) {
+            weapon.builtinAngle += 180;
           }
         }
       }
@@ -290,14 +319,14 @@ public class GameRound {
     return list;
   }
 
-  private EnemyAI getAi(System.Type type, float angleThreshold = 15) {
+  private EnemyAI getAi(System.Type type, float angleThreshold, float influence) {
     return new EnemyAI() {
       baseTurnRate = 1.5f * (1 + roundNumber / 10f * 2f),
       baseSpeed = 7f + roundNumber,
       minActiveDuration = 2 + roundNumber * 0.3f,
       cooldown = 2.5f - roundNumber * 0.1f,
       deltaAngleThreshold = angleThreshold,
-      desiredDistance = type == typeof(Gun) ? Random.Range(4, 10) : type == typeof(MeleeWeapon) ? 1 : 5,
+      desiredDistance = type == typeof(Gun) ? Random.Range(4, 10) : type == typeof(MeleeWeapon) ? influence + 1 : 5,
       minDistance = 8,
       encumbrance = 2f + 1 * roundNumber,
     };

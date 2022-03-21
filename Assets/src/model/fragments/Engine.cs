@@ -121,9 +121,9 @@ public class FlitterEngine : EngineBase {
 
   public override string Description => $"Gain {manaWhileMoving} Mana/s while this engine is moving (rotation counts).";
   public float manaWhileMoving => 5 + 1 * level;
-  public override float myHpMax => 10;
+  public override float myHpMax => 5;
   public override float myManaMax => 1;
-  public override float myOutFlowRate => 10;
+  public override float myOutFlowRate => 6;
   public override float weight => 1;
 
   int numFramesStill = 0;

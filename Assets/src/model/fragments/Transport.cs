@@ -50,6 +50,7 @@ public class JumpPad : Transport, IActivatable {
   bool active => timeElapsed >= 0;
   // public float deltaSpeed => active ? speedFn(timeElapsed) : 0;
   public float unitsToMove => 4 * owner.encumbranceScalar;
+  public float lastMovementAmount;
 
   float speedFn(float t) {
     return EasingFunction.EaseOutQuint(0, 1, t);
@@ -68,6 +69,9 @@ public class JumpPad : Transport, IActivatable {
       var delta = speedFn(timeElapsed + dt) - speedFn(timeElapsed);
       delta *= unitsToMove;
       owner.forceMovement(Util.fromDeg(worldRotation) * delta);
+      lastMovementAmount = delta / dt;
+    } else {
+      lastMovementAmount = 0;
     }
     // reset
     if (timeElapsed >= 1) {

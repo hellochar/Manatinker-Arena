@@ -133,15 +133,15 @@ public class Rapier : MeleeWeapon, IActivatable {
 
 [RegisteredFragment]
 public class Axe : Rapier {
-  public override float myInFlowRate => 20;
+  public override float myInFlowRate => 40;
   public override float myHpMax => 80;
-  public override float myManaMax => 80;
+  public override float myManaMax => 120;
   public override float weight => 8;
-  public override float attackTime => 1.5f;
+  public override float attackTime => 1.4f;
   public override float angleSpread => 61;
-  public override float manaPerCycle => 30;
+  public override float manaPerCycle => 45;
   public override float lerpRate => 10;
-  public override (int, int) damageSpread => (36 + level * 4, 47 + level * 5);
+  public override (int, int) damageSpread => (45 + level * 5, 45 + level * 5);
 }
 
 [RegisteredFragment]
@@ -150,11 +150,11 @@ public class Sawblade : MeleeWeapon, IActivatable {
   bool IActivatable.isHold => true;
 
   bool isActivated = false;
-  public float manaPerSecond => 33;
+  public float manaPerSecond => 20;
   public override float myHpMax => 45;
   public override float weight => 5;
-  public override float myInFlowRate => 20;
-  public override float myManaMax => 50;
+  public override float myInFlowRate => 30;
+  public override float myManaMax => 20;
 
   // protected override void PopulateInfoStrings(List<string> lines) {
   //   base.PopulateInfoStrings(lines);
