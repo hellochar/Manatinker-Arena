@@ -11,15 +11,13 @@ public class QuickInfoController : MonoBehaviour {
 
   internal void Init(Fragment obj) {
     fragment = obj;
-  }
-
-  void Start() {
     img.sprite = fragment.controller.spriteRenderer.sprite;
+    Update();
   }
 
   // Update is called once per frame
   void Update() {
-    if (!fragment.isPlayerOwned || fragment.isDead) {
+    if (!fragment.isPlayerOwned || fragment.isDead || !fragment.pinInSidebar) {
       Destroy(gameObject);
     } else {
       string extraText = "";

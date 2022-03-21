@@ -4,8 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuickInfoContainerController : MonoBehaviour {
+  public static QuickInfoContainerController instance;
   public GameObject prefab;
   public Player player => GameModel.main.player;
+
+  void Awake() {
+    instance = this;
+  }
+
   void Start() {
     foreach (var f in player.Children) {
       HandleGetFragment(f);
@@ -26,7 +32,7 @@ public class QuickInfoContainerController : MonoBehaviour {
   private void HandleLoseFragment(Fragment obj) {
   }
 
-  private void HandleGetFragment(Fragment obj) {
+  public void HandleGetFragment(Fragment obj) {
     var go = Instantiate(prefab, transform);
     go.GetComponent<QuickInfoController>().Init(obj);
   }

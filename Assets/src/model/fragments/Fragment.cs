@@ -106,6 +106,7 @@ public class Fragment {
 
   public virtual float Intensity => 1;
   public virtual bool hitByFriendlyFire => true;
+  public bool pinInSidebar = true;
 
   public Fragment() {
     outt = new Node("out" + name);

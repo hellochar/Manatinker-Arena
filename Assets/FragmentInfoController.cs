@@ -10,6 +10,7 @@ public class FragmentInfoController : MonoBehaviour {
   public TMPro.TMP_Text fragmentInfo;
   public GameObject inport, outport;
   public TMPro.TMP_Text inportflow, outportflow, weight;
+  public Toggle toggle;
   public GameObject levelUp;
   public GameObject Manabar;
 
@@ -27,6 +28,7 @@ public class FragmentInfoController : MonoBehaviour {
       inport.SetActive(fragment.hasInput);
       outport.SetActive(fragment.hasOutput);
       inset.SetActive(true);
+      toggle.SetIsOnWithoutNotify(fragment.pinInSidebar);
       fragmentIcon.sprite = fragment.controller.spriteRenderer.sprite;
       fragmentName.text = fragment.DisplayName;
       fragmentInfo.text = fragment.GetInfo();
@@ -39,6 +41,15 @@ public class FragmentInfoController : MonoBehaviour {
       outportflow.text = $"{fragment.outFlowRate.ToString("#0.#")} mana/s";
 
       Manabar.SetActive(fragment.manaMax > 0);
+    }
+  }
+
+  public void TogglePinInSidebar(bool value) {
+    if (fragment != null) {
+      fragment.pinInSidebar = value;
+      if (fragment.pinInSidebar) {
+        QuickInfoContainerController.instance.HandleGetFragment(fragment);
+      }
     }
   }
 }
