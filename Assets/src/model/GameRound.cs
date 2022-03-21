@@ -53,10 +53,6 @@ public class GameRound {
 
     List<Fragment> utilities = new List<Fragment>();
 
-    if (roundNumber == 0) {
-      utilities.Add(spawnRandom<EngineBase>());
-    }
-
     if (roundNumber % 3 == 0) {
       // at least 1
       utilities.Add(spawnRandom<EngineBase>());
