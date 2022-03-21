@@ -45,6 +45,10 @@ public abstract class ProjectileControllerBase : MonoBehaviour {
       if (isFriendlyFire && (projectile.noFriendlyFire || !hitFC.fragment.hitByFriendlyFire)) {
         return false;
       }
+      var isSawbladeHittingAnotherSawblade = projectile.creator is Sawblade && hitFC.fragment is Sawblade;
+      if (isSawbladeHittingAnotherSawblade) {
+        return false;
+      }
       // no self hitting
       if (hitFC.fragment == projectile.creator) {
         return false;
