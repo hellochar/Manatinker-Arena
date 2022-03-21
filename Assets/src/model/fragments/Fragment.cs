@@ -102,7 +102,7 @@ public class Fragment {
   public Vector2 worldPos => controller.transform.position.xy();
   public float worldRotation => controller.transform.eulerAngles.z;
 
-  public virtual string DisplayName => GetType().Name + " " + level;
+  public virtual string DisplayName => GetType().Name + (level > 1 ? (" " + level) : "");
 
   public virtual float Intensity => 1;
   public virtual bool hitByFriendlyFire => true;

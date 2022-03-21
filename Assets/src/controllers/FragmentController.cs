@@ -17,8 +17,11 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
 
   public static float HES = 2;
 
+  public Bounds worldBounds() {
+    return spriteRenderer.bounds;
+  }
   public Vector2 worldSize() {
-    return spriteRenderer.bounds.size.xy();
+    return worldBounds().size.xy();
   }
 
   private static int globalId = 0;

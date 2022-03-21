@@ -56,7 +56,7 @@ Influence radius increased!
       tempText = Resources.Load<GameObject>("TempText");
     }
     if (EditModeInstructions == null) {
-      EditModeInstructions = GameObject.Find("EditModeInstructions");
+      EditModeInstructions = GameObject.Find("EditModeUI");
     }
     existingText = Instantiate(tempText, EditModeInstructions.transform);
     existingText.GetComponentInChildren<TMPro.TMP_Text>().text = v;

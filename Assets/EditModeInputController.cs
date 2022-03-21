@@ -9,6 +9,7 @@ public class EditModeInputController : MonoBehaviour {
   public static EditModeInputController instance;
   public string instructions => inputState.instructions;
   public InputState inputState = InputState.Default;
+  public HoveredFragmentController hoveredController;
 
   void Awake() {
     instance = this;
@@ -36,29 +37,15 @@ public class EditModeInputController : MonoBehaviour {
     UpdateSelected(inputState.selected);
   }
 
-  // void UpdateMouse() {
-  //   if (Input.GetMouseButtonDown(0)) {
-  //     var fc = hovered?.GetComponent<FragmentController>();
-  //     if (fc != null) {
-  //       mouseDownOnFragment(fc);
-  //     } else {
-  //       clickGround();
-  //     }
-  //   } else if (Input.GetMouseButtonUp(0)) {
-  //     var fc = hovered?.GetComponent<FragmentController>();
-  //     if (fc != null) {
-  //       mouseUpOnFragment(fc);
-  //     }
-  //   }
-  // }
-
   public FragmentController hovered = null;
   private void UpdateHovered() {
-    // Debug.Log(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject());
-    // Debug.Log(UnityEngine.EventSystems.EventSystem.current.currentInputModule.);
     Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition).xy();
     RaycastHit2D hit = Physics2D.Linecast(mousePositionWorld, mousePositionWorld + new Vector2(0.001f, 0.001f));
     hovered = hit.collider?.GetComponentInParent<FragmentController>();
+    hoveredController.gameObject.SetActive(hovered != null);
+    if (hovered != null) {
+      hoveredController.Update();
+    }
   }
 
   private FragmentController lastSelected;

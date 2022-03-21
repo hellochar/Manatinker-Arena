@@ -150,11 +150,11 @@ public class Sawblade : MeleeWeapon, IActivatable {
   bool IActivatable.isHold => true;
 
   bool isActivated = false;
-  public float manaPerSecond => 25;
+  public float manaPerSecond => 33;
   public override float myHpMax => 45;
   public override float weight => 5;
-  public override float myInFlowRate => 18;
-  public override float myManaMax => 60;
+  public override float myInFlowRate => 20;
+  public override float myManaMax => 50;
 
   // protected override void PopulateInfoStrings(List<string> lines) {
   //   base.PopulateInfoStrings(lines);
@@ -175,7 +175,7 @@ public class Sawblade : MeleeWeapon, IActivatable {
         baseSpeed = 0,
         lifeTime = 0.02f,
         // we have 5 spawn points, but it's unlikely we'll hit everything
-        damage = rollDamage() * dt / 2,
+        damage = rollDamage() * dt,
       };
       OnShootProjectile?.Invoke(p);
     }
