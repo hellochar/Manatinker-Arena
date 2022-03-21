@@ -31,6 +31,9 @@ public class Rapier : MeleeWeapon, IActivatable {
 
   public override void Update(float dt) {
     activeLastFrame = activated;
+    if (owner == null) {
+      activated = false;
+    }
     if (!activated) {
       TurnOff();
     } else {

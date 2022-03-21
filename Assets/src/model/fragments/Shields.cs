@@ -85,6 +85,7 @@ public class EnergyShield : Shield {
   public override bool hitByFriendlyFire => false;
   public override float absorptionPercent => 1;
   public override float baseManaToDamageRatio => 3;
+  public override float Intensity => ManaPercent < 0.99f ? 0.8f : base.Intensity;
 }
 
 [RegisteredFragment]
