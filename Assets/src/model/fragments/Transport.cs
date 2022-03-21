@@ -46,11 +46,11 @@ public class JumpPad : Transport, IActivatable {
   public override float myInFlowRate => 5;
   public override float myManaMax => 10;
   public override float myHpMax => 30;
-  public override string Description => $"Space (10 Mana) - Jump 5 units in the direction you're facing over 1 second.";
+  public override string Description => $"Space (10 Mana) - Jump 4 units in the Jet's direction over 1 second.";
   float timeElapsed = -1;
   bool active => timeElapsed >= 0;
   // public float deltaSpeed => active ? speedFn(timeElapsed) : 0;
-  public float unitsToMove => (4 + level) * owner.encumbranceScalar;
+  public float unitsToMove => 4 * owner.encumbranceScalar;
 
   float speedFn(float t) {
     return EasingFunction.EaseOutQuint(0, 1, t);
@@ -68,7 +68,7 @@ public class JumpPad : Transport, IActivatable {
       timeElapsed += dt;
       var delta = speedFn(timeElapsed + dt) - speedFn(timeElapsed);
       delta *= unitsToMove;
-      owner.forceMovement(Util.fromDeg(owner.worldRotation) * delta);
+      owner.forceMovement(Util.fromDeg(worldRotation) * delta);
     }
     // reset
     if (timeElapsed >= 1) {
@@ -103,7 +103,7 @@ public class Jet : Transport, IActivatable {
     isActivated = true;
     ChangeMana(-manaUpkeep * GameModel.main.dt);
     if (owner != null) {
-      owner.forceMovement(Util.fromDeg(worldRotation) * 2 * GameModel.main.dt);
+      owner.forceMovement(Util.fromDeg(worldRotation) * power * GameModel.main.dt);
     }
   }
 
