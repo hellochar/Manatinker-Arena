@@ -142,28 +142,32 @@ public class GameRound {
     timeUntilNextSpawn -= dt;
     if (timeUntilNextSpawn < 0) {
       timeUntilNextSpawn += timeBetweenSpawns;
-      var enemyPower = Util.Temporal(0.2f + roundNumber * 0.8f);
+      var enemyNumFragments = Util.Temporal(Mathf.Pow(roundNumber, 0.65f));
+      if (enemyNumFragments < 1) {
+        enemyNumFragments = 1;
+      }
 
       if (timeUntilNextSpawn > remaining) {
         // last spawn!
         // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
         if (Random.value < 0.5f) {
-          enemyPower *= 2;
+          enemyNumFragments *= 2;
         } else {
           spawnsPerTime = 2;
         }
       }
       for(int i = 0; i < spawnsPerTime; i++) {
-        var numWeapons = Random.Range(Mathf.CeilToInt(enemyPower / 2), enemyPower + 1);
-        var numShields = enemyPower - numWeapons;
+        var numWeapons = Random.Range(Mathf.CeilToInt(enemyNumFragments / 2), enemyNumFragments + 1);
+        var numShields = enemyNumFragments - numWeapons;
         // shrink enemies; tighter enemies look cooler and are more focused
-        var influence = Mathf.Sqrt(enemyPower) * 0.75f;
+        var influence = Mathf.Sqrt(enemyNumFragments) * 0.75f;
 
         // var yOffset = (i - (spawnsPerTime - 1) / 2f) * 4f;
         // var pos = new Vector2(GameModel.main.floor.width - 4, GameModel.main.floor.height / 2f + yOffset);
         var floor = GameModel.main.floor;
         var pos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
-        spawnEnemy(numWeapons, numShields, influence, pos);
+        var powerScalar = spawnsPerTime > 1 ? 1.5f : 1;
+        spawnEnemy(numWeapons, numShields, influence, pos, powerScalar);
       }
     }
     if ((dt + elapsed) > duration) {
@@ -191,8 +195,8 @@ public class GameRound {
     }
   }
 
-  public void spawnEnemy(int numWeapons, int numShields, float influence, Vector2 pos) {
-    bool isSymmetrical = Random.value < 0.9f;
+  public void spawnEnemy(int numWeapons, int numShields, float influence, Vector2 pos, float powerScalar = 1) {
+    bool isSymmetrical = Random.value < 0.5f;
     UnityEngine.Object.Instantiate(VFX.Get("enemySpawn"), pos, Quaternion.identity);
     var main = GameModel.main;
     var floor = main.floor;
@@ -206,7 +210,7 @@ public class GameRound {
     main.AddFragment(enemy);
 
     var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
-    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 2f);
+    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 2f) * powerScalar;
     var avatar = new EnemyAvatar(maxHP, outflow);
     avatar.owner = enemy;
     main.AddFragment(avatar);
