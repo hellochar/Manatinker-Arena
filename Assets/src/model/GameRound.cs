@@ -23,12 +23,16 @@ public class GameRound {
   public int roundNumber;
 
   public GameRound(int roundNumber, int spawnsPerTime = 1) {
+    // 1
     this.roundNumber = roundNumber;
+    // 3
     int numEnemiesToSpawn = 3 + roundNumber / 2;
+    // 45
     duration = 42 + roundNumber * 3;
     // duration + 1 will force the last spawn to not naturally happen
     // so that the stronger end-of-round spawn happens
-    var timeBetweenSpawns = (duration + 1) / numEnemiesToSpawn;
+    // 46 / 3 = 
+    this.timeBetweenSpawns = (duration + 1) / numEnemiesToSpawn;
     this.spawnsPerTime = spawnsPerTime;
     timeStarted = GameModel.main.time;
   }
@@ -55,6 +59,7 @@ public class GameRound {
 
     if (roundNumber % 3 == 0) {
       // at least 1
+      utilities.Add(spawnRandom<EngineBase>());
       for (int i = 0; i < Mathf.Max(1, roundNumber / 3); i++) {
         utilities.Add(spawnRandom<Utility>());
       }
@@ -160,7 +165,7 @@ public class GameRound {
   }
 
   private void roundSpawn(bool isLastSpawn = false) {
-    float fragmentPow = roundNumber;
+    float enemyPow = roundNumber;
 
     bool isStronger = false;
     if (isLastSpawn) {
@@ -168,14 +173,14 @@ public class GameRound {
       // either spawn 3 enemies, or spawn one enemy with 2x weapons and shields
       if (Random.value < 0.5f) {
         isStronger = true;
-        fragmentPow *= 2;
+        enemyPow *= 2;
       } else {
         spawnsPerTime = 3;
-        fragmentPow *= 0.8f;
+        enemyPow *= 0.8f;
       }
     }
 
-    var enemyNumFragments = Util.Temporal(Mathf.Pow(fragmentPow, 0.65f));
+    var enemyNumFragments = Util.Temporal(Mathf.Pow(enemyPow, 0.85f));
     if (enemyNumFragments < 1) {
       enemyNumFragments = 1;
     }
@@ -220,23 +225,28 @@ public class GameRound {
 
     bool isSymmetrical = Random.value < 0.5f;
     bool isCircular = numWeapons > 5 ? Random.value < 0.1 : false;
+    bool bIsDirected = Random.value < 0.5f;
     bool isAntiDirected = Random.value < 0.2f;
     var weaponType = Random.value < 0.8f ? typeof(Gun) : Random.value < 0.5 ? typeof(MeleeWeapon) : typeof(Weapon);
+    var shieldType = Random.value < 0.5f ? typeof(MassyShield) : Random.value < 0.5f ? typeof(EnergyShield) : typeof(Shield);
+
+    int fragmentLevelMin = 1;
+    int fragmentLevelMax = (roundNumber + 1) / 2;
+    var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
+    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 2f) * powerScalar;
 
     var enemy = new Enemy(pos, getAi(weaponType, isCircular ? 180 : isAntiDirected ? 45 : 15, influence));
     enemy.builtinAngle = 180;
     main.AddFragment(enemy);
 
-    var maxHP = Mathf.RoundToInt(25 + Mathf.Pow(roundNumber, 1.2f) * 5);
-    var outflow = Mathf.RoundToInt(8 + Mathf.Pow(roundNumber, 1.2f) * 2f) * powerScalar;
     var avatar = new EnemyAvatar(maxHP, outflow);
     avatar.owner = enemy;
     main.AddFragment(avatar);
 
-    var shieldType = Random.value < 0.5f ? typeof(MassyShield) : Random.value < 0.5f ? typeof(EnergyShield) : typeof(Shield);
     List<RegisteredFragmentAttribute> shieldsTypeList = GetRandomTypeList(shieldType, numShields, true);
     for(var i = 0; i < numShields; i++) {
       var shield = NewFragmentFrom(shieldsTypeList[i]);
+      shield.level = Random.Range(fragmentLevelMin, fragmentLevelMax + 1);
       shield.ChangeMana(shield.manaMax);
       shield.owner = enemy;
       main.AddFragment(shield);
@@ -248,11 +258,10 @@ public class GameRound {
 
     List<RegisteredFragmentAttribute> weaponsTypeList = GetRandomTypeList(weaponType, numWeapons, true);
 
-    bool bIsDirected = Random.value < 0.5f;
-
     var hasBlobber = weaponsTypeList.Any(attr => attr.type == typeof(Blobber));
     for (var i = 0; i < numWeapons; i++) {
       var weapon = NewFragmentFrom(weaponsTypeList[i]);
+      weapon.level = Random.Range(fragmentLevelMin, fragmentLevelMax + 1);
       weapon.owner = enemy;
       weapon.ChangeMana(weapon.manaMax / 2);
 

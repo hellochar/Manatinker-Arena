@@ -163,7 +163,7 @@ public class Sawblade : MeleeWeapon, IActivatable {
 
   protected override string dmgString => $"{damageSpread.Item1} dmg/sec";
 
-  public override string Description => $"Click-and-hold ({manaPerSecond} mana/sec) - twist attack.\n\nWarning - can damage yourself!";
+  public override string Description => $"Click-and-hold ({manaPerSecond} mana/sec) - twist attack.\n\nWarning - can damage yourself!\n\nSawblades do not damage each other.";
 
   public override void Update(float dt) {
     base.Update(dt);

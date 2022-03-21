@@ -37,7 +37,8 @@ public class UpdateCriticalInfoText : MonoBehaviour {
 var speedText = $"Speed {player.speed.ToString("##0.##")} {extraSpeedText}".AddColor(encumbranceColor).Trim();
 
     text.text = $@"
-<sprite=0> {player.gold} • {weightText} • {speedText}
+<sprite=0> {player.gold}
+{weightText} • {speedText}
 ".Trim();
   }
 }

@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Creature {
   public EnemyAI ai;
   public Enemy(Vector2 start, EnemyAI ai) : base(start) {
     this.ai = ai;
+    myAngleThreshold = ai.deltaAngleThreshold;
+    myMinDistance = ai.minDistance;
   }
   public override float baseTurnRate => ai.baseTurnRate;
   public override float baseSpeed => ai.baseSpeed;
@@ -15,6 +18,11 @@ public class Enemy : Creature {
     base.Die();
   }
 
+  private IDictionary<IActivatable, bool> activatedHistory = new Dictionary<IActivatable, bool>();
+  float lastActivatedTime = GameModel.main.time;
+  float myAngleThreshold;
+  float myMinDistance;
+  Vector2 randomPos;
   public override void Update(float dt) {
     var player = GameModel.main.player;
     if (player.isDead) {
@@ -26,7 +34,18 @@ public class Enemy : Creature {
       return;
     }
 
-    var offset = player.worldPos - this.worldPos;
+    // if it's been 5 seconds and you haven't activated, just go for it
+    if (GameModel.main.time - lastActivatedTime > 5 && myMinDistance < 99) {
+      myAngleThreshold = 360;
+      myMinDistance = 99;
+      // reset to its min active duration
+      cooldown = 0;
+      var floor = GameModel.main.floor;
+      randomPos = new Vector2(Random.Range(3, floor.width - 3), Random.Range(3, floor.height - 3));
+    }
+
+    var targetPos = randomPos != Vector2.zero ? randomPos : player.worldPos;
+    var offset = targetPos - this.worldPos;
 
     // e.g. 8 units away
     var currentDistance = offset.magnitude;
@@ -40,21 +59,38 @@ public class Enemy : Creature {
     setRotation(desiredAngle);
 
     // if close enough, fire at player
-    if (Mathf.Abs(Mathf.DeltaAngle(worldRotation, desiredAngle)) < ai.deltaAngleThreshold && distanceOffset < ai.minDistance) {
+    var isAngleCloseEnough =
+      Mathf.Abs(Mathf.DeltaAngle(worldRotation, desiredAngle))
+      < myAngleThreshold;
+    var isDistanceCloseEnough = distanceOffset < myMinDistance;
+
+    if (isAngleCloseEnough && isDistanceCloseEnough) {
       foreach(var f in Children) {
         // fire weapons
         if (f is Weapon w && f is IActivatable p) {
           if (p.CanActivate()) {
+            lastActivatedTime = GameModel.main.time;
             p.Activate();
+            activatedHistory.Add(p, true);
             // active for at least 2 seconds
             if (cooldown < -ai.minActiveDuration) {
               // then pause for 2 seconds
               cooldown = ai.cooldown;
+
+              myAngleThreshold = ai.deltaAngleThreshold;
+              myMinDistance = ai.minDistance;
+              randomPos = Vector2.zero;
             }
+          } else {
+            activatedHistory.Add(p, false);
           }
         }
       }
     }
+  }
+
+  internal bool activatedThisTurn(IActivatable a) {
+    return activatedHistory.ContainsKey(a) && activatedHistory[a];
   }
 }
 

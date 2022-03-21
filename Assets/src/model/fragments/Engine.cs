@@ -56,11 +56,11 @@ public class PainEngine : EngineBase {
 
 [RegisteredFragment]
 public class CalmEngine : EngineBase {
-  public override float myManaMax => 50;
+  public override float myManaMax => 200;
   public override float myHpMax => 30;
   public override float myOutFlowRate => 8;
   public override float weight => 2f;
-  public override string Description => "Convert 100% of damage you take into Mana on this Engine.";
+  public override string Description => "Convert 100% of damage your Fragments take into Mana on this Engine.";
 
   public CalmEngine() {
     Player.OnTakesDamage += HandleTakesDamage;
@@ -73,7 +73,8 @@ public class CalmEngine : EngineBase {
 
   private void HandleTakesDamage(float amount) {
     if (isPlayerOwned) {
-      ChangeMana(amount * 1.0f);
+      // remember - player only takes 25% damage, we must unscale that
+      ChangeMana(amount * 4.0f);
     }
   }
 }

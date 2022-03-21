@@ -14,7 +14,9 @@ public class Player : Creature {
 
   public override void Update(float dt) {
     base.Update(dt);
-    numContacts = rigidbody.GetContacts(contacts);
+    if (rigidbody != null) {
+      numContacts = rigidbody.GetContacts(contacts);
+    }
     // for (var i = 0; i < numContacts; i++) {
     //   var contact = contacts[i];
     //   var fragmentController = contact.collider.GetComponentInParent<FragmentController>();

@@ -119,7 +119,7 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
   }
 
   internal void UpdateOffset(Vector2 offset) {
-    var z = fragment is Creature ? -1 : 0;
+    var z = fragment is Creature ? -1 : fragment is DefenseGrid ? 0.1f : 0;
     transform.localPosition = offset.z(z);
   }
 
@@ -166,7 +166,9 @@ public class FragmentController : MonoBehaviour, IPointerDownHandler, IPointerUp
         OnActivated?.Invoke();
       }
       if (a.isHold) {
-        var playSound = ((IActivatable)a).PlayerInputCheck() && a.CanActivate();
+        var playerInputCheck = fragment.isPlayerOwned && ((IActivatable)a).PlayerInputCheck();
+        var enemyActivatedCheck = fragment.owner is Enemy e && e.activatedThisTurn(a);
+        var playSound = (playerInputCheck || enemyActivatedCheck) && a.CanActivate();
         UpdateHoldAudio(playSound);
       }
     }

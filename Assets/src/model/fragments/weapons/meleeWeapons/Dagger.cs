@@ -61,13 +61,13 @@ public class Dagger : MeleeWeapon, IActivatable {
 [RegisteredFragment]
 public class Spear : Dagger {
   public override bool isHold => false;
-  public override float manaCost => 16;
+  public override float manaCost => 18;
   public override float attackDistance => 1.8f;
   public float attackSpeedScalar => 1f - (level - 1) * 0.2f / ((level - 1) * 0.2f + 1);
   public override float attackTime => 1.0f * attackSpeedScalar;
   public override float weight => 3f;
   public override float myInFlowRate => 12;
-  public override float myManaMax => 16;
+  public override float myManaMax => 18;
   public override (int, int) damageSpread => (15 + level * 1, 19 + level * 2);
 
   public override string Description => $"Click ({manaCost} mana) - attack.";

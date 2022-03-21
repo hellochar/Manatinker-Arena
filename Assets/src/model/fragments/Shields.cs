@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Shield : Fragment {
   // public override bool hasInput => false;
   public override bool hasOutput => false;
-  public override float myInFlowRate => 5;
+  public override float myInFlowRate => 2;
   public override float myManaMax => myHpMax / 2;
   public override float myOutFlowRate => 0;
   public virtual float absorptionPercent => 0.5f;
@@ -34,7 +34,9 @@ public abstract class Shield : Fragment {
   }
 }
 
-public class MassyShield : Shield {}
+public class MassyShield : Shield {
+  public override float baseManaToDamageRatio => 2;
+}
 
 [RegisteredFragment]
 public class Buckler : MassyShield {
@@ -48,7 +50,7 @@ public class Buckler : MassyShield {
 
 [RegisteredFragment]
 public class TowerShield : MassyShield {
-  public override float myInFlowRate => 3;
+  public override float myInFlowRate => 4;
   public override float myHpMax => 120;
   public override float weight => 10f;
   public TowerShield() {
@@ -67,6 +69,7 @@ public class Crenel : MassyShield {
 public class PlowShield : MassyShield {
   public override float myHpMax => 90;
   public override float weight => 6f;
+  public override float myInFlowRate => 3;
   public PlowShield() {
   }
 }
